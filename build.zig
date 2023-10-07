@@ -5,21 +5,26 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const lib = b.addStaticLibrary(.{
-        .name = "macos-sdk",
+        .name = "xcode-frameworks",
         .root_source_file = .{ .path = "stub.c" },
         .target = target,
         .optimize = optimize,
     });
     lib.linkLibC();
-    try addPaths(b, lib);
+    addPaths(lib);
     b.installArtifact(lib);
 }
 
-pub fn addPaths(b: *std.Build, step: *std.build.CompileStep) !void {
-    // https://github.com/ziglang/zig/issues/17358
-    if (step.target.isNative()) b.sysroot = "/";
+pub fn addPaths(step: *std.build.CompileStep) void {
+    step.addSystemFrameworkPath(.{ .cwd_relative = sdkPath("/Frameworks") });
+    step.addSystemIncludePath(.{ .cwd_relative = sdkPath("/include") });
+    step.addLibraryPath(.{ .cwd_relative = sdkPath("/lib") });
+}
 
-    step.addSystemFrameworkPath(.{ .path = "Frameworks" });
-    step.addSystemIncludePath(.{ .path = "include" });
-    step.addLibraryPath(.{ .path = "lib" });
+fn sdkPath(comptime suffix: []const u8) []const u8 {
+    if (suffix[0] != '/') @compileError("suffix must be an absolute path");
+    return comptime blk: {
+        const root_dir = std.fs.path.dirname(@src().file) orelse ".";
+        break :blk root_dir ++ suffix;
+    };
 }
