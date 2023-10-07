@@ -1,0 +1,20 @@
+name: CI
+on:
+  - push
+  - pull_request
+jobs:
+  x86_64-macos:
+    runs-on: macos-12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      - name: Setup Zig
+        run: |
+          brew install xz
+          sudo sh -c 'wget -c https://pkg.machengine.org/zig/zig-macos-x86_64-0.11.0-dev.4410+76f7b40e1.tar.xz -O - | tar -xJ --strip-components=1 -C /usr/local/bin'
+      - name: build
+        run: zig build
+        env:
+          AGREE: true
