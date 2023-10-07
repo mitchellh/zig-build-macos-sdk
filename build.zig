@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const lib = b.addStaticLibrary(.{
-        .name = "xcode-frameworks",
+        .name = "macos_sdk",
         .root_source_file = .{ .path = "stub.c" },
         .target = target,
         .optimize = optimize,
