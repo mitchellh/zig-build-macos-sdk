@@ -92,3 +92,6 @@ rm ./Frameworks/OpenGL.framework/Versions/A/Libraries/3425AMD/libLLVMContainer.t
 
 # 444K
 rm ./Frameworks/CloudKit.framework/Versions/A/CloudKit.tbd
+
+# Remove all broken symlinks
+find . -type l ! -exec test -e {} \; -exec rm {} ';'
