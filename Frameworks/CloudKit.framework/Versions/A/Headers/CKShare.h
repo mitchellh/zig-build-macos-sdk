@@ -37,6 +37,8 @@ CK_EXTERN CKRecordFieldKey const CKShareTypeKey API_AVAILABLE(macos(10.12), ios(
  */
 
 API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
+// This class should not be subclassed. If it is, Sendable may no longer apply.
+// NS_SWIFT_SENDABLE on macos(14.0), ios(17.0), tvos(17.0), watchos(10.0)
 @interface CKShare : CKRecord <NSSecureCoding, NSCopying>
 
 /*! When saving a newly created CKShare, you must save the share and its rootRecord in the same CKModifyRecordsOperation batch. */
@@ -64,23 +66,23 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  Changing the public permission to @c CKShareParticipantPermissionReadOnly or @c CKShareParticipantPermissionReadWrite will result in all pending participants being removed.  Already-accepted participants will remain on the share.
  *  Changing the public permission to @c CKShareParticipantPermissionNone will result in all participants being removed from the share.  You may subsequently choose to call @c addParticipant: before saving the share, those participants will be added to the share.
  */
-@property (nonatomic, assign) CKShareParticipantPermission publicPermission;
+@property (assign) CKShareParticipantPermission publicPermission;
 
 /*! @abstract A URL that can be used to invite participants to this share.
  *
  *  @discussion Only available after share record has been saved to the server.  This url is stable, and is tied to the rootRecord.  That is, if you share a rootRecord, delete the share, and re-share the same rootRecord via a newly created share, that newly created share's url will be identical to the prior share's url
  */
-@property (nonatomic, readonly, copy, nullable) NSURL *URL;
+@property (nullable, readonly, copy) NSURL *URL;
 
 /*! @abstract All participants on the share that the current user has permissions to see.
  *
  *  @discussion At the minimum that will include the owner and the current user.
  */
-@property (nonatomic, readonly, copy) NSArray<CKShareParticipant *> *participants;
+@property (readonly, copy) NSArray<CKShareParticipant *> *participants;
 
 /*! Convenience methods for fetching special users from the participant array */
-@property (nonatomic, readonly, copy) CKShareParticipant *owner;
-@property (nonatomic, readonly, copy, nullable) CKShareParticipant *currentUserParticipant;
+@property (readonly, copy) CKShareParticipant *owner;
+@property (nullable, readonly, copy) CKShareParticipant *currentUserParticipant;
 
 /*! @discussion If a participant with a matching userIdentity already exists, then that existing participant's properties will be updated; no new participant will be added.
  *  In order to modify the list of participants, a share must have publicPermission set to @c CKShareParticipantPermissionNone.  That is, you cannot mix-and-match private users and public users in the same share.

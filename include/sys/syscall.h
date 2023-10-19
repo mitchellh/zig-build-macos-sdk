@@ -222,7 +222,7 @@
 #define	SYS_setegid        182
 #define	SYS_seteuid        183
 #define	SYS_sigreturn      184
-			/* 185  old chud */
+#define	SYS_panic_with_data 185
 #define	SYS_thread_selfcounts 186
 #define	SYS_fdatasync      187
 #define	SYS_stat           188

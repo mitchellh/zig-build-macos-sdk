@@ -101,6 +101,7 @@ typedef NS_OPTIONS(NSUInteger, MTLTextureUsage)
     MTLTextureUsageShaderWrite     = 0x0002,
     MTLTextureUsageRenderTarget    = 0x0004,
     MTLTextureUsagePixelFormatView = 0x0010,
+    MTLTextureUsageShaderAtomic API_AVAILABLE(macos(14.0), ios(17.0)) = 0x0020,
 } API_AVAILABLE(macos(10.11), ios(9.0));
 
 typedef NS_ENUM(NSInteger, MTLTextureCompressionType)
@@ -238,7 +239,7 @@ MTL_EXPORT API_AVAILABLE(macos(10.11), ios(8.0))
  Losslessly compressed textures may benefit from reduced bandwidth usage when regions of correlated color values are written, but do not benefit from reduced storage requirements.
  Enabling lossy compression for textures that can tolerate some precision loss will guarantee both reduced bandwidth usage and reduced storage requirements.
  The amount of precision loss depends on the color values stored; regions with correlated color values can be represented with limited to no precision loss, whereas regions with unrelated color values suffer more precision loss.
- Enabling lossy compression requires both storageMode == MTLStorageModePrivate, allowGPUOptimizedContents == YES, and cannot be combined with either MTLTextureUsagePixelFormatView, MTLTextureUsageShaderWrite, MTLTextureType1D(Array) or MTLTextureTypeTextureBuffer.
+ Enabling lossy compression requires both storageMode == MTLStorageModePrivate, allowGPUOptimizedContents == YES, and cannot be combined with either MTLTextureUsagePixelFormatView, MTLTextureUsageShaderWrite, MTLTextureUsageShaderAtomic, MTLTextureType1D(Array) or MTLTextureTypeTextureBuffer.
  Moreover, not all MTLPixelFormat are supported with lossy compression, verify that the MTLDevice's GPU family supports the lossy compression feature for the pixelFormat requested.
  Set allowGPUOptimizedContents to NO to opt out of both lossless and lossy compression; such textures do not benefit from either reduced bandwidth usage or reduced storage requirements, but have predictable CPU readback performance.
  */

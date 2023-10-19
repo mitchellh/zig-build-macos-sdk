@@ -83,7 +83,10 @@ enum : NSInteger {
     NSInferredMappingModelError                      = 134190, // inferred mapping model creation error
     NSExternalRecordImportError                      = 134200, // general error encountered while importing external records
     
-    NSPersistentHistoryTokenExpiredError             = 134301  // The history token passed to NSPersistentChangeRequest was invalid
+    NSPersistentHistoryTokenExpiredError             = 134301, // The history token passed to NSPersistentChangeRequest was invalid
+    NSManagedObjectModelReferenceNotFoundError       = 134504, // the referenced model could not be found or instantiated
+    NSStagedMigrationFrameworkVersionMismatchError   = 134505, // the metadata of this store file has to be updated to use Staged Migration
+    NSStagedMigrationBackwardMigrationError          = 134506  // the migration failed due to migration attempting to migrate backwards
 };
 
 NS_ASSUME_NONNULL_END

@@ -2,14 +2,14 @@
 /*
         NSATSTypesetter.h
         Application Kit
-        Copyright (c) 2002-2021, Apple Inc.
+        Copyright (c) 2002-2023, Apple Inc.
         All rights reserved.
 */
 
 #import <AppKit/NSTypesetter.h>
 #import <AppKit/NSParagraphStyle.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #if !TARGET_OS_IPHONE
 
 NS_AUTOMATED_REFCOUNT_WEAK_UNAVAILABLE
@@ -96,7 +96,7 @@ NS_AUTOMATED_REFCOUNT_WEAK_UNAVAILABLE
 
 
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSATSTypesetter.h>
 #endif

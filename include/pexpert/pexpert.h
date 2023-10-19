@@ -69,6 +69,7 @@ int PE_stub_poll_input(unsigned int options, char *c);
 boolean_t PE_panic_debugging_enabled(void);
 
 void PE_mark_hwaccess(uint64_t thread);
+
 #endif /* defined(__arm__) || defined(__arm64__) */
 
 /* Return the offset of the specified address into the panic region */
@@ -279,6 +280,8 @@ extern boolean_t PE_parse_boot_argn(
 	void            *arg_ptr,
 	int                     max_arg);
 
+extern boolean_t PE_boot_arg_uint64_eq(const char *arg_string, uint64_t value);
+
 
 extern boolean_t PE_get_default(
 	const char      *property_name,
@@ -345,6 +348,8 @@ extern void PE_cpu_power_enable(int cpu_id);
 
 extern void PE_cpu_power_disable(int cpu_id);
 
+extern void PE_singlestep_hook(void);
+
 #if defined(__arm__) || defined(__arm64__)
 typedef void (*perfmon_interrupt_handler_func)(cpu_id_t source);
 extern kern_return_t PE_cpu_perfmon_interrupt_install_handler(perfmon_interrupt_handler_func handler);
@@ -357,6 +362,7 @@ __options_decl(panic_trace_t, uint32_t, {
 	panic_trace_unused                   = 0x00000001,
 	panic_trace_enabled                  = 0x00000002,
 	panic_trace_alt_enabled              = 0x00000010,
+	panic_trace_partial_policy           = 0x00000020,
 });
 extern panic_trace_t panic_trace;
 

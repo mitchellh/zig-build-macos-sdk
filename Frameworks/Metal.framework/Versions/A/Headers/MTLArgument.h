@@ -124,6 +124,10 @@ typedef NS_ENUM(NSUInteger, MTLDataType) {
     MTLDataTypeIntersectionFunctionTable API_AVAILABLE(macos(11.0), ios(14.0)) = 116,
     MTLDataTypePrimitiveAccelerationStructure API_AVAILABLE(macos(11.0), ios(14.0)) = 117,
     MTLDataTypeInstanceAccelerationStructure API_AVAILABLE(macos(11.0), ios(14.0)) = 118,
+    MTLDataTypeBFloat  API_AVAILABLE(macos(14.0), ios(17.0)) = 121,
+    MTLDataTypeBFloat2 API_AVAILABLE(macos(14.0), ios(17.0)) = 122,
+    MTLDataTypeBFloat3 API_AVAILABLE(macos(14.0), ios(17.0)) = 123,
+    MTLDataTypeBFloat4 API_AVAILABLE(macos(14.0), ios(17.0)) = 124,
 } API_AVAILABLE(macos(10.11), ios(8.0));
 
 @class MTLArgument;
@@ -210,15 +214,18 @@ typedef NS_ENUM(NSUInteger, MTLArgumentType) {
     MTLArgumentTypeIntersectionFunctionTable API_AVAILABLE(macos(11.0), ios(14.0)) = 27,
 } API_DEPRECATED_WITH_REPLACEMENT("MTLBindingType", macos(10.11, 13.0), ios(8.0, 16.0));
 
-/*!
- @enum MTLArgumentAccess
-*/
-typedef NS_ENUM(NSUInteger, MTLArgumentAccess) {
 
-    MTLArgumentAccessReadOnly   = 0,
-    MTLArgumentAccessReadWrite  = 1,
-    MTLArgumentAccessWriteOnly  = 2,
-} API_AVAILABLE(macos(10.11), ios(8.0));
+typedef NS_ENUM(NSUInteger, MTLBindingAccess) {
+    MTLBindingAccessReadOnly   = 0,
+    MTLBindingAccessReadWrite  = 1,
+    MTLBindingAccessWriteOnly  = 2,
+    MTLArgumentAccessReadOnly API_DEPRECATED_WITH_REPLACEMENT("MTLBindingAccessReadOnly", macos(10.13, 14.0), ios(8.0, 17.0)) = MTLBindingAccessReadOnly,
+    MTLArgumentAccessReadWrite API_DEPRECATED_WITH_REPLACEMENT("MTLBindingAccessReadWrite", macos(10.13, 14.0), ios(8.0, 17.0)) = MTLBindingAccessReadWrite,
+    MTLArgumentAccessWriteOnly API_DEPRECATED_WITH_REPLACEMENT("MTLBindingAccessWriteOnly", macos(10.13, 14.0), ios(8.0, 17.0)) = MTLBindingAccessWriteOnly,
+};
+
+typedef MTLBindingAccess MTLArgumentAccess API_DEPRECATED_WITH_REPLACEMENT("MTLBindingAccess", macos(10.11, 14.0), ios(8.0, 17.0));
+
 
 @class MTLStructType;
 @class MTLArrayType;
@@ -277,7 +284,7 @@ MTL_EXPORT API_AVAILABLE(macos(10.13), ios(11.0))
 @interface MTLPointerType : MTLType
 
 @property (readonly) MTLDataType elementType;           // MTLDataTypeFloat, MTLDataTypeFloat4, MTLDataTypeStruct, ...
-@property (readonly) MTLArgumentAccess access;
+@property (readonly) MTLBindingAccess access;
 @property (readonly) NSUInteger alignment;              // min alignment for the element data
 @property (readonly) NSUInteger dataSize;               // sizeof(T) for T *argName
 
@@ -293,7 +300,7 @@ MTL_EXPORT API_AVAILABLE(macos(10.13), ios(11.0))
 
 @property (readonly) MTLDataType textureDataType; // half, float, int, or uint.
 @property (readonly) MTLTextureType textureType;  // texture1D, texture2D...
-@property (readonly) MTLArgumentAccess access;    // read, write, read-write
+@property (readonly) MTLBindingAccess access;    // read, write, read-write
 @property (readonly) BOOL isDepthTexture;         // true for depth textures
 
 @end
@@ -307,7 +314,7 @@ API_DEPRECATED_WITH_REPLACEMENT("MTLBinding", macos(10.11, 13.0), ios(8.0, 16.0)
 
 @property (readonly) NSString *name;
 @property (readonly) MTLArgumentType type;
-@property (readonly) MTLArgumentAccess access;
+@property (readonly) MTLBindingAccess access;
 @property (readonly) NSUInteger index;
 
 @property (readonly, getter=isActive) BOOL active;
@@ -335,7 +342,7 @@ MTL_EXPORT API_AVAILABLE(macos(13.0), ios(16.0))
 @protocol MTLBinding<NSObject>
 @property (readonly) NSString *name;
 @property (readonly) MTLBindingType type;
-@property (readonly) MTLArgumentAccess access;
+@property (readonly) MTLBindingAccess access;
 @property (readonly) NSUInteger index;
 
 @property (readonly, getter=isUsed) BOOL used;

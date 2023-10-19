@@ -45,6 +45,19 @@ SPAffineTransform3D SPAffineTransform3DMakeWithProjective(SPProjectiveTransform3
 __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
 
 /*!
+ @abstract Returns a new affine transform structure from the first three rows of the specified projective transform.
+ 
+ @param transform The source transform.
+ @returns A new affine transform structure.
+ @note This function is similar to @p SPAffineTransform3DMakeWithProjective, but it ignores the last
+ row of the matrix.
+ */
+SPATIAL_INLINE
+SPATIAL_OVERLOADABLE
+SPAffineTransform3D SPAffineTransform3DMakeWithTruncatedProjective(SPProjectiveTransform3D transform)
+__API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+/*!
  @abstract Returns a new scale affine transform.
  
  @param scale The scale.
@@ -545,6 +558,22 @@ SPAffineTransform3D SPAffineTransform3DMakeWith4x3Matrix(simd_double4x3 matrix) 
     return transform;
 }
 
+SPATIAL_SWIFT_NAME(AffineTransform3D.init(truncating:))
+SPATIAL_OVERLOADABLE
+SPAffineTransform3D SPAffineTransform3DMakeWithTruncatedProjective(SPProjectiveTransform3D transform) {
+    simd_double3 column0 = transform.matrix.columns[0].xyz;
+    simd_double3 column1 = transform.matrix.columns[1].xyz;
+    simd_double3 column2 = transform.matrix.columns[2].xyz;
+    simd_double3 column3 = transform.matrix.columns[3].xyz;
+    
+    SPAffineTransform3D affine = { .matrix = simd_matrix(column0,
+                                                         column1,
+                                                         column2,
+                                                         column3) };
+    
+    return affine;
+}
+
 SPATIAL_REFINED_FOR_SWIFT
 SPATIAL_OVERLOADABLE
 SPAffineTransform3D SPAffineTransform3DMakeWith4x4Matrix(simd_double4x4 matrix) {
@@ -573,24 +602,7 @@ SPATIAL_REFINED_FOR_SWIFT
 SPATIAL_OVERLOADABLE
 SPAffineTransform3D SPAffineTransform3DMakeWithProjective(SPProjectiveTransform3D transform) {
     
-    if (!(transform.matrix.columns[0].w == 0 &&
-          transform.matrix.columns[1].w == 0 &&
-          transform.matrix.columns[2].w == 0 &&
-          transform.matrix.columns[3].w == 1)) {
-     
-        return SPAffineTransform3DInvalid;
-    }
-    
-    simd_double3 column0 = transform.matrix.columns[0].xyz;
-    simd_double3 column1 = transform.matrix.columns[1].xyz;
-    simd_double3 column2 = transform.matrix.columns[2].xyz;
-    simd_double3 column3 = transform.matrix.columns[3].xyz;
-    
-    simd_double4x3 matrix = simd_matrix(column0, column1, column2, column3);
-    
-    SPAffineTransform3D affine = { .matrix = matrix };
-    
-    return affine;
+    return SPAffineTransform3DMakeWith4x4Matrix(transform.matrix);
 }
 
 SPATIAL_SWIFT_NAME(AffineTransform3D.init(scale:))

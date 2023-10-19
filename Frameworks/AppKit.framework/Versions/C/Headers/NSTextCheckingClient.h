@@ -1,7 +1,7 @@
 /*
         NSTextCheckingClient.h
         Application Kit
-        Copyright (c) 2018-2021, Apple Inc.
+        Copyright (c) 2018-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -14,7 +14,7 @@
 #import <AppKit/AppKitDefines.h>
 #import <AppKit/NSTextInputClient.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSAttributedString, NSView, NSCandidateListTouchBarItem;
@@ -37,6 +37,7 @@ typedef NS_ENUM(NSInteger, NSTextInputTraitType) {
 @property NSTextInputTraitType dataDetectionType;
 @property NSTextInputTraitType linkDetectionType;
 @property NSTextInputTraitType textCompletionType;
+@property NSTextInputTraitType inlinePredictionType API_AVAILABLE(macos(14.0));
 @end
 
 @protocol NSTextCheckingClient <NSTextInputClient, NSTextInputTraits>
@@ -83,4 +84,4 @@ typedef NS_ENUM(NSInteger, NSTextInputTraitType) {
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

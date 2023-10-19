@@ -88,12 +88,30 @@ MTL_EXPORT API_AVAILABLE(macos(10.14), ios(12.0))
  */
 @property (readwrite, nonatomic) NSUInteger maxKernelBufferBindCount API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(13.0));
 
+/*!
+ @abstract
+ The maximum bind index of kernel (or tile) threadgroup memory that can be set per command.
+ The default value is 31.
+ */
+@property (readwrite, nonatomic) NSUInteger maxKernelThreadgroupMemoryBindCount API_AVAILABLE(macos(14.0), ios(17.0));
+
 
 /*!
  @abstract
  Whether the render or compute commands can use ray tracing. Default value is NO.
  */
 @property (readwrite, nonatomic) BOOL supportRayTracing API_AVAILABLE(macos(13.0), ios(16.0));
+
+/*!
+  @brief
+    allows binding pipelines that have at least one MTLBufferLayout with a
+    stride of `MTLBufferLayoutStrideDynamic`
+
+    will allow setting attributeStride in `setVertexBuffer` / `setKernelBuffer`
+    calls
+*/
+@property (readwrite, nonatomic) BOOL supportDynamicAttributeStride API_AVAILABLE(macos(14.0), ios(17.0));
+
 @end
 
 

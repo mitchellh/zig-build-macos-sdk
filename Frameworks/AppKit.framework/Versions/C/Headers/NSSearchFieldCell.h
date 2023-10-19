@@ -1,7 +1,7 @@
 /*
 	NSSearchFieldCell.h
 	Application Kit
-	Copyright (c) 2003-2021, Apple Inc.
+	Copyright (c) 2003-2023, Apple Inc.
 	All rights reserved.
  */
 
@@ -24,7 +24,7 @@ static const NSInteger NSSearchFieldClearRecentsMenuItemTag = 1002;
 // The item describing a lack of recents uses this tag. Hidden if recents
 static const NSInteger NSSearchFieldNoRecentsMenuItemTag = 1003;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSButtonCell, NSMenu, NSMutableArray, NSTimer, NSImage;
@@ -70,5 +70,5 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

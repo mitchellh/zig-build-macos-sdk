@@ -24,14 +24,14 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithShareURLs:(NSArray<NSURL *> *)shareURLs;
 
-@property (nonatomic, copy, nullable) NSArray<NSURL *> *shareURLs;
+@property (nullable, copy, nonatomic) NSArray<NSURL *> *shareURLs;
 
 /*! @abstract If set to YES, the resulting @c CKShareMetadata will have a @c rootRecord object filled out.
  *
  *  @discussion Defaults to @c NO.
  *  The resulting @c CKShareMetadata will have a @c rootRecordID property regardless of the value of this property.
  */
-@property (nonatomic, assign) BOOL shouldFetchRootRecord;
+@property (assign, nonatomic) BOOL shouldFetchRootRecord;
 
 /*! @abstract Declares which user-defined keys should be fetched and added to the resulting @c rootRecord.
  *
@@ -39,7 +39,7 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  If nil, declares the entire root record should be downloaded. If set to an empty array, declares that no user fields should be downloaded.
  *  Defaults to @c nil.
  */
-@property (nonatomic, copy, nullable) NSArray<CKRecordFieldKey> *rootRecordDesiredKeys;
+@property (nullable, copy, nonatomic) NSArray<CKRecordFieldKey> *rootRecordDesiredKeys;
 
 /*! @abstract Called once for each share URL that the server processed
  *
@@ -47,7 +47,7 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^perShareMetadataBlock)(NSURL *shareURL, CKShareMetadata * _Nullable shareMetadata, NSError * _Nullable error)
+@property (nullable, copy, nonatomic) void (^perShareMetadataBlock)(NSURL *shareURL, CKShareMetadata * _Nullable shareMetadata, NSError * _Nullable error)
 CK_SWIFT_DEPRECATED("Use perShareMetadataResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
 
 /*! @abstract This block is called when the operation completes.
@@ -58,7 +58,7 @@ CK_SWIFT_DEPRECATED("Use perShareMetadataResultBlock instead", macos(10.12, 12.0
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchShareMetadataCompletionBlock)(NSError * _Nullable operationError)
+@property (nullable, copy, nonatomic) void (^fetchShareMetadataCompletionBlock)(NSError * _Nullable operationError)
 CK_SWIFT_DEPRECATED("Use fetchShareMetadataResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
 
 @end

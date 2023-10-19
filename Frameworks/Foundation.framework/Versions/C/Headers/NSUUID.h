@@ -3,7 +3,9 @@
 */
 
 #import <Foundation/NSObject.h>
+#if !0
 #include <CoreFoundation/CFUUID.h>
+#endif
 #include <uuid/uuid.h>
 
 /* Note: NSUUID is not toll-free bridged with CFUUID. Use UUID strings to convert between CFUUID and NSUUID, if needed. NSUUIDs are not guaranteed to be comparable by pointer value (as CFUUIDRef is); use isEqual: to compare two NSUUIDs. */

@@ -18,7 +18,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // An instance of NSPersistentContainer includes all objects needed to represent a functioning Core Data stack, and provides convenience methods and properties for common patterns.
-API_AVAILABLE(macosx(10.12),ios(10.0),tvos(10.0),watchos(3.0))
+API_AVAILABLE(macosx(10.12),ios(10.0),tvos(10.0),watchos(3.0)) NS_SWIFT_SENDABLE
 @interface NSPersistentContainer : NSObject {
 }
 

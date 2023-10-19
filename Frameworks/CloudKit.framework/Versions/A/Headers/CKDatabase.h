@@ -20,12 +20,13 @@ typedef NS_ENUM(NSInteger, CKDatabaseScope) {
 } API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0));
 
 API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
+// This class should not be subclassed. If it is, Sendable may no longer apply.
 NS_SWIFT_SENDABLE
 @interface CKDatabase : NSObject
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 - (void)addOperation:(CKDatabaseOperation *)operation;
-@property (nonatomic, readonly, assign) CKDatabaseScope databaseScope API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0));
+@property (readonly, assign, nonatomic) CKDatabaseScope databaseScope API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0));
 @end
 
 /*! @abstract Convenience APIs

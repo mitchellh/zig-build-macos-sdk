@@ -26,7 +26,6 @@
 
 #include <stdint.h>
 #include <xpc/xpc.h>
-#include <odmodule/odtypes.h>
 
 enum {
 	eODModuleTypeSession		= 1L << 0,

@@ -114,6 +114,15 @@ COREDATA_EXTERN NSString * const NSPersistentStoreConnectionPoolMaxSizeKey API_A
 
 COREDATA_EXTERN NSString * const NSCoreDataCoreSpotlightExporter API_AVAILABLE(macosx(10.13),ios(11.0)) API_UNAVAILABLE(tvos,watchos);
 
+/*
+ * To perform a staged lightweight migration, this key must be set with an NSStagedMigrationManager.
+ * This class encapsulates developer-described NSCustomMigrationStage's and supplementary NSLightweightMigrationStage's.
+ * The NSCustomMigrationStage's will be applied in the order in which they are indexed in the .stages property at the
+ * appropriate time (when the model matches the stage model references). The stages array must contain a total ordering
+ * of all models to be applied to the store using the aforementioned sub-classes.
+ */
+COREDATA_EXTERN NSString * const NSPersistentStoreStagedMigrationManagerOptionKey API_AVAILABLE(macosx(14.0),ios(17.0),tvos(17.0),watchos(10.0));
+
 /* Values to be passed with NSExternalRecordsFileFormatOption indicating the format used when writing external records. 
    The files are serialized dictionaries. 
 */
@@ -188,7 +197,24 @@ COREDATA_EXTERN NSString * const NSPersistentStoreRemoteChangeNotification API_A
 COREDATA_EXTERN NSString * const NSPersistentStoreURLKey API_AVAILABLE(macosx(10.14),ios(12.0),tvos(12.0),watchos(5.0));
 COREDATA_EXTERN NSString * const NSPersistentHistoryTokenKey API_AVAILABLE(macosx(10.14),ios(12.0),tvos(12.0),watchos(5.0));
 
-API_AVAILABLE(macosx(10.4),ios(3.0))
+/*
+  
+  During a Lightweight Migration, an Entity that has a migration transformation that requires dropping a column in
+  a table would require a copy of the old table into a new table.  If NSPersistentStoreDeferredLightweightMigrationOptionKey
+  is set to @YES, this table transformation can be delayed until the developer deems that the resources are available
+  to perform the table transformation.
+ 
+  Examples of Lightweight Migration Scenarios that can be delayed:
+       An Entitiy removed Attributes/Relationships
+       Relationships where a ForeignEntityKey is no longer needed
+ 
+  The Persistent Store's metadata contains the key - NSPersistentStoreDeferredLightweightMigrationOptionKey - to signal to the developer that work needs to be done.  The delayed
+  table transformations can be processed by invoking finishDeferredLightweightMigration on the Persistent Store Coordinator.
+ 
+ */
+COREDATA_EXTERN NSString * const NSPersistentStoreDeferredLightweightMigrationOptionKey API_AVAILABLE(macosx(11.0),ios(14.0),tvos(14.0),watchos(7.0));
+
+API_AVAILABLE(macosx(10.4),ios(3.0)) NS_SWIFT_SENDABLE
 @interface NSPersistentStoreCoordinator : NSObject <NSLocking> {
 }
 
@@ -284,6 +310,12 @@ API_AVAILABLE(macosx(10.4),ios(3.0))
 
 /* Constructs a combined NSPersistentHistoryToken given an array of persistent stores. If stores is nil or an empty array, the NSPersistentHistoryToken will be constructed with all of the persistent stores in the coordinator. */
 - (nullable NSPersistentHistoryToken *)currentPersistentHistoryTokenFromStores:(nullable NSArray*)stores API_AVAILABLE(macosx(10.14),ios(12.0),tvos(12.0),watchos(5.0));
+
+// Finish deferred work from lightweight migration
+- (BOOL)finishDeferredLightweightMigration:(NSError **)error API_AVAILABLE(macosx(11.0),ios(14.0),tvos(14.0),watchos(7.0));
+
+// Finish deferred work from lightweight migration for a single table
+- (BOOL)finishDeferredLightweightMigrationTask:(NSError **)error API_AVAILABLE(macosx(11.0),ios(14.0),tvos(14.0),watchos(7.0));
 
  /*
   *   DEPRECATED

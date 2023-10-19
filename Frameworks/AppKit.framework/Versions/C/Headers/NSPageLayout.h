@@ -1,7 +1,7 @@
 /*
 	NSPageLayout.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -9,10 +9,16 @@
 #import <AppKit/NSApplication.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSPrintInfo, NSView, NSViewController, NSWindow, NSWindowController;
+
+API_AVAILABLE(macos(14.0))
+typedef NS_ENUM(NSInteger, NSPageLayoutResult) {
+    NSPageLayoutResultCancelled = 0,
+    NSPageLayoutResultChanged,
+} NS_SWIFT_NAME(NSPageLayout.Result);
 
 NS_SWIFT_UI_ACTOR
 @interface NSPageLayout : NSObject
@@ -28,19 +34,24 @@ NS_SWIFT_UI_ACTOR
 - (void)removeAccessoryController:(NSViewController *)accessoryController API_AVAILABLE(macos(10.5));
 @property (readonly, copy) NSArray<__kindof NSViewController *> *accessoryControllers API_AVAILABLE(macos(10.5));
 
+/* Displays a page layout panel as a sheet on a window.
+    This method returns immediately.
+    When the page layout panel is dismissed, calls the completion handler with NSPageLayoutResult as the argument.
+*/
+- (void)beginSheetUsingPrintInfo:(NSPrintInfo *)printInfo onWindow:(NSWindow *)parentWindow completionHandler:(void (^_Nullable)(NSPageLayoutResult result))handler API_AVAILABLE(macos(14.0));
 
 /* Present a page setup panel to the user, document-modally. When the user has dismissed it, send the message selected by didEndSelector to the delegate, with the contextInfo as the last argument. The method selected by didEndSelector must have the same signature as:
 
     - (void)pageLayoutDidEnd:(NSPageLayout *)pageLayout returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 */
-- (void)beginSheetWithPrintInfo:(NSPrintInfo *)printInfo modalForWindow:(NSWindow *)docWindow delegate:(nullable id)delegate didEndSelector:(nullable SEL)didEndSelector contextInfo:(nullable void *)contextInfo;
+- (void)beginSheetWithPrintInfo:(NSPrintInfo *)printInfo modalForWindow:(NSWindow *)docWindow delegate:(nullable id)delegate didEndSelector:(nullable SEL)didEndSelector contextInfo:(nullable void *)contextInfo API_DEPRECATED_WITH_REPLACEMENT("This method will be deprecated in a future release. Use -[NSPageLayout beginSheetUsingPrintInfo:onWindow:completionHandler:] instead.", macos(10.0, API_TO_BE_DEPRECATED));
 
 /* Present a page setup panel to the user, application-modally, and return either NSOKButton or NSCancelButton. The default implementation of -runModal just invokes [self runModalWithPrintInfo:[NSPrintInfo sharedPrintInfo]].
 */
 - (NSInteger)runModalWithPrintInfo:(NSPrintInfo *)printInfo;
 - (NSInteger)runModal;
 
-/* A simple accessor. Your -beginSheetWithPrintInfo:... delegate can use this so it doesn't have to keep a pointer to the NSPrintInfo elsewhere while waiting for the user to dismiss the print panel.
+/* Returns the printInfo passed to `beginSheetUsingPrintInfo:onWindow:completionHandler:`.
 */
 @property (nullable, readonly, strong) NSPrintInfo *printInfo;
 
@@ -67,4 +78,4 @@ NS_SWIFT_UI_ACTOR
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

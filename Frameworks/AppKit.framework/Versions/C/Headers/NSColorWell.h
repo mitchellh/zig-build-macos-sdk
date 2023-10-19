@@ -1,14 +1,14 @@
 /*
 	NSColorWell.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
 #import <AppKit/NSControl.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 typedef NS_ENUM(NSInteger, NSColorWellStyle) {
@@ -39,8 +39,11 @@ typedef NS_ENUM(NSInteger, NSColorWellStyle) {
 @property (nullable, weak) id pulldownTarget API_AVAILABLE(macos(13.0)); /// The target which `pulldownAction` is sent to. This property only applicable when `colorWellStyle` is `NSColorWellStyleExpanded` or `NSColorWellStyleMinimal`.
 @property (nullable) SEL pulldownAction API_AVAILABLE(macos(13.0)); /// The action sent to `pulldownTarget` when the user interacts with the well. This property only applicable when `colorWellStyle` is `NSColorWellStyleExpanded` or `NSColorWellStyleMinimal`. If no action is set, the well will show the system color picker popover.
 
+/// Controls alpha support for the current color well, and the visibility of alpha slider in the color panel.
+/// When `NSColor.ignoresAlpha` (deprecated) is set to `YES`, this property will always return `NO` and alpha is not supported globally.
+@property BOOL supportsAlpha API_AVAILABLE(macos(14.0));
 
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

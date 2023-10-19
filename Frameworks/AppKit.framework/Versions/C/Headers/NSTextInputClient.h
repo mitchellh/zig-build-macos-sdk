@@ -1,7 +1,7 @@
 /*
 	NSTextInputClient.h
 	Application Kit
-	Copyright (c) 2006-2021, Apple Inc.
+	Copyright (c) 2006-2023, Apple Inc.
 	All rights reserved.
  */
 
@@ -12,10 +12,22 @@
 #import <Foundation/NSAttributedString.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSAttributedString;
+
+typedef NS_ENUM(NSInteger, NSTextCursorAccessoryPlacement) {
+    NSTextCursorAccessoryPlacementUnspecified,
+    NSTextCursorAccessoryPlacementBackward,   // up side for horizontal text, right side for vertical text
+    NSTextCursorAccessoryPlacementForward,    // down side for horizontal text, left side for horizontal text
+    NSTextCursorAccessoryPlacementInvisible,  // hide
+    NSTextCursorAccessoryPlacementCenter, // centered above selected text
+    NSTextCursorAccessoryPlacementOffscreenLeft, // show left edge of visible rect with ←
+    NSTextCursorAccessoryPlacementOffscreenTop,  // show top edge of visible rect with ↑
+    NSTextCursorAccessoryPlacementOffscreenRight, // show right edge of visible rect with →
+    NSTextCursorAccessoryPlacementOffscreenBottom // show bottom edge of visible rect with ↓
+} API_AVAILABLE(macos(14.0));
 
 @protocol NSTextInputClient
 @required
@@ -83,7 +95,24 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 /* Returns if the marked text is in vertical layout.
  */
 - (BOOL)drawsVerticallyForCharacterAtIndex:(NSUInteger)charIndex API_AVAILABLE(macos(10.6));
+
+/* Return the placement of cursor accessory. If this isn't provided, it's assumed as `NSTextCursorAccessoryPlacementUnspecified`.
+ */
+- (NSTextCursorAccessoryPlacement)preferredTextAccessoryPlacement;
+
+/* Return rect which covers whole selected text in screen coordinate. If this method isn't provided, -selectedRange + -firstRectForCharRange:actualRange: will be used.
+
+ To support dictation indicator on custom text view, expose this method and `-documentVisibleRect`, and also calls `-[NSTextInputContext willStartScrollingOrZooming]`/ `-[NSTextInputContext didEndScrollingOrZooming]` when needed.
+ */
+@property (readonly) NSRect unionRectInVisibleSelectedRange API_AVAILABLE(macos(14.0));
+
+/* Return visible rect of document area in screen coordinate. If this method isn't provided, -[NSView  visibleRect] will be used.
+
+ To support dictation indicator on custom text view, expose this method and `-selectionRect`, and also calls `-[NSTextInputContext willStartScrollingOrZooming]`/ `-[NSTextInputContext didEndScrollingOrZooming]` when needed.
+ */
+@property (readonly) NSRect documentVisibleRect API_AVAILABLE(macos(14.0));
+
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

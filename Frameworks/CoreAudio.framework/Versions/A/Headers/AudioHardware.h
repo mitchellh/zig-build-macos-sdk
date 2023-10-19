@@ -544,6 +544,10 @@ typedef CF_ENUM(UInt32, AudioHardwarePowerHint)
                         user preferences such as the default devices. The value of this property is
                         a UInt32, but its value has no currently defined meaning and clients may
                         pass any value when setting it to trigger the cache flush.
+    @constant       kAudioHardwarePropertyProcessInputMute
+                        A UInt32 where a non-zero value indicates that all data coming into the process
+                        for all devices will be silent. A value of 0 indicates that input data will be
+                        received normally.
     @constant       kAudioHardwarePropertyProcessIsAudible
                         A UInt32 where a non-zero value indicates that the audio of the process will
                         be heard. A value of 0 indicates that all audio in the process will not be
@@ -599,13 +603,14 @@ CF_ENUM(AudioObjectPropertySelector)
     kAudioHardwarePropertyProcessIsMain							= 'main',
     kAudioHardwarePropertyIsInitingOrExiting                    = 'inot',
     kAudioHardwarePropertyUserIDChanged                         = 'euid',
+    kAudioHardwarePropertyProcessInputMute                      = 'pmin',
     kAudioHardwarePropertyProcessIsAudible                      = 'pmut',
     kAudioHardwarePropertySleepingIsAllowed                     = 'slep',
     kAudioHardwarePropertyUnloadingIsAllowed                    = 'unld',
     kAudioHardwarePropertyHogModeIsAllowed                      = 'hogr',
     kAudioHardwarePropertyUserSessionIsActiveOrHeadless         = 'user',
     kAudioHardwarePropertyServiceRestarted                      = 'srst',
-    kAudioHardwarePropertyPowerHint                             = 'powh'
+    kAudioHardwarePropertyPowerHint                             = 'powh',
 };
 
 //==================================================================================================
@@ -1246,6 +1251,17 @@ CF_ENUM(AudioObjectPropertySelector)
                         A UInt32 where a value of 1 means that mute is enabled making the LFE on
                         that element inaudible. The property is implemented by an AudioControl
                         object that is a subclass of AudioLFEMuteControl.
+    @constant       kAudioDevicePropertyVoiceActivityDetectionEnable
+                        A UInt32 where 0 disables voice activity detection process and non-zero enables it.
+                        Voice activity detection can be used with input audio and has echo cancellation.
+                        Detection works when a process mute is used, but not with hardware mute.
+    @constant       kAudioDevicePropertyVoiceActivityDetectionState
+                        A read-only UInt32 where 0 indicates no voice currently detected and 1 indicates voice.
+                        Used in conjunction with kAudioDevicePropertyVoiceActivityDetectionEnable.
+                        A client would normally register to listen to this property for changes and then query
+                        the state rather than continuously poll the value.
+                        NOTE: If input audio is not active/runnning or the voice activity detection is disabled,
+                        then it is not analyzed and this will provide 0.
 */
 CF_ENUM(AudioObjectPropertySelector)
 {
@@ -1295,7 +1311,10 @@ CF_ENUM(AudioObjectPropertySelector)
     kAudioDevicePropertySubVolumeRangeDecibels                          = 'svd#',
     kAudioDevicePropertySubVolumeScalarToDecibels                       = 'sv2d',
     kAudioDevicePropertySubVolumeDecibelsToScalar                       = 'sd2v',
-    kAudioDevicePropertySubMute                                         = 'smut'
+    kAudioDevicePropertySubMute                                         = 'smut',
+    kAudioDevicePropertyVoiceActivityDetectionEnable                    = 'vAd+',
+    kAudioDevicePropertyVoiceActivityDetectionState                     = 'vAdS'
+
 };
 
 //==================================================================================================
@@ -1570,7 +1589,7 @@ CF_ENUM(AudioClassID)
                     the output streams are all fed the same data.
  */
 #define kAudioAggregateDeviceIsStackedKey       "stacked"
-    
+
 //==================================================================================================
 #pragma mark AudioAggregateDevice Properties
 
@@ -1611,7 +1630,27 @@ CF_ENUM(AudioObjectPropertySelector)
     kAudioAggregateDevicePropertyActiveSubDeviceList    = 'agrp',
     kAudioAggregateDevicePropertyComposition            = 'acom',
     kAudioAggregateDevicePropertyMainSubDevice          = 'amst',
-    kAudioAggregateDevicePropertyClockDevice            = 'apcd'
+    kAudioAggregateDevicePropertyClockDevice            = 'apcd',
+};
+
+//==================================================================================================
+#pragma mark -
+#pragma mark AudioAggregateDriftCompensation Constants
+/*!
+	@enum           AudioSubDevice and AudioSubTap Clock Drift Compensation Methods
+	@abstract       Constants that describe the range of values the property
+					kAudioSubTapPropertyDriftCompensation. It is a continuous range from
+					kAudioSubTapDriftCompensationMinQuality to
+					kAudioSubTapDriftCompensationMaxQuality, with some commonly used settings
+					called out.
+*/
+CF_ENUM(UInt32)
+{
+	kAudioAggregateDriftCompensationMinQuality      = 0,
+	kAudioAggregateDriftCompensationLowQuality      = 0x20,
+	kAudioAggregateDriftCompensationMediumQuality   = 0x40,
+	kAudioAggregateDriftCompensationHighQuality     = 0x60,
+	kAudioAggregateDriftCompensationMaxQuality      = 0x7F
 };
 
 //==================================================================================================
@@ -1639,11 +1678,11 @@ CF_ENUM(AudioClassID)
 */
 CF_ENUM(UInt32)
 {
-    kAudioSubDeviceDriftCompensationMinQuality      = 0,
-    kAudioSubDeviceDriftCompensationLowQuality      = 0x20,
-    kAudioSubDeviceDriftCompensationMediumQuality   = 0x40,
-    kAudioSubDeviceDriftCompensationHighQuality     = 0x60,
-    kAudioSubDeviceDriftCompensationMaxQuality      = 0x7F
+    kAudioSubDeviceDriftCompensationMinQuality      API_DEPRECATED_WITH_REPLACEMENT("kAudioAggregateDriftCompensationMinQuality", macos(13.0, API_TO_BE_DEPRECATED), ios(16.0, API_TO_BE_DEPRECATED)) = 0,
+    kAudioSubDeviceDriftCompensationLowQuality      API_DEPRECATED_WITH_REPLACEMENT("kAudioAggregateDriftCompensationLowQuality", macos(13.0, API_TO_BE_DEPRECATED), ios(16.0, API_TO_BE_DEPRECATED)) = 0x20,
+    kAudioSubDeviceDriftCompensationMediumQuality   API_DEPRECATED_WITH_REPLACEMENT("kAudioAggregateDriftCompensationMediumQuality", macos(13.0, API_TO_BE_DEPRECATED), ios(16.0, API_TO_BE_DEPRECATED)) = 0x40,
+    kAudioSubDeviceDriftCompensationHighQuality     API_DEPRECATED_WITH_REPLACEMENT("kAudioAggregateDriftCompensationHighQuality", macos(13.0, API_TO_BE_DEPRECATED), ios(16.0, API_TO_BE_DEPRECATED)) = 0x60,
+    kAudioSubDeviceDriftCompensationMaxQuality      API_DEPRECATED_WITH_REPLACEMENT("kAudioAggregateDriftCompensationMaxQuality", macos(13.0, API_TO_BE_DEPRECATED), ios(16.0, API_TO_BE_DEPRECATED)) = 0x7F
 };
 
 /*!
@@ -1707,7 +1746,7 @@ CF_ENUM(UInt32)
 /*!
     @defined        kAudioSubDeviceDriftCompensationQualityKey
     @discussion     The key used in a CFDictionary that describes the state of an AudioSubDevice.
-                    The value for this key is a CFNumber that indicates the quality of the drifty
+                    The value for this key is a CFNumber that indicates the quality of the drift
                     compensation for the AudioSubDevice
 */
 #define kAudioSubDeviceDriftCompensationQualityKey  "drift quality"
@@ -1740,6 +1779,7 @@ CF_ENUM(AudioObjectPropertySelector)
     kAudioSubDevicePropertyDriftCompensation        = 'drft',
     kAudioSubDevicePropertyDriftCompensationQuality = 'drfq'
 };
+
 
 //==================================================================================================
 

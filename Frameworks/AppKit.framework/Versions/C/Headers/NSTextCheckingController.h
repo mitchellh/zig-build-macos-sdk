@@ -1,7 +1,7 @@
 /*
         NSTextCheckingController.h
         Application Kit
-        Copyright (c) 2018-2021, Apple Inc.
+        Copyright (c) 2018-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -18,7 +18,7 @@
 #import <AppKit/NSSpellChecker.h>
 #import <AppKit/NSTextCheckingClient.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 API_AVAILABLE(macos(10.15))
@@ -72,5 +72,5 @@ API_AVAILABLE(macos(10.15))
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

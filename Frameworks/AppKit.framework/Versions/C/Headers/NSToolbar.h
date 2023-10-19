@@ -1,14 +1,14 @@
 /*
 	NSToolbar.h
 	Application Kit
-	Copyright (c) 2000-2021, Apple Inc.
+	Copyright (c) 2000-2023, Apple Inc.
 	All rights reserved.
 */
 
 #import <AppKit/AppKitDefines.h>
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 typedef NSString * NSToolbarIdentifier NS_SWIFT_BRIDGED_TYPEDEF API_AVAILABLE(ios(13.0));
 typedef NSString * NSToolbarItemIdentifier NS_TYPED_EXTENSIBLE_ENUM API_AVAILABLE(ios(13.0));
@@ -42,14 +42,14 @@ API_AVAILABLE(ios(13.0)) NS_SWIFT_UI_ACTOR
 /* Calls through to -initWithIdentifier: with an empty string identifier.  Customizable toolbars should use -initWithIdentifier: with a unique identifier instead. */
 - (instancetype)init API_AVAILABLE(macos(10.13));
 
-/* Primitives for explicitly adding and removing items.  Any change made will be propogated immediately to all other toolbars with the same identifier. */
+/* Primitives for explicitly adding and removing items.  Any change made will be propagated immediately to all other toolbars with the same identifier. */
 - (void)insertItemWithItemIdentifier:(NSToolbarItemIdentifier)itemIdentifier atIndex:(NSInteger)index;
 - (void)removeItemAtIndex:(NSInteger)index;
 
 /* Customizable toolbars must have a delegate, and must implement the required NSToolbarDelegate methods. */
 @property (nullable, weak) id<NSToolbarDelegate> delegate;
 
-/* toggles the visibliity of the toolbar. */
+/* toggles the visibility of the toolbar. This property is KVO compliant on macOS 14.0 and higher. */
 @property (getter=isVisible) BOOL visible;
 
 /* Customizable toolbars (those with delegates) can show a palette which allows users to populate the toolbar with individual items or to reset the toolbar to some default set of items.  The items and item sets in the palette are specified by the delegate (-toolbarAllowedItemIdentifiers: and -toolbarDefaultItemIdentifiers:).  When the user is done configuring, they will dismiss the palette. */
@@ -186,4 +186,4 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <os/base.h>
 #include <mach/message.h>
+#include <uuid/uuid.h>
 
 typedef struct {
 	uint8_t reserved[32];
@@ -42,11 +43,25 @@ typedef enum {
 } es_proc_check_type_t;
 
 /**
+ * @brief This enum describes the types of XPC service domains.
+ */
+typedef enum {
+	ES_XPC_DOMAIN_TYPE_SYSTEM = 1,
+	ES_XPC_DOMAIN_TYPE_USER,
+	ES_XPC_DOMAIN_TYPE_USER_LOGIN,
+	ES_XPC_DOMAIN_TYPE_SESSION,
+	ES_XPC_DOMAIN_TYPE_PID,
+	ES_XPC_DOMAIN_TYPE_MANAGER,
+	ES_XPC_DOMAIN_TYPE_PORT,
+	ES_XPC_DOMAIN_TYPE_GUI,
+} es_xpc_domain_type_t;
+
+/**
  * @brief This enum describes the types of authentications that
  * ES_EVENT_TYPE_NOTIFY_AUTHENTICATION can describe.
  */
 typedef enum {
-    ES_AUTHENTICATION_TYPE_OD,
+	ES_AUTHENTICATION_TYPE_OD,
 	ES_AUTHENTICATION_TYPE_TOUCHID,
 	ES_AUTHENTICATION_TYPE_TOKEN,
 	ES_AUTHENTICATION_TYPE_AUTO_UNLOCK,
@@ -202,10 +217,31 @@ typedef enum {
   , ES_EVENT_TYPE_NOTIFY_LOGIN_LOGOUT
   , ES_EVENT_TYPE_NOTIFY_BTM_LAUNCH_ITEM_ADD
   , ES_EVENT_TYPE_NOTIFY_BTM_LAUNCH_ITEM_REMOVE
-    // ES_EVENT_TYPE_LAST is not a valid event type but a convenience
-    // value for operating on the range of defined event types.
-    // This value may change between releases and was available
-    // beginning in macOS 10.15
+	// The following events are available beginning in macOS 14.0
+  , ES_EVENT_TYPE_NOTIFY_PROFILE_ADD
+  , ES_EVENT_TYPE_NOTIFY_PROFILE_REMOVE
+  , ES_EVENT_TYPE_NOTIFY_SU
+  , ES_EVENT_TYPE_NOTIFY_AUTHORIZATION_PETITION
+  , ES_EVENT_TYPE_NOTIFY_AUTHORIZATION_JUDGEMENT
+  , ES_EVENT_TYPE_NOTIFY_SUDO
+  , ES_EVENT_TYPE_NOTIFY_OD_GROUP_ADD
+  , ES_EVENT_TYPE_NOTIFY_OD_GROUP_REMOVE
+  , ES_EVENT_TYPE_NOTIFY_OD_GROUP_SET
+  , ES_EVENT_TYPE_NOTIFY_OD_MODIFY_PASSWORD
+  , ES_EVENT_TYPE_NOTIFY_OD_DISABLE_USER
+  , ES_EVENT_TYPE_NOTIFY_OD_ENABLE_USER
+  , ES_EVENT_TYPE_NOTIFY_OD_ATTRIBUTE_VALUE_ADD
+  , ES_EVENT_TYPE_NOTIFY_OD_ATTRIBUTE_VALUE_REMOVE
+  , ES_EVENT_TYPE_NOTIFY_OD_ATTRIBUTE_SET
+  , ES_EVENT_TYPE_NOTIFY_OD_CREATE_USER
+  , ES_EVENT_TYPE_NOTIFY_OD_CREATE_GROUP
+  , ES_EVENT_TYPE_NOTIFY_OD_DELETE_USER
+  , ES_EVENT_TYPE_NOTIFY_OD_DELETE_GROUP
+  , ES_EVENT_TYPE_NOTIFY_XPC_CONNECT
+	// ES_EVENT_TYPE_LAST is not a valid event type but a convenience
+	// value for operating on the range of defined event types.
+	// This value may change between releases and was available
+	// beginning in macOS 10.15
   , ES_EVENT_TYPE_LAST
 } es_event_type_t;
 
@@ -382,19 +418,69 @@ typedef enum {
 } es_address_type_t;
 
 typedef enum {
-	ES_MUTE_INVERSION_TYPE_PROCESS
-	, ES_MUTE_INVERSION_TYPE_PATH
-	, ES_MUTE_INVERSION_TYPE_TARGET_PATH
-	, ES_MUTE_INVERSION_TYPE_LAST
+    ES_MUTE_INVERSION_TYPE_PROCESS
+  , ES_MUTE_INVERSION_TYPE_PATH
+  , ES_MUTE_INVERSION_TYPE_TARGET_PATH
+  , ES_MUTE_INVERSION_TYPE_LAST
 } es_mute_inversion_type_t;
 
 typedef enum {
-	/// The type of muted queried was inverted
-	ES_MUTE_INVERTED
-	/// The type of muted queried was not inverted
-	, ES_MUTE_NOT_INVERTED
-	/// There was an error querying mute inversion state
-	, ES_MUTE_INVERTED_ERROR
+    /// The type of muted queried was inverted
+    ES_MUTE_INVERTED
+    /// The type of muted queried was not inverted
+  , ES_MUTE_NOT_INVERTED
+    /// There was an error querying mute inversion state
+  , ES_MUTE_INVERTED_ERROR
 } es_mute_inverted_return_t;
+
+/*
+ * The class of rules used to evaluate the petition for a specific authorization right
+ */
+typedef enum {
+  /// Right is judged on user properties
+  ES_AUTHORIZATION_RULE_CLASS_USER
+  /// Right is judged by a tree of sub-rules
+, ES_AUTHORIZATION_RULE_CLASS_RULE
+  /// Right is judged by one or more plugins
+, ES_AUTHORIZATION_RULE_CLASS_MECHANISM
+  /// Right is always granted
+, ES_AUTHORIZATION_RULE_CLASS_ALLOW
+  /// Right is always denied
+, ES_AUTHORIZATION_RULE_CLASS_DENY
+  /// Right is unknown
+, ES_AUTHORIZATION_RULE_CLASS_UNKNOWN
+  /// Right is invalid
+, ES_AUTHORIZATION_RULE_CLASS_INVALID
+} es_authorization_rule_class_t;
+
+// The following types are used in OpenDirectory (od) events
+/*
+ * Type of a group member
+ */
+typedef enum {
+	/// Group member is a user, designated by name
+  ES_OD_MEMBER_TYPE_USER_NAME
+	/// Group member is a user, designated by UUID
+, ES_OD_MEMBER_TYPE_USER_UUID
+	/// Group member is another group, designated by UUID
+, ES_OD_MEMBER_TYPE_GROUP_UUID
+} es_od_member_type_t;
+
+/*
+ * Type of an account
+ */
+typedef enum {
+  ES_OD_ACCOUNT_TYPE_USER
+, ES_OD_ACCOUNT_TYPE_COMPUTER
+} es_od_account_type_t;
+
+/*
+ * Type of a record
+ */
+typedef enum {
+  ES_OD_RECORD_TYPE_USER
+, ES_OD_RECORD_TYPE_GROUP
+} es_od_record_type_t;
+// end od types
 
 #endif /* __ENDPOINT_SECURITY_TYPES_H */

@@ -172,24 +172,25 @@
  * I've never seen earlier releases.
  */
 #ifdef __APPLE__
-#define PCAP_AVAILABLE_MACOS(v)	/* define to say "first appears in v" */
-#define PCAP_AVAILABLE_0_4	PCAP_AVAILABLE_MACOS(10.0) /* Did any version of Mac OS X ship with this? */
-#define PCAP_AVAILABLE_0_5	PCAP_AVAILABLE_MACOS(10.0) /* Did any version of Mac OS X ship with this? */
-#define PCAP_AVAILABLE_0_6	PCAP_AVAILABLE_MACOS(10.1)
-#define PCAP_AVAILABLE_0_7	PCAP_AVAILABLE_MACOS(10.4)
-#define PCAP_AVAILABLE_0_8	PCAP_AVAILABLE_MACOS(10.4)
-#define PCAP_AVAILABLE_0_9	PCAP_AVAILABLE_MACOS(10.5)
-#define PCAP_AVAILABLE_1_0	PCAP_AVAILABLE_MACOS(10.6)
+#include <os/availability.h>
+#define PCAP_AVAILABLE_MACOS(v)	API_AVAILABLE(macos(v))
+#define PCAP_AVAILABLE_0_4	API_AVAILABLE(macos(10.0)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_0_5	API_AVAILABLE(macos(10.0)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_0_6	API_AVAILABLE(macos(10.1)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_0_7	API_AVAILABLE(macos(10.4)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_0_8	API_AVAILABLE(macos(10.4)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_0_9	API_AVAILABLE(macos(10.5)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_1_0	API_AVAILABLE(macos(10.6)) API_UNAVAILABLE(ios, tvos, watchos)
 /* #define PCAP_AVAILABLE_1_1	no routines added to the API */
-#define PCAP_AVAILABLE_1_2	PCAP_AVAILABLE_MACOS(10.9)
+#define PCAP_AVAILABLE_1_2	API_AVAILABLE(macos(10.9)) API_UNAVAILABLE(ios, tvos, watchos)
 /* #define PCAP_AVAILABLE_1_3	no routines added to the API */
 /* #define PCAP_AVAILABLE_1_4	no routines added to the API */
-#define PCAP_AVAILABLE_1_5	PCAP_AVAILABLE_MACOS(10.10)
+#define PCAP_AVAILABLE_1_5	API_AVAILABLE(macos(10.10)) API_UNAVAILABLE(ios, tvos, watchos)
 /* #define PCAP_AVAILABLE_1_6	no routines added to the API */
-#define PCAP_AVAILABLE_1_7	PCAP_AVAILABLE_MACOS(10.12)
-#define PCAP_AVAILABLE_1_8	PCAP_AVAILABLE_MACOS(10.13) /* only Windows adds routines to the API; XXX - what version first had it? */
-#define PCAP_AVAILABLE_1_9	PCAP_AVAILABLE_MACOS(10.13)
-#define PCAP_AVAILABLE_1_10	/* not in macOS yet */
+#define PCAP_AVAILABLE_1_7	API_AVAILABLE(macos(10.12)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_1_8	API_AVAILABLE(macos(10.13)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_1_9	API_AVAILABLE(macos(10.13)) API_UNAVAILABLE(ios, tvos, watchos)
+#define PCAP_AVAILABLE_1_10	API_AVAILABLE(macos(12.1)) API_UNAVAILABLE(ios, tvos, watchos)
 #define PCAP_AVAILABLE_1_11	/* not released yet, so not in macOS yet */
 #else /* __APPLE__ */
 #define PCAP_AVAILABLE_0_4

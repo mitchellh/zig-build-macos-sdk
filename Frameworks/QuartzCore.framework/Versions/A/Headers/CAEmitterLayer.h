@@ -14,6 +14,8 @@
  * The particles are drawn above the backgroundColor and border of the
  * layer. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 
 typedef NSString * CAEmitterLayerEmitterShape NS_TYPED_ENUM;
@@ -145,3 +147,5 @@ CA_EXTERN CAEmitterLayerRenderMode const kCAEmitterLayerAdditive
     API_AVAILABLE(macos(10.6), ios(5.0), watchos(2.0), tvos(9.0));
 
 NS_ASSUME_NONNULL_END
+
+#endif

@@ -1,7 +1,7 @@
 /*
     NSSavePanel.h
     Application Kit
-    Copyright (c) 1994-2021, Apple Inc.
+    Copyright (c) 1994-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <AppKit/NSPanel.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSBox, NSTextField, NSTextView, NSView, NSURL, NSProgressIndicator, NSControl;
@@ -40,6 +40,12 @@ enum {
 
 #pragma mark -
 #pragma mark Configuration Properties
+
+/* Gets and sets the identifier.
+    The panel's current state such as the root directory and the current directory are saved and restored relative to the identifier.
+    Note: When the identifier is changed, the properties that depend on the identifier are updated from user defaults. Properties that have a null default value are not changed (and keep their existing value).
+*/
+@property (nullable, copy) NSUserInterfaceItemIdentifier identifier;
 
 /* NSSavePanel/NSOpenPanel: Gets and sets the directoryURL shown. A value of nil indicates that the last directory shown to the user will be used. This method will not block to resolve the URL, and the directory will asyncronously be set, if required.
 */
@@ -215,7 +221,5 @@ enum {
 @property (nullable, copy) NSArray<NSString *> *allowedFileTypes API_DEPRECATED("Use -allowedContentTypes instead", macos(10.3,12.0));
 @end
 
-
-
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

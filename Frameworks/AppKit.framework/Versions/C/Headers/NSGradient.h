@@ -1,7 +1,7 @@
 /*
 	NSGradient.h
 	Application Kit
-	Copyright (c) 2006-2021, Apple Inc.
+	Copyright (c) 2006-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <Foundation/NSGeometry.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSBezierPath, NSColor, NSColorSpace;
@@ -46,7 +46,7 @@ An NSGradient has a color space.  When initialized, all colors provided are conv
 
 */
 
-API_AVAILABLE(macos(10.5))
+API_AVAILABLE(macos(10.5)) NS_SWIFT_SENDABLE
 @interface NSGradient : NSObject <NSCopying, NSSecureCoding>
 /* Initializes a gradient with starting color at location 0.0 and ending color at location 1.0  The color space returned by [NSColorSpace genericRGBColorSpace] is used.
 */
@@ -71,8 +71,7 @@ API_AVAILABLE(macos(10.5))
 */
 - (nullable instancetype)initWithColors:(NSArray<NSColor *> *)colorArray atLocations:(nullable const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace NS_DESIGNATED_INITIALIZER;
 
-- (instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
-
+- (nullable instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
 
 /* DRAWING LINEAR GRADIENTS */
 
@@ -139,5 +138,5 @@ You should not need to override this method, it reports the color value of the g
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

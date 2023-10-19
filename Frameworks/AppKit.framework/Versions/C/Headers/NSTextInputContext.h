@@ -1,7 +1,7 @@
 /*
 	NSTextInputContext.h
 	Application Kit
-	Copyright (c) 2008-2021, Apple Inc.
+	Copyright (c) 2008-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <AppKit/NSTextInputClient.h>
 #import <Foundation/NSNotification.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSEvent;
@@ -62,6 +62,16 @@ API_AVAILABLE(macos(10.6))
  */
 - (void)invalidateCharacterCoordinates;
 
+/* Notifies the text input client will be continuous updated due to user action. This includes scrolling, resizing, zooming, and any other action modifying the the geometry information of text selection while displaying the content.
+
+    This method should be called before -invalidateCharacterCoordinates.
+ */
+- (void)textInputClientWillStartScrollingOrZooming API_AVAILABLE(macos(14.0));
+
+/* Notifies the text input client was continuous updated due to user action. This includes scrolling, resizing, zooming, and any other action modifying the the geometry information of text selection while displaying the content.
+
+  This method should be called after -invalidateCharacterCoordinates. */
+- (void)textInputClientDidEndScrollingOrZooming API_AVAILABLE(macos(14.0));
 
 /**** Text Input sources handling ****/
 /* Text Input source handling API identifies text input sources with text input source identifier strings (i.e. "com.apple.inputmethod.Kotoeri.Japanese") supplied by the underlying TextInputSources framework. The ID corresponds to the kTISPropertyInputSourceID attribute.
@@ -88,5 +98,5 @@ API_AVAILABLE(macos(10.6))
 APPKIT_EXTERN NSNotificationName NSTextInputContextKeyboardSelectionDidChangeNotification API_AVAILABLE(macos(10.6));
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

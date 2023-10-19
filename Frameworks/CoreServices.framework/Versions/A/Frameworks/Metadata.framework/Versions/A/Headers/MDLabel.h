@@ -30,7 +30,7 @@ MD_BEGIN_C_DECLS
 typedef struct __MDLabel * MDLabelRef;
 
 MD_EXPORT CFTypeID MDLabelGetTypeID(void)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /* MDItem API additions for Labels */
 
@@ -41,7 +41,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result A CFArrayRef containing MDLabelRefs for the labels set on the item, or NULL on failure.
  */
 MD_EXPORT CFArrayRef MDItemCopyLabels(MDItemRef item)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDItemSetLabel
@@ -51,7 +51,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result True if the label was successfully set on the item, false otherwise.
  */
 MD_EXPORT Boolean MDItemSetLabel(MDItemRef item, MDLabelRef label)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDItemRemoveLabel
@@ -61,7 +61,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result True if the label was successfully removed from the item, false otherwise.
  */
 MD_EXPORT Boolean MDItemRemoveLabel(MDItemRef item, MDLabelRef label)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @typedef MDLabelDomain
@@ -87,7 +87,7 @@ MD_EXPORT MDLabelRef MDLabelCreate(CFAllocatorRef allocator,
                                    CFStringRef displayName,
                                    CFStringRef kind,
                                    MDLabelDomain domain)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDLabelCopyAttribute
@@ -98,7 +98,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  */
 MD_EXPORT CFTypeRef MDLabelCopyAttribute(MDLabelRef label,
                                          CFStringRef name)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDLabelCopyAttributeName
@@ -107,7 +107,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result A CFStringRef, or NULL on failure.
  */
 MD_EXPORT CFStringRef MDLabelCopyAttributeName(MDLabelRef label)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDLabelDelete
@@ -116,7 +116,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result True if a label definition or override was successfully deleted.
  */
 MD_EXPORT Boolean MDLabelDelete(MDLabelRef label)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDLabelSetAttributes
@@ -127,7 +127,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  */
 MD_EXPORT Boolean MDLabelSetAttributes(MDLabelRef label,
                                        CFDictionaryRef attrs)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDCopyLabelKinds
@@ -135,7 +135,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result A CFArrayRef containing all of the label kind strings, or NULL on failure.
  */
 MD_EXPORT CFArrayRef MDCopyLabelKinds(void)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDCopyLabelsMatchingExpression
@@ -144,7 +144,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result A CFArrayRef containing all of the matching labels, or NULL on failure.
  */
 MD_EXPORT CFArrayRef MDCopyLabelsMatchingExpression(CFStringRef simpleQueryString)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDCopyLabelsWithKind
@@ -153,7 +153,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result A CFArrayRef containing all of the labels with the specified kind string, or NULL on failure.
  */
 MD_EXPORT CFArrayRef MDCopyLabelsWithKind(CFStringRef kind)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @function MDCopyLabelWithUUID
@@ -162,7 +162,7 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  @result An MDLabelRef, or NULL on failure.
  */
 MD_EXPORT MDLabelRef MDCopyLabelWithUUID(CFUUIDRef labelUUID)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @constant kMDLabelBundleURL
@@ -206,34 +206,34 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  Type is a CFString. This attribute is read-only.
  */
 MD_EXPORT CFStringRef kMDLabelBundleURL                    // CFURL
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelContentChangeDate            // CFDate
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelDisplayName                  // CFString
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelIconData                     // CFData (kUTTypeAppleICNS)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelIconUUID                     // CFUUID
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelIsMutuallyExclusiveSetMember // CFBoolean
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelKind                         // CFString
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelSetsFinderColor              // CFNumber (0 - 7)
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelUUID                         // CFUUID
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelVisibility                   // CFString
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @constant kMDLabelKindIsMutuallyExclusiveSetKey
@@ -245,37 +245,37 @@ API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
  The value is a CFString constant, either "Public" (kMDPublicVisibility) or "Private" (kMDPrivateVisibility).
  */
 MD_EXPORT CFStringRef kMDLabelKindIsMutuallyExclusiveSetKey // Boolean
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDLabelKindVisibilityKey             // "Private" (the default) or "Public"
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDPrivateVisibility                  // "Private"
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_EXPORT CFStringRef kMDPublicVisibility                   // "Public"
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @constant kMDLabelAddedNotification
  @abstract The name of the notification sent when a label has been added. The notification object is the subject MDLabelRef. All label notifications are distributed to processes owned by the same uid that have initialized the Metadata framework label APIs.
  */
 MD_EXPORT const CFStringRef kMDLabelAddedNotification
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @constant kMDLabelChangedNotification
  @abstract The name of the notification sent when a label has been changed. The notification object is the subject MDLabelRef. The label's new attributes can be retrieved using MDLabelCopyAttribute().
  */
 MD_EXPORT const CFStringRef kMDLabelChangedNotification
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 /*!
  @constant kMDLabelRemovedNotification
  @abstract The name of the notification sent when a label has been deleted. The notification object is the subject MDLabelRef. The label's kMDLabelIconUUID, kMDLabelKind, kMDLabelKindBundleURL and kMDLabelUUID attributes can still be retrieved using MDLabelCopyAttribute(), and the label may still be passed to MDLabelCopyAttributeName().
  */
 MD_EXPORT const CFStringRef kMDLabelRemovedNotification
-API_AVAILABLE( macos(10.7) ) API_UNAVAILABLE( ios, tvos, watchos );
+API_AVAILABLE( macos(10.7)) API_UNAVAILABLE( ios, tvos, watchos );
 
 MD_END_C_DECLS
 CF_IMPLICIT_BRIDGING_DISABLED

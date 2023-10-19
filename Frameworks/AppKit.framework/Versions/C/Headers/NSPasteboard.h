@@ -1,7 +1,7 @@
 /*
 	NSPasteboard.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -13,7 +13,7 @@
 #import <Foundation/NSURL.h>
 #import <CoreFoundation/CFBase.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSData, NSFileWrapper, NSMutableDictionary, NSPasteboard;
@@ -346,7 +346,7 @@ Although NSPICTPboardType and its UTI equivalent kUTTypePICT will appear in a pa
 APPKIT_EXTERN NSPasteboardType NSPICTPboardType API_DEPRECATED("", macos(10.0,10.6));
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 
 
 

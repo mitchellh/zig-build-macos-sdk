@@ -116,9 +116,6 @@
 /* Define if compiling with the snmpv3/usmUser module files.  */
 #define USING_SNMPV3_USMUSER_MODULE 1
  
-/* Define if compiling with the mibII/snmp_mib_5_5 module files.  */
-#define USING_MIBII_SNMP_MIB_5_5_MODULE 1
- 
 /* Define if compiling with the mibII/system_mib module files.  */
 #define USING_MIBII_SYSTEM_MIB_MODULE 1
  
@@ -128,23 +125,8 @@
 /* Define if compiling with the mibII/at module files.  */
 #define USING_MIBII_AT_MODULE 1
  
-/* Define if compiling with the mibII/ip module files.  */
-#define USING_MIBII_IP_MODULE 1
- 
-/* Define if compiling with the mibII/tcp module files.  */
-#define USING_MIBII_TCP_MODULE 1
- 
 /* Define if compiling with the mibII/icmp module files.  */
 #define USING_MIBII_ICMP_MODULE 1
- 
-/* Define if compiling with the mibII/udp module files.  */
-#define USING_MIBII_UDP_MODULE 1
- 
-/* Define if compiling with the mibII/vacm_vars module files.  */
-#define USING_MIBII_VACM_VARS_MODULE 1
- 
-/* Define if compiling with the mibII/setSerialNo module files.  */
-#define USING_MIBII_SETSERIALNO_MODULE 1
  
 /* Define if compiling with the if-mib module files.  */
 #define USING_IF_MIB_MODULE 1
@@ -322,24 +304,6 @@
  
 /* Define if compiling with the mibII/updates module files.  */
 #define USING_MIBII_UPDATES_MODULE 1
- 
-/* Define if compiling with the mibII/ipAddr module files.  */
-#define USING_MIBII_IPADDR_MODULE 1
- 
-/* Define if compiling with the mibII/var_route module files.  */
-#define USING_MIBII_VAR_ROUTE_MODULE 1
- 
-/* Define if compiling with the mibII/route_write module files.  */
-#define USING_MIBII_ROUTE_WRITE_MODULE 1
- 
-/* Define if compiling with the mibII/tcpTable module files.  */
-#define USING_MIBII_TCPTABLE_MODULE 1
- 
-/* Define if compiling with the mibII/udpTable module files.  */
-#define USING_MIBII_UDPTABLE_MODULE 1
- 
-/* Define if compiling with the mibII/vacm_context module files.  */
-#define USING_MIBII_VACM_CONTEXT_MODULE 1
  
 /* Define if compiling with the if-mib/ifXTable module files.  */
 #define USING_IF_MIB_IFXTABLE_MODULE 1

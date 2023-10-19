@@ -3,6 +3,8 @@
    Copyright (c) 2006-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 #import <QuartzCore/CAFrameRateRange.h>
 #import <Foundation/NSObject.h>
@@ -278,11 +280,39 @@ API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
 
 @property CGFloat initialVelocity;
 
+/* Whether true overdamping is allowed (otherwise it is treated as critically
+ * damped). Defaults to false. */
+
+@property BOOL allowsOverdamping
+    API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
 /* Returns the estimated duration required for the spring system to be
  * considered at rest. The duration is evaluated for the current animation
  * parameters. */
 
 @property(readonly) CFTimeInterval settlingDuration;
+
+/* Creates a spring animation with coefficients computed from the specified
+ * perceptual duration and bounce. A spring animation created with this
+ * initializer will have allowsOverdamping set to true (so will use overdamping
+ * when a negative bounce is specified). */
+
+- (instancetype)initWithPerceptualDuration:(CFTimeInterval)perceptualDuration
+                    bounce:(CGFloat)bounce
+    API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+/* The perceptual duration, which defines the pace of the spring. */
+
+@property(readonly) CFTimeInterval perceptualDuration
+    API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+/* How bouncy the spring is. A value of 0 indicates no bounces (a critically
+ * damped spring), positive values indicate increasing amounts of bounce (with
+ * typical values being between 0.0 and 1.0), and negative values indicate
+ * overdamped springs (with typical values being between 0.0 and -1.0). */
+
+@property(readonly) CGFloat bounce
+    API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
 @end
 
@@ -359,3 +389,5 @@ API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

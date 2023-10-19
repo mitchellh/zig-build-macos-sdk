@@ -1,7 +1,7 @@
 /*
     NSSplitViewController.h
     Application Kit
-    Copyright (c) 2014-2021, Apple Inc.
+    Copyright (c) 2014-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -12,7 +12,7 @@
 #import <AppKit/AppKitDefines.h>
 #import <Foundation/NSArray.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 /// This constant can be used with any sizing related \c NSSplitViewController properties to get the default system behavior.
@@ -87,7 +87,10 @@ API_AVAILABLE(macos(10.10))
 /// Animatedly collapses or uncollapses the first sidebar split view item in the receiver. Does nothing if the receiver does not contain any sidebars.
 - (IBAction)toggleSidebar:(nullable id)sender API_AVAILABLE(macos(10.11));
 
+/// Animatedly collapses or uncollapses the first inspector split view item in the receiver. Does nothing if the receiver does not contain any inspectors.
+- (IBAction)toggleInspector:(nullable id)sender API_AVAILABLE(macos(14.0));
+
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

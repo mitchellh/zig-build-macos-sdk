@@ -16,12 +16,12 @@
       (a <code>CFAttributedStringRef</code> or an <code>NSAttributedString</code>) that uses the constants defined in this header file to define its attributes.
  */
 
+#include <CoreFoundation/CoreFoundation.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <CoreFoundation/CoreFoundation.h>
 CF_ASSUME_NONNULL_BEGIN
     
 /*! @constant kAXFontTextAttribute

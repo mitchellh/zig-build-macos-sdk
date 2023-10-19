@@ -3,6 +3,8 @@
    Copyright (c) 2010-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 #import <Foundation/NSObject.h>
 #import <mach/mach.h>
@@ -37,3 +39,5 @@ API_AVAILABLE(macos(10.7))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

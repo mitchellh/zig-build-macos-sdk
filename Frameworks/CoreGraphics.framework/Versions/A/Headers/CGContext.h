@@ -751,6 +751,19 @@ CG_EXTERN void CGContextDrawRadialGradient(CGContextRef cg_nullable c,
     CGPoint endCenter, CGFloat endRadius, CGGradientDrawingOptions options)
     CG_AVAILABLE_STARTING(10.5, 2.0);
 
+/* Fill the current clipping region of `context' with a conic gradient
+   defined by the center point and rotation angle. The location 0 of `gradient'
+   corresponds to a initial rotation angle; the location 1 of `gradient'
+   corresponds to 360 degrees rotation from rotation angle; colors are linearly
+   interpolated over the full angle based on the values of the gradient's
+   locations. The 0 angle corresponds to positive x axis. The angle increases
+   towards positive y axis. */
+
+CG_EXTERN void CGContextDrawConicGradient(CGContextRef _Nonnull c,
+    CGGradientRef _Nullable gradient, CGPoint center, CGFloat angle)
+    CG_AVAILABLE_STARTING(14.0, 17.0);
+
+
 /* Fill the current clipping region of `context' with `shading'. */
 
 CG_EXTERN void CGContextDrawShading(CGContextRef cg_nullable c,

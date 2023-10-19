@@ -1,7 +1,7 @@
 /*
         NSTrackingSeparatorToolbarItem.h
         Application Kit
-        Copyright (c) 2019-2021, Apple Inc.
+        Copyright (c) 2019-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -9,7 +9,7 @@
 
 @class NSSplitView;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 API_AVAILABLE(macos(11.0)) API_UNAVAILABLE(ios)
 @interface NSTrackingSeparatorToolbarItem : NSToolbarItem
@@ -31,4 +31,4 @@ API_AVAILABLE(macos(11.0)) API_UNAVAILABLE(ios)
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

@@ -2,7 +2,7 @@
 /*
         NSGlyphGenerator.h
         Application Kit
-        Copyright (c) 1993-2021, Apple Inc.
+        Copyright (c) 1993-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -12,7 +12,7 @@
 // NSGlyphGenerator is now deprecated. It will be formally deprecated in a future version of macOS. Use -layoutManager:shouldGenerateGlyphs:properties:characterIndexes:forGlyphRange: in order to customize the canonical glyph generation mapping
 
 /* NSGlyphStorage layout options */
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #if !TARGET_OS_IPHONE
 
 enum {
@@ -38,7 +38,7 @@ enum {
 @end
 
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSGlyphGenerator.h>
 #endif

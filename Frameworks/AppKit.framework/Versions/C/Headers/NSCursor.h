@@ -1,7 +1,7 @@
 /*
 	NSCursor.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <AppKit/NSApplication.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 @class NSColor, NSEvent, NSImage;
 #if TARGET_OS_IPHONE
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 API_AVAILABLE(macos(10.0), ios(13.0))
-@interface NSCursor : NSObject <NSCoding>
+@interface NSCursor : NSObject <NSSecureCoding>
 
 /** Returns the application’s current cursor. This is not necessarily the cursor that is currently being displayed on the system. If you need the currently displayed cursor, use `NSCursor.currentSystemCursor`.
 */
@@ -93,4 +93,4 @@ static const NSAppKitVersion NSAppKitVersionNumberWithCursorSizeSupport = 682.0;
 @end
 API_UNAVAILABLE_END
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

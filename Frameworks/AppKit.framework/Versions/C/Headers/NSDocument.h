@@ -1,7 +1,7 @@
 /*
 	NSDocument.h
 	Application Kit
-	Copyright (c) 1997-2021, Apple Inc.
+	Copyright (c) 1997-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -17,7 +17,7 @@
 #import <AppKit/AppKitDefines.h>
 #import <AppKit/NSPreviewRepresentingActivityItem.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSData, NSDate, NSError, NSFileWrapper, NSMenuItem, NSPageLayout, NSPrintInfo, NSPrintOperation, NSSavePanel, NSSharingService, NSSharingServicePicker, NSUndoManager, NSURL, NSView, NSWindow, NSWindowController;
@@ -796,7 +796,7 @@ You can invoke this method when creating a custom save panel accessory view to e
 */
 - (NSArray<NSString *> *)writableTypesForSaveOperation:(NSSaveOperationType)saveOperation NS_SWIFT_NONISOLATED;
 
-/* For a specified type, and a particular kind of save operation, return a file name extension that can be appended to a base file name. The default implementation of this method invokes [[NSWorkspace sharedWorkspace] preferredFilenameExtensionForType:typeName] if the type is a UTI or, for backward binary compatibility with Mac OS 10.4 and earlier, invokes [[NSDocumentController sharedDocumentController] fileExtensionsFromType:typeName] and chooses the first file name extension in the returned array if not.
+/* For a specified type, and a particular kind of save operation, return a file name extension that can be appended to a base file name. The default implementation of this method invokes [UTType typeWithIdentifier:typeName].preferredFilenameExtension if the type is a UTI or, for backward binary compatibility with Mac OS 10.4 and earlier, invokes [[NSDocumentController sharedDocumentController] fileExtensionsFromType:typeName] and chooses the first file name extension in the returned array if not.
 
 You can override this method to customize the appending of extensions to file names by NSDocument. It's invoked from a variety of places within AppKit itself.
 */
@@ -866,4 +866,4 @@ You can override this method to customize the appending of extensions to file na
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

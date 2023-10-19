@@ -11,6 +11,7 @@
 #ifdef __OBJC__
 
 #import <CoreImage/CIImage.h>
+#import <CoreImage/CIVector.h>
 
 #if TARGET_OS_OSX
 #import <IOSurface/IOSurface.h>
@@ -64,6 +65,19 @@ NS_CLASS_AVAILABLE(10_12, 10_0)
 + (CGRect)roiForInput:(int)input
             arguments:(nullable NSDictionary<NSString*,id> *)arguments
            outputRect:(CGRect)outputRect;
+
+// Returns an array of CIVectors that specify tile regions for 'input' that are needed to satisfy 'outputRect'.
+// Each region tile in the array is a created by calling [CIVector vectorWithCGRect:roi]
+// The tiles may overlap but should fully cover the area of 'input' that is needed.
+// If a processor has multiple inputs, then each input should return the same number of region tiles.
+//
+// If the processor implements this method, then when rendered;
+//  - as CoreImage prepares for a render, this method will be called for each input to return the roiArray.
+//  - as CoreImage performs the render, the method 'processWithInputs:arguments:output:' will be called once for for each tile.
+//
++ (NSArray<CIVector*>*) roiTileArrayForInput:(int)input
+                                   arguments:(nullable NSDictionary<NSString*,id> *)arguments
+                                  outputRect:(CGRect)outputRect NS_AVAILABLE(14_0, 17_0);
 
 // Override this class method if you want your any of the inputs to be in a specific supported CIPixelFormat.
 // The format must be one of kCIFormatBGRA8, kCIFormatRGBAh, kCIFormatRGBAf or kCIFormatR8.
@@ -173,6 +187,10 @@ NS_CLASS_AVAILABLE(10_12, 10_0)
 // A 64-bit digest that uniquely describes the contents of the input to a processor.
 // This digest will change if the graph of the input changes in any way.
 @property (nonatomic, readonly) uint64_t digest NS_AVAILABLE(13_0, 16_0);
+
+// For processors that implement 'roiTileArrayForInput:arguments:outputRect:'
+@property (nonatomic, readonly) NSUInteger roiTileIndex NS_AVAILABLE(14_0, 17_0);
+@property (nonatomic, readonly) NSUInteger roiTileCount NS_AVAILABLE(14_0, 17_0);
 
 @end
 

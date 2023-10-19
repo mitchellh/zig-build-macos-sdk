@@ -198,6 +198,9 @@ NS_CLASS_AVAILABLE(10_13, 11_0)
 // This property will return how much time a render spent executing kernels.
 @property (readonly) NSTimeInterval kernelExecutionTime;
 
+// This property will return how much time a render spent compiling kernels.
+@property (readonly) NSTimeInterval kernelCompileTime NS_AVAILABLE(14_0, 17_0);
+
 // This property will return how many passes the render requires.
 // If passCount is 1 than the render can be fully concatinated and no
 // intermediate buffers will be required.

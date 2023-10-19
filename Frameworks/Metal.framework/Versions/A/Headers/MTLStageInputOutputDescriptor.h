@@ -7,6 +7,7 @@
 
 #import <Metal/MTLDefines.h>
 #import <Metal/MTLDevice.h>
+#import <Metal/MTLVertexDescriptor.h>
 
 
 
@@ -86,6 +87,9 @@ typedef NS_ENUM(NSUInteger, MTLAttributeFormat)
     MTLAttributeFormatShortNormalized API_AVAILABLE(macos(10.13), ios(11.0)) = 52,
     
     MTLAttributeFormatHalf API_AVAILABLE(macos(10.13), ios(11.0)) = 53,
+
+    MTLAttributeFormatFloatRG11B10 API_AVAILABLE(macos(14.0), ios(17.0)) = 54,
+    MTLAttributeFormatFloatRGB9E5 API_AVAILABLE(macos(14.0), ios(17.0)) = 55,
     
 } API_AVAILABLE(macos(10.12), ios(10.0));
 
@@ -112,7 +116,6 @@ typedef NS_ENUM(NSUInteger, MTLStepFunction)
     MTLStepFunctionThreadPositionInGridXIndexed = 7,
     MTLStepFunctionThreadPositionInGridYIndexed = 8,
 } API_AVAILABLE(macos(10.12), ios(10.0));
-
 
 MTL_EXPORT API_AVAILABLE(macos(10.12), ios(10.0))
 @interface MTLBufferLayoutDescriptor : NSObject <NSCopying>

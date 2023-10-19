@@ -2,7 +2,7 @@
  *  CTDefines.h
  *  CoreText
  *
- *  Copyright (c) 2010-2020 Apple Inc. All rights reserved.
+ *  Copyright (c) 2010-2023 Apple Inc. All rights reserved.
  *
  */
 
@@ -58,6 +58,12 @@
 @class NSTextTab;
 # endif /* defined(__OBJC__) */
 #endif /*  __has_attribute(objc_bridge) */
+
+#if __has_attribute(__swift_attr__)
+# define CT_SWIFT_SENDABLE __attribute__((__swift_attr__("@Sendable")))
+#else
+# define CT_SWIFT_SENDABLE
+#endif // __has_attribute(__swift_attr__)
 
 #if TARGET_OS_WIN32
 #define _Nullable

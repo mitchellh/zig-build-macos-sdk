@@ -191,6 +191,8 @@ typedef NS_ENUM(NSUInteger, MTLLanguageVersion) {
     MTLLanguageVersion2_4 API_AVAILABLE(macos(12.0), ios(15.0)) = (2 << 16) + 4,
     MTLLanguageVersion3_0 API_AVAILABLE(macos(13.0), ios(16.0)) =
     (3 << 16) + 0,
+    MTLLanguageVersion3_1 API_AVAILABLE(macos(14.0), ios(17.0)) = 
+    (3 << 16) + 1,
 } API_AVAILABLE(macos(10.11), ios(9.0));
 
 typedef NS_ENUM(NSInteger, MTLLibraryType) {

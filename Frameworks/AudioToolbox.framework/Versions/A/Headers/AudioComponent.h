@@ -306,7 +306,7 @@ typedef struct OpaqueAudioComponent *   AudioComponent;
                     ComponentInstanceRecord *, you should not assume that this will always be
                     compatible and usable with Component Manager calls.
 */
-#if TARGET_OS_IPHONE || (defined(AUDIOCOMPONENT_NOCARBONINSTANCES) && AUDIOCOMPONENT_NOCARBONINSTANCES)
+#if TARGET_OS_IPHONE || (0 && 0) || (defined(AUDIOCOMPONENT_NOCARBONINSTANCES) && AUDIOCOMPONENT_NOCARBONINSTANCES)
     typedef struct OpaqueAudioComponentInstance *   AudioComponentInstance;
 #else
     typedef struct ComponentInstanceRecord *        AudioComponentInstance;
@@ -453,7 +453,7 @@ AudioComponentGetVersion(   AudioComponent                      inComponent,
                             UInt32 *                            outVersion)
                                                                             API_AVAILABLE(macos(10.6), ios(2.0), watchos(2.0), tvos(9.0));
 
-#if defined(__OBJC__) && !TARGET_OS_IPHONE
+#if defined(__OBJC__) && !TARGET_OS_IPHONE && !(0 && 0)
 @class NSImage;
 
 /*!
@@ -654,6 +654,7 @@ typedef CF_ENUM(UInt32, AudioComponentValidationResult)
 						On exit, this is an AudioComponentValidationResult.
 	@result			an OSStatus result code.
 */
+#if !(0 && 0)
 extern OSStatus
 AudioComponentValidate( AudioComponent					inComponent,
 						CFDictionaryRef __nullable		inValidationParameters,
@@ -701,7 +702,7 @@ AudioComponentValidateWithResults(AudioComponent				inComponent,
 								  CFDictionaryRef __nullable	inValidationParameters,
 								  void 							(^inCompletionHandler)(AudioComponentValidationResult, CFDictionaryRef))
 													API_AVAILABLE(macos(13.0), ios(16.0)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*!
 	@define		kAudioComponentValidationParameter_TimeOut
 	@discussion This is a number that indicates the time in seconds to wait for a validation

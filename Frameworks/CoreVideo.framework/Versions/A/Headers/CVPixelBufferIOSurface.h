@@ -40,16 +40,16 @@ extern "C" {
 #endif
 
 // Ensures that CGLTexImageIOSurface2D() will succeed in creating a valid texture object from the CVPixelBuffer's IOSurface.
-CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLTextureCompatibilityKey API_AVAILABLE(macosx(10.6)) __IOS_PROHIBITED __TVOS_PROHIBITED __WATCHOS_PROHIBITED;	// CFBoolean
+CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLTextureCompatibilityKey API_AVAILABLE(macosx(10.6)) API_UNAVAILABLE(visionos) __IOS_PROHIBITED __TVOS_PROHIBITED __WATCHOS_PROHIBITED;	// CFBoolean
 // Ensures that CGLTexImageIOSurface2D() will succeed in creating a valid texture object from the CVPixelBuffer's IOSurface AND that the resulting texture may be used as a color buffer attachment to a OpenGL frame buffer object.
-CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLFBOCompatibilityKey API_AVAILABLE(macosx(10.6)) __IOS_PROHIBITED __TVOS_PROHIBITED __WATCHOS_PROHIBITED;	// CFBoolean
+CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLFBOCompatibilityKey API_AVAILABLE(macosx(10.6)) API_UNAVAILABLE(visionos) __IOS_PROHIBITED __TVOS_PROHIBITED __WATCHOS_PROHIBITED;	// CFBoolean
 // Ensures that the CVPixelBuffer's IOSurfaceRef can be displayed in an CoreAnimation CALayer.
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceCoreAnimationCompatibilityKey AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER;	// CFBoolean
 
 // Ensures that OpenGLES can create a valid texture object from IOSurface-backed CVPixelBuffers.
-CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLESTextureCompatibilityKey API_AVAILABLE(ios(5.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst)	__WATCHOS_PROHIBITED;	// CFBoolean
+CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLESTextureCompatibilityKey API_AVAILABLE(ios(5.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) API_UNAVAILABLE(visionos)	__WATCHOS_PROHIBITED;	// CFBoolean
 // Ensures that OpenGLES can create a valid texture object from IOSurface-backed CVPixelBuffers AND that the resulting texture may be used as a color buffer attachment to a OpenGLES frame buffer object.
-CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLESFBOCompatibilityKey API_AVAILABLE(ios(5.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) __WATCHOS_PROHIBITED;	// CFBoolean
+CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLESFBOCompatibilityKey API_AVAILABLE(ios(5.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) API_UNAVAILABLE(visionos) __WATCHOS_PROHIBITED;	// CFBoolean
     
 #if COREVIDEO_SUPPORTS_IOSURFACE
 #if COREVIDEO_INCLUDED_IOSURFACE_HEADER_FILE

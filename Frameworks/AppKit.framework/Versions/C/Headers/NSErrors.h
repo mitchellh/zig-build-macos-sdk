@@ -1,7 +1,7 @@
 /*
 	NSErrors.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -9,7 +9,7 @@
 
 @class NSString;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 // The following strings are the names of exceptions the AppKit can raise
@@ -52,4 +52,4 @@ APPKIT_EXTERN NSExceptionName NSBrowserIllegalDelegateException;
 APPKIT_EXTERN NSExceptionName NSAccessibilityException API_DEPRECATED("Exceptions are no longer appropriate for indicating errors in accessibility API. Unexpected values should be handled through appropriate type checking.", macos(10.1,10.11));
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

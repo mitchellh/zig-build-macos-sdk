@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 4 -*-
  *
- * Copyright (c) 2003-2022 Apple Inc. All rights reserved.
+ * Copyright (c) 2003-2023 Apple Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -66,7 +66,7 @@
  */
 
 #ifndef _DNS_SD_H
-#define _DNS_SD_H 1807101002
+#define _DNS_SD_H 2200000008
 
 /* DNS-SD API version strings are of the form x[.y[.z]].
  * Version strings less than or equal to 1661 are encoded as (x * 10000) + (y * 100) + z, where 0 ≤ y,z ≤ 99.
@@ -84,8 +84,6 @@
         #define __END_DECLS
     #endif
 #endif
-
-__BEGIN_DECLS
 
 /* Set to 1 if libdispatch is supported
  * Note: May also be set by project and/or Makefile
@@ -182,6 +180,8 @@ typedef INT32 int32_t;
         #define DNS_SD_NONNULL
     #endif
 #endif
+
+__BEGIN_DECLS
 
 /* DNSServiceRef, DNSRecordRef
  *
@@ -1501,15 +1501,20 @@ DNSServiceErrorType DNSSD_API DNSServiceAddRecord
 
 /*!
  *  @brief
- *                  Update a registered resource record.
+ *                  Update a registered resource record. This function can update three types of records:
+ *                    1. The primary txt record for a service that was previously registered.
+ *                    2. Some other record that was added to the service using DNSServiceAddRecord().
+ *                    3. A record registered using DNSServiceRegisterRecord().
  *
  *  @param sdRef
- *                  A DNSServiceRef that was initialized by DNSServiceRegister()
- *                  or DNSServiceCreateConnection().
+ *                  For updates of records associated with a registered service (cases 1 and 2), this is the
+ *                  DNSServiceRef returned by DNSServiceRegister(). For updates of records registered with
+ *                  DNSServiceRegisterRecord() (case 3), this is the DNSServiceRef that was passed to
+ *                  DNSServiceRegisterRecord().
  *
  *  @param recordRef
- *                  A DNSRecordRef initialized by DNSServiceAddRecord, or NULL to update the
- *                  service's primary txt record.
+ *                  For case 1, this is NULL. For case 2, it's a DNSRecordRef returned by DNSServiceAddRecord(). For
+ *                  case 3, it's a DNSRecordRef returned by DNSServiceRegisterRecord().
  *
  *  @param flags
  *                  Currently ignored, reserved for future use.
@@ -1528,12 +1533,6 @@ DNSServiceErrorType DNSSD_API DNSServiceAddRecord
  *  @result
  *                  Returns kDNSServiceErr_NoError on success, otherwise returns an
  *                  error code indicating the error that occurred.
- *
- *  @discussion
- *                  The record must either be:
- *                  - The primary txt record of a service registered via DNSServiceRegister()
- *                  - A record added to a registered service via DNSServiceAddRecord()
- *                  - An individual record registered by DNSServiceRegisterRecord()
  */
 DNSSD_EXPORT
 DNSServiceErrorType DNSSD_API DNSServiceUpdateRecord

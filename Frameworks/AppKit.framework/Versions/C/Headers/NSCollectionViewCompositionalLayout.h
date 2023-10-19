@@ -1,13 +1,12 @@
 /*
     NSCollectionViewCompositionalLayout.h
     Application Kit
-    Copyright (c) 2019-2021, Apple Inc.
+    Copyright (c) 2019-2023, Apple Inc.
     All rights reserved.
 */
 
 #import <TargetConditionals.h>
-
-#if !TARGET_OS_IPHONE
+#if TARGET_OS_OSX
 
 #import <AppKit/NSCollectionViewLayout.h>
 #import <AppKit/NSCollectionViewFlowLayout.h> // for NSCollectionViewScrollDirection
@@ -17,7 +16,7 @@
 @protocol NSCollectionLayoutContainer;
 @protocol NSCollectionLayoutVisibleItem;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSCollectionLayoutSection;
@@ -51,7 +50,7 @@ typedef NS_OPTIONS(NSUInteger, NSDirectionalRectEdge) {
 
 /* Specifies edge insets that should be interpreted according to the user interface layout direction.  Specify positive values to inset, negative values to outset.
  */
-typedef struct __attribute__((objc_boxable)) NSDirectionalEdgeInsets {
+typedef struct __attribute__((objc_boxable)) NS_SWIFT_SENDABLE NSDirectionalEdgeInsets {
     CGFloat top;
     CGFloat leading;
     CGFloat bottom;
@@ -80,7 +79,6 @@ NS_INLINE NSDirectionalEdgeInsets NSDirectionalEdgeInsetsMake(CGFloat top, CGFlo
 }
 
 #endif
-
 /* End temporary declarations */
 
 
@@ -612,6 +610,5 @@ API_AVAILABLE(macos(10.15))
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
-
-#endif
+NS_HEADER_AUDIT_END(nullability, sendability)
+#endif // TARGET_OS_OSX

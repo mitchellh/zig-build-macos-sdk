@@ -72,6 +72,7 @@
 #define _MACH_MESSAGE_H_
 
 #include <stdint.h>
+#include <machine/limits.h>
 #include <mach/port.h>
 #include <mach/boolean.h>
 #include <mach/kern_return.h>
@@ -481,6 +482,22 @@ typedef struct {
 typedef struct {
 	unsigned int                  val[8];
 } audit_token_t;
+
+/*
+ * Safe initializer for audit_token_t.
+ * Variables holding unset audit tokens should generally
+ * be initialized to INVALID_AUDIT_TOKEN_VALUE, to allow
+ * unset audit tokens be distinguished from the kernel's
+ * audit token, KERNEL_AUDIT_TOKEN_VALUE.  It is `safe'
+ * in that it limits potential damage if such an unset
+ * audit token, or one of its fields, were ever to be
+ * interpreted as valid by mistake.  Notably, the pid is
+ * outside of range of valid pids, and none of the
+ * fields correspond to privileged users or groups.
+ */
+#define INVALID_AUDIT_TOKEN_VALUE     {{ \
+	UINT_MAX, UINT_MAX, UINT_MAX, UINT_MAX, \
+	UINT_MAX, UINT_MAX, UINT_MAX, UINT_MAX }}
 
 typedef struct {
 	mach_msg_trailer_type_t       msgh_trailer_type;

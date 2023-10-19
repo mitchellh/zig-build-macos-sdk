@@ -1,7 +1,7 @@
 /*
  NSAccessibilityProtocols.h
  Application Kit
- Copyright (c) 2013-2021, Apple Inc.
+ Copyright (c) 2013-2023, Apple Inc.
  All rights reserved.
  */
 
@@ -12,7 +12,7 @@
 
 @class NSAccessibilityCustomRotor;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 NS_PROTOCOL_REQUIRES_EXPLICIT_IMPLEMENTATION
@@ -428,6 +428,24 @@ API_AVAILABLE(macos(10.13)) @protocol NSAccessibilityElementLoading <NSObject>
  */
 @property (copy) NSArray<NSAccessibilityCustomRotor *> *accessibilityCustomRotors API_AVAILABLE(macos(10.13));
 
+/*
+ * @brief Returns the localized label(s) that should be provided by the user to refer to this element.
+ * Use this property when the accessibilityLabel is not appropriate for dictated or typed input.
+ * For example, an element that contains additional descriptive information in its accessibilityLabel
+ * can return a more concise label. The primary label should be first in the array, optionally followed
+ * by alternative labels in descending order of importance.
+ * If this property returns an empty or invalid value, the accessibilityLabel will be used instead.
+ * The default on AppKit controls is an array with an appropriate label, if different from accessibilityLabel.
+ */
+@property (nullable, copy) NSArray<NSString *> *accessibilityUserInputLabels API_AVAILABLE(macos(14.0));
+
+/*
+ * @brief The underlying attributed versions of the accessibility user input labels.
+ * Returns an array of localized labels the user provides to refer to the accessibility element.
+ * Setting this property will change the value of the accessibilityUserInputLabels property and vice versa.
+ */
+@property (nullable, copy) NSArray<NSAttributedString *> *accessibilityAttributedUserInputLabels API_AVAILABLE(macos(14.0));
+
 #pragma mark Application
 
 // Returns YES if the element is focused (generally, accessibilityFocused is equivalent to the
@@ -842,4 +860,4 @@ API_AVAILABLE(macos(10.13)) @protocol NSAccessibilityElementLoading <NSObject>
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

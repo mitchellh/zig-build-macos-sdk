@@ -1,14 +1,14 @@
 /*
         NSTextStorageScripting.h
         AppKit Framework
-        Copyright (c) 1997-2021, Apple Inc.
+        Copyright (c) 1997-2023, Apple Inc.
         All rights reserved.
 */
 
 #import <Foundation/NSArray.h>
 #import <AppKit/NSTextStorage.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #if !TARGET_OS_IPHONE
 
 @interface NSTextStorage (Scripting)
@@ -27,4 +27,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

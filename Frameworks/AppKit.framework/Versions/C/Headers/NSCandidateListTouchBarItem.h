@@ -1,7 +1,7 @@
 /*
     NSCandidateListTouchBarItem.h
     Application Kit
-    Copyright (c) 2016-2021, Apple Inc.
+    Copyright (c) 2016-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -13,7 +13,7 @@
 @protocol NSCandidateListTouchBarItemDelegate;
 @protocol NSTextInputClient;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 /* NSCandidateListTouchBarItem is an NSTouchBarItem that shows the word completion candidates for assisting users typing with text input capable views. In addition to candidates supplied by its client, the NSTouchBarItem can show candidates coming from the active input method. NSCandidateListTouchBarItem has two states: expanded and collapsed. When expanded, the item replaces any NSTouchBarItems occupying its location on the bar.
@@ -87,4 +87,4 @@ API_UNAVAILABLE(macCatalyst)
 APPKIT_EXTERN NSTouchBarItemIdentifier const NSTouchBarItemIdentifierCandidateList API_AVAILABLE(macos(10.12.2)) API_UNAVAILABLE(macCatalyst);
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

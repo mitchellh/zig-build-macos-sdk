@@ -1,7 +1,7 @@
 #if !__has_include(<UIFoundation/NSTextStorage.h>)
 /*
         NSTextStorage.h
-        Copyright (c) 1994-2021, Apple Inc.
+        Copyright (c) 1994-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -14,7 +14,7 @@
 @protocol NSTextStorageDelegate;
 @protocol NSTextStorageObserving;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #if !TARGET_OS_IPHONE
 
 typedef NS_OPTIONS(NSUInteger, NSTextStorageEditActions) {
@@ -136,7 +136,7 @@ typedef NSUInteger NSTextStorageEditedOptions;
 
 
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSTextStorage.h>
 #endif

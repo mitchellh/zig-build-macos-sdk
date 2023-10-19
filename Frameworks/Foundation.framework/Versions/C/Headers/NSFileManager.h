@@ -482,6 +482,7 @@ FOUNDATION_EXPORT NSFileProtectionType const NSFileProtectionNone API_AVAILABLE(
 FOUNDATION_EXPORT NSFileProtectionType const NSFileProtectionComplete API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
 FOUNDATION_EXPORT NSFileProtectionType const NSFileProtectionCompleteUnlessOpen API_AVAILABLE(macos(10.6), ios(5.0), watchos(2.0), tvos(9.0));
 FOUNDATION_EXPORT NSFileProtectionType const NSFileProtectionCompleteUntilFirstUserAuthentication API_AVAILABLE(macos(10.6), ios(5.0), watchos(2.0), tvos(9.0));
+FOUNDATION_EXPORT NSFileProtectionType const NSFileProtectionCompleteWhenUserInactive API_AVAILABLE(ios(17.0), watchos(10.0), tvos(17.0)) API_UNAVAILABLE(macos);
 
 FOUNDATION_EXPORT NSFileAttributeKey const NSFileSystemSize;
 FOUNDATION_EXPORT NSFileAttributeKey const NSFileSystemFreeSize;

@@ -29,6 +29,8 @@
  *    from the -render method, the default values will be preserved.
  */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CABase.h>
 #import <CoreVideo/CVBase.h>
 #import <Foundation/NSObject.h>
@@ -55,6 +57,7 @@ API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 #else
     API_AVAILABLE(macos(10.5));
 #endif
+
 
 /* Create a new renderer object. Its render target is the specified
  * texture. 'dict' is an optional dictionary of parameters.  */
@@ -127,3 +130,5 @@ CA_EXTERN NSString * const kCARendererMetalCommandQueue
     API_AVAILABLE(macos(10.14), ios(12.0), watchos(5.0), tvos(12.0));
 
 NS_ASSUME_NONNULL_END
+
+#endif

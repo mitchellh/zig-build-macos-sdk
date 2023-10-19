@@ -20,6 +20,17 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol MTLAccelerationStructure;
 @protocol MTLIntersectionFunctionTable;
 
+/*
+ @brief
+     When calling functions with an `attributeStrides:` parameter on a render
+     or compute command encoder, this value must be provided for the binding
+     points that are either not part of the set of MTLBufferLayoutDescriptor,
+     or whose stride values in the descriptor is not set to
+     `MTLBufferLayoutStrideDynamic`
+*/
+API_AVAILABLE(macos(14.0), ios(17.0))
+static const NSUInteger MTLAttributeStrideStatic = NSUIntegerMax;
+
 /*!
  * @protocol MTLArgumentEncoder
  * @discussion MTLArgumentEncoder encodes buffer, texture, sampler, and constant data into a buffer.

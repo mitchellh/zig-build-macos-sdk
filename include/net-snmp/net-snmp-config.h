@@ -1262,7 +1262,7 @@
 #define NETSNMP_CAN_USE_SYSCTL 1
 
 /* configure options specified */
-#define NETSNMP_CONFIGURE_OPTIONS " '--prefix=/usr' '--mandir=/usr/share/man' '--infodir=/usr/share/info' '--disable-dependency-tracking' '--sysconfdir=/etc' '--with-install-prefix=/AppleInternal/Library/BuildRoots/97f6331a-ba75-11ed-a4bc-863efbbaf80d/Library/Caches/com.apple.xbs/Binaries/net_snmp/install/TempContent/Root' '--with-default-snmp-version=2' '--with-persistent-directory=/var/db/net-snmp' '--with-defaults' '--without-rpm' '--with-sys-contact=postmaster@example.com' '--with-mib-modules=host ucd-snmp/diskio ucd-snmp/loadave ' '--disable-static' '--enable-ipv6' '--without-perl-modules' '--disable-perl-cc-checks' '--disable-embedded-perl' '--datarootdir=/usr/share' '--with-openssl=/usr/libressl/' '--without-kmem-usage' 'CC=/AppleInternal/Library/BuildRoots/97f6331a-ba75-11ed-a4bc-863efbbaf80d/Applications/Xcode.app/Contents/Developer/Toolchains/OSX13.3.xctoolchain/usr/bin/cc' 'CFLAGS=-arch arm64e -arch x86_64 -g -Os -pipe -DBUILD=175.1 -DMACOSX_DEPLOYMENT_TARGET=13.3 -F/AppleInternal/Library/BuildRoots/97f6331a-ba75-11ed-a4bc-863efbbaf80d/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.Internal.sdk/System/Library/PrivateFrameworks/ -F/AppleInternal/Library/BuildRoots/97f6331a-ba75-11ed-a4bc-863efbbaf80d/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.Internal.sdk/System/Library/Frameworks/ -iwithsysroot /usr/local/libressl/include -L/AppleInternal/Library/BuildRoots/97f6331a-ba75-11ed-a4bc-863efbbaf80d/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.Internal.sdk/usr/local/libressl/lib' 'LDFLAGS=-arch arm64e -arch x86_64            '"
+#define NETSNMP_CONFIGURE_OPTIONS " '--prefix=/usr' '--mandir=/usr/share/man' '--infodir=/usr/share/info' '--disable-dependency-tracking' '--sysconfdir=/etc' '--with-install-prefix=/AppleInternal/Library/BuildRoots/98ed8ad3-3356-11ee-9b53-aead88ae2785/Library/Caches/com.apple.xbs/Binaries/net_snmp/install/TempContent/Root' '--with-default-snmp-version=2' '--with-persistent-directory=/var/db/net-snmp' '--with-defaults' '--without-rpm' '--with-sys-contact=postmaster@example.com' '--with-mib-modules=host ucd-snmp/diskio ucd-snmp/loadave ' '--disable-static' '--enable-ipv6' '--without-perl-modules' '--disable-perl-cc-checks' '--disable-embedded-perl' '--datarootdir=/usr/share' '--with-openssl=/usr/libressl/' '--without-kmem-usage' 'CC=/AppleInternal/Library/BuildRoots/98ed8ad3-3356-11ee-9b53-aead88ae2785/Applications/Xcode.app/Contents/Developer/Toolchains/OSX14.0.xctoolchain/usr/bin/cc' 'CFLAGS=-arch arm64e -arch x86_64 -g -Os -pipe -DBUILD=177 -DMACOSX_DEPLOYMENT_TARGET=14.0 -F/AppleInternal/Library/BuildRoots/98ed8ad3-3356-11ee-9b53-aead88ae2785/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.Internal.sdk/System/Library/PrivateFrameworks/ -F/AppleInternal/Library/BuildRoots/98ed8ad3-3356-11ee-9b53-aead88ae2785/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.Internal.sdk/System/Library/Frameworks/ -iwithsysroot /usr/local/libressl/include -L/AppleInternal/Library/BuildRoots/98ed8ad3-3356-11ee-9b53-aead88ae2785/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.Internal.sdk/usr/local/libressl/lib' 'LDFLAGS=-arch arm64e -arch x86_64            '"
 
 /* default location to look for mibs to load using the above tokens and/or
    those in the MIBS envrionment variable */
@@ -1639,7 +1639,7 @@
 #define NETSNMP_SNMPV2AUTH  0x8000       /* V2 Authenticated requests only */
 
 /* default list of mibs to load */
-#define NETSNMP_DEFAULT_MIBS ":HOST-RESOURCES-MIB:HOST-RESOURCES-TYPES:UCD-DISKIO-MIB:SNMPv2-MIB:IF-MIB:IP-MIB:TCP-MIB:UDP-MIB:NOTIFICATION-LOG-MIB:DISMAN-EVENT-MIB:DISMAN-SCHEDULE-MIB:UCD-SNMP-MIB:UCD-DEMO-MIB:SNMP-TARGET-MIB:NET-SNMP-AGENT-MIB:SNMP-MPD-MIB:SNMP-USER-BASED-SM-MIB:SNMP-FRAMEWORK-MIB:SNMP-VIEW-BASED-ACM-MIB:SNMP-COMMUNITY-MIB:NET-SNMP-PASS-MIB:NET-SNMP-EXTEND-MIB:UCD-DLMOD-MIB:SNMP-NOTIFICATION-MIB:SNMPv2-TM:NET-SNMP-VACM-MIB"
+#define NETSNMP_DEFAULT_MIBS ":HOST-RESOURCES-MIB:HOST-RESOURCES-TYPES:UCD-DISKIO-MIB:SNMPv2-MIB:IF-MIB:IP-MIB:TCP-MIB:UDP-MIB:NOTIFICATION-LOG-MIB:DISMAN-EVENT-MIB:DISMAN-SCHEDULE-MIB:UCD-SNMP-MIB:UCD-DEMO-MIB:SNMP-TARGET-MIB:NET-SNMP-AGENT-MIB:SNMP-MPD-MIB:SNMP-USER-BASED-SM-MIB:SNMP-FRAMEWORK-MIB:NET-SNMP-PASS-MIB:NET-SNMP-EXTEND-MIB:UCD-DLMOD-MIB:SNMP-NOTIFICATION-MIB:SNMPv2-TM:NET-SNMP-VACM-MIB"
 
 /* debugging stuff */
 /* if defined, we optimize the code to exclude all debugging calls. */
@@ -1669,7 +1669,7 @@
 #define NETSNMP_MAX_PERSISTENT_BACKUPS 10
 
 /* define the system type include file here */
-#define NETSNMP_SYSTEM_INCLUDE_FILE "net-snmp/system/darwin22.h"
+#define NETSNMP_SYSTEM_INCLUDE_FILE "net-snmp/system/darwin23.h"
 
 /* define the machine (cpu) type include file here */
 #define NETSNMP_MACHINE_INCLUDE_FILE "net-snmp/machine/generic.h"

@@ -37,10 +37,11 @@ CF_EXPORT CFTypeID CFNotificationCenterGetTypeID(void);
 
 CF_EXPORT CFNotificationCenterRef CFNotificationCenterGetLocalCenter(void);
 
-#if TARGET_OS_OSX || TARGET_OS_WIN32
+#if (TARGET_OS_OSX || TARGET_OS_WIN32) && !0
 CF_EXPORT CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
 #endif
 
+#if !0
 CF_EXPORT CFNotificationCenterRef CFNotificationCenterGetDarwinNotifyCenter(void);
 // The Darwin Notify Center is based on the <notify.h> API.
 // For this center, there are limitations in the API. There are no notification "objects",
@@ -57,7 +58,7 @@ CF_EXPORT CFNotificationCenterRef CFNotificationCenterGetDarwinNotifyCenter(void
 // As with distributed notifications, the main thread's run loop must be running in one of the
 // common modes (usually kCFRunLoopDefaultMode) for Darwin-style notifications to be delivered.
 // NOTE: NULL or 0 should be passed for all ignored arguments to ensure future compatibility.
-
+#endif
 
 CF_EXPORT void CFNotificationCenterAddObserver(CFNotificationCenterRef center, const void *observer, CFNotificationCallback callBack, CFStringRef name, const void *object, CFNotificationSuspensionBehavior suspensionBehavior);
 

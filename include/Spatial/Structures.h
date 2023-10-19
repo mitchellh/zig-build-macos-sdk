@@ -160,7 +160,7 @@ __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
 /*!
  @abstract A 3D affine transformation matrix.
  
- @field matrix The 4x3 matrix that describes the affine transfrom.
+ @field matrix The 4x3 matrix that describes the affine transform.
  */
 typedef struct {
     simd_double4x3 matrix;
@@ -209,9 +209,18 @@ SPATIAL_SWIFT_NAME(RotationAxis3D.zero)
 static const SPRotationAxis3D SPRotationAxis3DZero = { 0 };
 
 /// The rotation with an angle of zero.
-__API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0))
+__API_DEPRECATED("This constant is deprecated.",
+                 macos(13.0, 14.0),
+                 ios(16.0, 17.0),
+                 watchos(9.0, 10.0),
+                 tvos(16.0, 17.0))
 SPATIAL_SWIFT_NAME(Rotation3D.zero)
-static const SPRotation3D SPRotation3DZero = { 0 };
+static const SPRotation3D SPRotation3DZero = (SPRotation3D){ .vector = {0, 0, 0, 1 }};
+
+/// The identity rotation.
+__API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0))
+SPATIAL_SWIFT_NAME(Rotation3D.identity)
+static const SPRotation3D SPRotation3DIdentity = (SPRotation3D){ .vector = {0, 0, 0, 1 }};
 
 /// A rotation that represents an invalid rotation.
 __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0))

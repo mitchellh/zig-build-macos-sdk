@@ -1,14 +1,14 @@
 /*
 	NSButtonCell.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
 #import <AppKit/NSActionCell.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSAttributedString, NSFont, NSImage, NSSound;
@@ -27,19 +27,52 @@ typedef NS_ENUM(NSUInteger, NSButtonType) {
 };
 
 typedef NS_ENUM(NSUInteger, NSBezelStyle) {
-    NSBezelStyleRounded           = 1,
-    NSBezelStyleRegularSquare     = 2,
-    NSBezelStyleDisclosure        = 5,
-    NSBezelStyleShadowlessSquare  = 6,
-    NSBezelStyleCircular          = 7,
-    NSBezelStyleTexturedSquare    = 8,
-    NSBezelStyleHelpButton        = 9,
-    NSBezelStyleSmallSquare       = 10,
-    NSBezelStyleTexturedRounded   = 11,
-    NSBezelStyleRoundRect         = 12,
-    NSBezelStyleRecessed          = 13,
-    NSBezelStyleRoundedDisclosure = 14,
-    NSBezelStyleInline API_AVAILABLE(macos(10.7)) = 15,
+    /// The appearance of this bezel style is automatically determined based on the button's contents and position within the window. This bezel style is the default for all button initializers.
+    NSBezelStyleAutomatic API_AVAILABLE(macos(14.0)) = 0,
+    
+    /// The standard system push button style.
+    NSBezelStylePush               = 1,
+    
+    /// A flexible-height variant of NSBezelStylePush.
+    NSBezelStyleFlexiblePush       = 2,
+    
+    /// An unbezeled button with a disclosure triangle.
+    NSBezelStyleDisclosure         = 5,
+    
+    /// A button with a circular bezel suitable for a small icon or single character.
+    NSBezelStyleCircular           = 7,
+    
+    /// A circular button with a question mark providing the standard Help button appearance.
+    NSBezelStyleHelpButton         = 9,
+    
+    /// A button with squared edges and flexible height.
+    NSBezelStyleSmallSquare        = 10,
+    
+    /// A button style that is appropriate for use in a toolbar item.
+    NSBezelStyleToolbar            = 11,
+    
+    /// A bezel style that is suitable for accessory and scope bars. This style is typically used for buttons that perform an action or for pop-up buttons.
+    NSBezelStyleAccessoryBarAction = 12,
+    
+    /// A bezel style that is suitable for accessory and scope bars. This style is typically used for buttons with togglable state.
+    NSBezelStyleAccessoryBar       = 13,
+    
+    /// A bezeled variant of NSBezelStyleDisclosure.
+    NSBezelStylePushDisclosure     = 14,
+    
+    /// A bezel style that is typically used in table rows to display information about the row, such as a count.
+    NSBezelStyleBadge API_AVAILABLE(macos(10.7)) = 15,
+    
+    NSBezelStyleShadowlessSquare API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleSmallSquare", macos(10.0, API_TO_BE_DEPRECATED)) = 6,
+    NSBezelStyleTexturedSquare API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleSmallSquare", macos(10.0, API_TO_BE_DEPRECATED)) = 8,
+    
+    NSBezelStyleRounded API_DEPRECATED_WITH_REPLACEMENT("NSBezelStylePush", macos(10.0, API_TO_BE_DEPRECATED)) = NSBezelStylePush,
+    NSBezelStyleRegularSquare API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleFlexiblePush", macos(10.0, API_TO_BE_DEPRECATED)) = NSBezelStyleFlexiblePush,
+    NSBezelStyleTexturedRounded API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleToolbar", macos(10.0, API_TO_BE_DEPRECATED)) = NSBezelStyleToolbar,
+    NSBezelStyleRoundRect API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleAccessoryBarAction", macos(10.0, API_TO_BE_DEPRECATED)) = NSBezelStyleAccessoryBarAction,
+    NSBezelStyleRecessed API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleAccessoryBar", macos(10.0, API_TO_BE_DEPRECATED)) = NSBezelStyleAccessoryBar,
+    NSBezelStyleRoundedDisclosure API_DEPRECATED_WITH_REPLACEMENT("NSBezelStylePushDisclosure", macos(10.0, API_TO_BE_DEPRECATED)) = NSBezelStylePushDisclosure,
+    NSBezelStyleInline API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleBadge", macos(10.7, API_TO_BE_DEPRECATED)) = NSBezelStyleBadge,
 };
 
 @interface NSButtonCell : NSActionCell
@@ -116,24 +149,23 @@ static const NSButtonType NSMultiLevelAcceleratorButton API_DEPRECATED_WITH_REPL
 static const NSButtonType NSMomentaryPushButton API_DEPRECATED("This constant is misnamed and has the same effect as NSButtonTypeMomentaryLight. Use that name instead, or switch to NSButtonTypeMomentaryPushIn.", macos(10.0,10.9)) = NSButtonTypeMomentaryLight;
 static const NSButtonType NSMomentaryLight API_DEPRECATED("This constant is misnamed and has the same effect as NSButtonTypeMomentaryPushIn. Use that name instead, or switch to NSButtonTypeMomentaryLight.", macos(10.0,10.9)) = NSButtonTypeMomentaryPushIn;
 
-static const NSBezelStyle NSRoundedBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleRounded", macos(10.0,10.14)) = NSBezelStyleRounded;
-static const NSBezelStyle NSRegularSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleRegularSquare", macos(10.0,10.14)) = NSBezelStyleRegularSquare;
+static const NSBezelStyle NSRoundedBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStylePush", macos(10.0,10.14)) = NSBezelStylePush;
+static const NSBezelStyle NSRegularSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleFlexiblePush", macos(10.0,10.14)) = NSBezelStyleFlexiblePush;
 static const NSBezelStyle NSDisclosureBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleDisclosure", macos(10.0,10.14)) = NSBezelStyleDisclosure;
 static const NSBezelStyle NSShadowlessSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleShadowlessSquare", macos(10.0,10.14)) = NSBezelStyleShadowlessSquare;
 static const NSBezelStyle NSCircularBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleCircular", macos(10.0,10.14)) = NSBezelStyleCircular;
 static const NSBezelStyle NSTexturedSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleTexturedSquare", macos(10.0,10.14)) = NSBezelStyleTexturedSquare;
 static const NSBezelStyle NSHelpButtonBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleHelpButton", macos(10.0,10.14)) = NSBezelStyleHelpButton;
 static const NSBezelStyle NSSmallSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleSmallSquare", macos(10.0,10.14)) = NSBezelStyleSmallSquare;
-static const NSBezelStyle NSTexturedRoundedBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleTexturedRounded", macos(10.0,10.14)) = NSBezelStyleTexturedRounded;
-static const NSBezelStyle NSRoundRectBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleRoundRect", macos(10.0,10.14)) = NSBezelStyleRoundRect;
-static const NSBezelStyle NSRecessedBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleRecessed", macos(10.0,10.14)) = NSBezelStyleRecessed;
-static const NSBezelStyle NSRoundedDisclosureBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleRoundedDisclosure", macos(10.0,10.14)) = NSBezelStyleRoundedDisclosure;
-static const NSBezelStyle NSInlineBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleInline", macos(10.0,10.14)) = NSBezelStyleInline;
+static const NSBezelStyle NSTexturedRoundedBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleToolbar", macos(10.0,10.14)) = NSBezelStyleToolbar;
+static const NSBezelStyle NSRoundRectBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleAccessoryBarAction", macos(10.0,10.14)) = NSBezelStyleAccessoryBarAction;
+static const NSBezelStyle NSRecessedBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleAccessoryBar", macos(10.0,10.14)) = NSBezelStyleAccessoryBar;
+static const NSBezelStyle NSRoundedDisclosureBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStylePushDisclosure", macos(10.0,10.14)) = NSBezelStylePushDisclosure;
+static const NSBezelStyle NSInlineBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleBadge", macos(10.0,10.14)) = NSBezelStyleBadge;
 
 static const NSBezelStyle NSSmallIconButtonBezelStyle API_DEPRECATED("This bezel style is obsolete and should not be used.", macos(10.0,10.0)) = (NSBezelStyle)2;
-static const NSBezelStyle NSThickSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleRegularSquare", macos(10.0,10.12)) = (NSBezelStyle)3;
-static const NSBezelStyle NSThickerSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleRegularSquare", macos(10.0,10.12)) = (NSBezelStyle)4;
-
+static const NSBezelStyle NSThickSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleFlexiblePush", macos(10.0,10.12)) = (NSBezelStyle)3;
+static const NSBezelStyle NSThickerSquareBezelStyle API_DEPRECATED_WITH_REPLACEMENT("NSBezelStyleFlexiblePush", macos(10.0,10.12)) = (NSBezelStyle)4;
 @interface NSButtonCell(NSDeprecated)
 
 /* The NSGradientType enumeration and corresponding gradientType property are not used on macOS. */
@@ -155,5 +187,5 @@ static const NSBezelStyle NSThickerSquareBezelStyle API_DEPRECATED_WITH_REPLACEM
 
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

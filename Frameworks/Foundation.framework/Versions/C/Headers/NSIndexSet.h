@@ -31,10 +31,9 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 @interface NSIndexSet : NSObject <NSCopying, NSMutableCopying, NSSecureCoding> {
     @protected   // all instance variables are private
     struct {
-        NSUInteger _isEmpty:1;
         NSUInteger _hasSingleRange:1;
-        NSUInteger _cacheValid:1;
-        NSUInteger _reservedArrayBinderController:29;
+        NSUInteger _hasBitfield:1;
+        NSUInteger _reservedArrayBinderController:30;
     } _indexSetFlags;
     union {
         struct {
@@ -44,6 +43,9 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
             void * _data;
             void *_reserved;
         } _multipleRanges;
+        struct {
+            uint64_t _bitfield;
+        } _singleBitfield;
     } _internal;
 }
 

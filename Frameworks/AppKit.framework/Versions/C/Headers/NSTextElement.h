@@ -6,7 +6,7 @@
 //  NSTextElement.h
 //  Text Kit
 //
-//  Copyright (c) 2018-2021, Apple Inc. All rights reserved.
+//  Copyright (c) 2018-2023, Apple Inc. All rights reserved.
 //
 
 

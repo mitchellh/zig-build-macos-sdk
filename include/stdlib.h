@@ -250,6 +250,7 @@ int	 unsetenv(const char *) __DARWIN_ALIAS(unsetenv);
 void	 unsetenv(const char *);
 #endif /* __DARWIN_UNIX03 */
 #endif	/* !_ANSI_SOURCE */
+__END_DECLS
 
 #if !defined(_ANSI_SOURCE) && (!defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE))
 #include <machine/types.h>
@@ -257,6 +258,7 @@ void	 unsetenv(const char *);
 #include <sys/_types/_mode_t.h>
 #include <_types/_uint32_t.h>
 
+__BEGIN_DECLS
 uint32_t arc4random(void);
 void	 arc4random_addrandom(unsigned char * /*dat*/, int /*datlen*/)
     __OSX_DEPRECATED(10.0, 10.12, "use arc4random_stir")
@@ -363,8 +365,10 @@ unsigned long long
 #endif /* !__DARWIN_NO_LONG_LONG */
 extern char *suboptarg;		/* getsubopt(3) external variable */
 /* valloc is now declared in _malloc.h */
+__END_DECLS
 #endif	/* !_ANSI_SOURCE && !_POSIX_SOURCE */
 
+__BEGIN_DECLS
 /* Poison the following routines if -fshort-wchar is set */
 #if !defined(__cplusplus) && defined(__WCHAR_MAX__) && __WCHAR_MAX__ <= 0xffffU
 #pragma GCC poison mbstowcs mbtowc wcstombs wctomb

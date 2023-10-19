@@ -5,10 +5,6 @@
 #ifndef CGDIRECTDISPLAYMETAL_H_
 #define CGDIRECTDISPLAYMETAL_H_
 
-#ifdef __cplusplus
-    extern "C" {
-#endif
-
 
 /* This file only makes sense to Objective C clients */
 #if defined(__OBJC__)
@@ -16,6 +12,10 @@
 #import <CoreGraphics/CGDirectDisplay.h>
 
 @protocol MTLDevice;
+
+#ifdef __cplusplus
+    extern "C" {
+#endif
 
 #ifndef NS_RETURNS_RETAINED
 # if __has_feature(attribute_ns_returns_retained)
@@ -30,10 +30,10 @@
    almost any time. */
 CG_EXTERN id<MTLDevice> __nullable CGDirectDisplayCopyCurrentMetalDevice(CGDirectDisplayID display) NS_RETURNS_RETAINED CG_AVAILABLE_STARTING(10.11);
 
-#endif /* __OBJC__ */
-
 #ifdef __cplusplus
 }   /* extern "C" */
 #endif
+
+#endif /* __OBJC__ */
 
 #endif /* CGDIRECTDISPLAYMETAL_H_ */

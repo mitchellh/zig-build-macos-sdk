@@ -3,6 +3,8 @@
    Copyright (c) 2006-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 #import <CoreVideo/CVBase.h>
 #import <OpenGL/OpenGL.h>
@@ -88,3 +90,5 @@ API_AVAILABLE(macos(10.5))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

@@ -1,7 +1,7 @@
 /*
  NSLayoutAnchor.h
  Application Kit
- Copyright (c) 2015-2021, Apple Inc.
+ Copyright (c) 2015-2023, Apple Inc.
  All rights reserved.
  */
 
@@ -9,7 +9,7 @@
 #import <Foundation/NSArray.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 #if !TARGET_OS_IPHONE
 
@@ -117,4 +117,4 @@ NSLAYOUTANCHOR_EXTERN API_AVAILABLE(macos(10.11), ios(9.0))
 
 #endif // !TARGET_OS_IPHONE
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

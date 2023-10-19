@@ -2,7 +2,7 @@
  *  CTGlyphInfo.h
  *  CoreText
  *
- *  Copyright (c) 2006-2019 Apple Inc. All rights reserved.
+ *  Copyright (c) 2006-2023 Apple Inc. All rights reserved.
  *
  */
 
@@ -28,9 +28,9 @@ CF_ASSUME_NONNULL_BEGIN
 /* --------------------------------------------------------------------------- */
 
 #if TARGET_OS_IPHONE
-typedef const struct CF_BRIDGED_TYPE(id) __CTGlyphInfo * CTGlyphInfoRef;
+typedef const struct CF_BRIDGED_TYPE(id) CT_SWIFT_SENDABLE __CTGlyphInfo * CTGlyphInfoRef;
 #else
-typedef const struct CF_BRIDGED_TYPE(NSGlyphInfo) __CTGlyphInfo * CTGlyphInfoRef;
+typedef const struct CF_BRIDGED_TYPE(NSGlyphInfo) CT_SWIFT_SENDABLE __CTGlyphInfo * CTGlyphInfoRef;
 #endif
 
 /*!

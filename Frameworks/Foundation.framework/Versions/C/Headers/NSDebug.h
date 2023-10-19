@@ -46,7 +46,7 @@ NSZombieEnabled				  NO	"YES"
 NSDeallocateZombies			  NO	"YES"
 
 */
-
+#if !0
 /****************	General		****************/
 
 FOUNDATION_EXPORT BOOL NSDebugEnabled;
@@ -101,7 +101,7 @@ FOUNDATION_EXPORT NSUInteger NSCountFrames(void);
 	// Returns the number of call frames on the stack. The behavior
 	// of this functions is undefined in the presence of code which
 	// has been compiled without frame pointers.
-
+#endif
 /****************	Autorelease pool debugging	****************/
 
 // Functions used as interesting breakpoints in a debugger
@@ -146,8 +146,10 @@ FOUNDATION_EXPORT NSUInteger NSCountFrames(void);
 // allocation functions (NSZoneMalloc(), etc.), and allocation and
 // deallocation of objects (and other types of lifetime-related events).
 
+#if !0
 // This boolean is obsolete and unused; don't use this.
 FOUNDATION_EXPORT BOOL NSKeepAllocationStatistics;
+#endif
 
 // Object allocation event types
 #define NSObjectAutoreleasedEvent		3
@@ -156,7 +158,7 @@ FOUNDATION_EXPORT BOOL NSKeepAllocationStatistics;
 #define NSObjectInternalRefIncrementedEvent	6
 #define NSObjectInternalRefDecrementedEvent	7
 
-
+#if !0
 FOUNDATION_EXPORT void NSRecordAllocationEvent(int eventType, id object);
 	// Notes an object or zone allocation event and various other
 	// statistics, such as the time and current thread.
@@ -176,4 +178,4 @@ FOUNDATION_EXPORT void NSRecordAllocationEvent(int eventType, id object);
 	//	NSObjectInternalRefDecrementedEvent
 	// when a class overrides -retain and -release to do its own
 	// reference counting.
-
+#endif

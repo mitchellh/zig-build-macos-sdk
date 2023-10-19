@@ -495,10 +495,7 @@ SPATIAL_OVERLOADABLE
 SPSize3D SPSize3DApplyPose(SPSize3D size,
                            SPPose3D pose) {
     
-    simd_double3 transformed = simd_act(simd_normalize(pose.rotation.quaternion),
-                                        size.vector);
-    
-    return (SPSize3D){ .vector = transformed };
+    return SPSize3DRotate(size, pose.rotation);
 }
 
 /*!
@@ -530,4 +527,3 @@ SPSize3D SPSize3DUnapplyPose(SPSize3D size,
 }
 
 #endif /* Spatial_SPSize3D_h */
-

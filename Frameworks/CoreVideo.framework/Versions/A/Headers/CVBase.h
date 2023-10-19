@@ -70,6 +70,7 @@ extern "C" {
 	#define COREVIDEO_SUPPORTS_DISPLAYLINK 	COREVIDEO_FALSE
 #endif
 
+
 #if TARGET_OS_MAC
 	#define COREVIDEO_SUPPORTS_IOSURFACE COREVIDEO_TRUE
 #else
@@ -79,7 +80,7 @@ extern "C" {
 #if TARGET_OS_EMBEDDED && (__IPHONE_OS_VERSION_MIN_REQUIRED >= 80300)
 	#define COREVIDEO_SUPPORTS_PREFETCH    COREVIDEO_TRUE
 #elif TARGET_OS_OSX
-	#define COREVIDEO_SUPPORTS_PREFETCH    COREVIDEO_TRUE	
+	#define COREVIDEO_SUPPORTS_PREFETCH    COREVIDEO_TRUE
 #else
 	#define COREVIDEO_SUPPORTS_PREFETCH    COREVIDEO_FALSE
 #endif
@@ -87,7 +88,7 @@ extern "C" {
 #if TARGET_OS_EMBEDDED && (__IPHONE_OS_VERSION_MIN_REQUIRED >= 80300)
 	#define COREVIDEO_SUPPORTS_IOSURFACE_PREFETCH    COREVIDEO_TRUE
 #elif TARGET_OS_OSX && (__MAC_OS_X_VERSION_MIN_REQUIRED >= 101500)
-	#define COREVIDEO_SUPPORTS_IOSURFACE_PREFETCH    COREVIDEO_TRUE	
+	#define COREVIDEO_SUPPORTS_IOSURFACE_PREFETCH    COREVIDEO_TRUE
 #else
 	#define COREVIDEO_SUPPORTS_IOSURFACE_PREFETCH    COREVIDEO_FALSE
 #endif
@@ -353,6 +354,17 @@ typedef CF_OPTIONS(uint64_t, CVTimeStampFlags)
 
 CV_EXPORT const CVTime kCVZeroTime;
 CV_EXPORT const CVTime kCVIndefiniteTime;
+
+// These defines are copied over from CFNSObjCRuntime.h
+#if __SWIFT_ATTR_SUPPORTS_SENDABLE_DECLS
+    // The typedef or struct should be imported as 'Sendable' in Swift
+    #define CV_SWIFT_SENDABLE __attribute__((swift_attr("@Sendable")))
+    // The struct should *not* be imported as 'Sendable' in Swift even if it normally would be
+    #define CV_SWIFT_NONSENDABLE __attribute__((swift_attr("@_nonSendable")))
+#else
+    #define CV_SWIFT_SENDABLE
+    #define CV_SWIFT_NONSENDABLE
+#endif // __SWIFT_ATTR_SUPPORTS_SENDABLE_DECLS
 
 #if defined(__cplusplus)
 }

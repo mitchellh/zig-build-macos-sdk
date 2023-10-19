@@ -1,17 +1,19 @@
 /*
     NSDiffableDataSource.h
     Application Kit
-    Copyright (c) 2019-2021, Apple Inc.
+    Copyright (c) 2019-2023, Apple Inc.
     All rights reserved.
 */
 
 #import <TargetConditionals.h>
+#if TARGET_OS_OSX
 
-#if !TARGET_OS_IPHONE
+#import <AppKit/AppKitDefines.h>
+APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 #import <AppKit/NSCollectionView.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 /* An NSDiffableDataSourceSnapshot represents the complete state of a UI element (e.g. NSCollectionView)
 
@@ -110,6 +112,8 @@ typedef NSView * _Nullable (^NSCollectionViewDiffableDataSourceSupplementaryView
 @property(copy,nullable) NSCollectionViewDiffableDataSourceSupplementaryViewProvider supplementaryViewProvider;
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 
-#endif
+API_UNAVAILABLE_END
+#endif // TARGET_OS_OSX
+

@@ -1,7 +1,7 @@
 /*
 	NSColor.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -50,7 +50,7 @@
 #import <AppKit/AppKitDefines.h>
 #import <CoreImage/CIColor.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSImage, NSColorSpace, NSAppearance;
@@ -73,6 +73,7 @@ typedef NS_ENUM(NSInteger, NSColorSystemEffect) {
     NSColorSystemEffectRollover,
 } API_AVAILABLE(macos(10.14));
 
+NS_SWIFT_SENDABLE
 @interface NSColor : NSObject <NSCopying, NSSecureCoding, NSPasteboardReading, NSPasteboardWriting>
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
@@ -190,6 +191,7 @@ typedef NS_ENUM(NSInteger, NSColorSystemEffect) {
 @property (class, strong, readonly) NSColor *secondaryLabelColor API_AVAILABLE(macos(10.10));  // Foreground color for secondary static text and related elements
 @property (class, strong, readonly) NSColor *tertiaryLabelColor API_AVAILABLE(macos(10.10));   // Foreground color for disabled static text and related elements
 @property (class, strong, readonly) NSColor *quaternaryLabelColor API_AVAILABLE(macos(10.10)); // Foreground color for large secondary or disabled static text, separators, large glyphs/icons, etc
+@property (class, strong, readonly) NSColor *quinaryLabelColor API_AVAILABLE(macos(11.0));     /// Used for large scale images or subtle decorative elements; not for general foreground content.
 
 @property (class, strong, readonly) NSColor *linkColor API_AVAILABLE(macos(10.10));            // Foreground color for standard system links
 @property (class, strong, readonly) NSColor *placeholderTextColor API_AVAILABLE(macos(10.10)); // Foreground color for placeholder text in controls or text views
@@ -214,6 +216,7 @@ typedef NS_ENUM(NSInteger, NSColorSystemEffect) {
 /* Text Colors */
 @property (class, strong, readonly) NSColor *textColor;                                    // Document text
 @property (class, strong, readonly) NSColor *textBackgroundColor;                          // Document text background
+@property (class, strong, readonly) NSColor *textInsertionPointColor API_AVAILABLE(macos(14.0));
 
 @property (class, strong, readonly) NSColor *selectedTextColor;                            // Selected document text
 @property (class, strong, readonly) NSColor *selectedTextBackgroundColor;                  // Selected document text background
@@ -247,6 +250,19 @@ typedef NS_ENUM(NSInteger, NSColorSystemEffect) {
 @property (class, strong, readonly) NSColor *systemMintColor API_AVAILABLE(macos(10.12));
 @property (class, strong, readonly) NSColor *systemCyanColor API_AVAILABLE(macos(12.0));
 
+/*! Fill colors for UI elements.
+ These are meant to be used over the background colors, since their alpha component is less than 1.
+ */
+/// systemFillColor is appropriate for filling thin shapes, such as the track of a slider.
+@property (class, strong, readonly) NSColor *systemFillColor API_AVAILABLE(macos(14.0));
+/// secondarySystemFillColor is appropriate for filling small-size shapes, such as the backing of a progress indicator.
+@property (class, strong, readonly) NSColor *secondarySystemFillColor API_AVAILABLE(macos(14.0));
+/// tertiarySystemFillColor is appropriate for filling medium-size shapes,  such as the backing of a switch.
+@property (class, strong, readonly) NSColor *tertiarySystemFillColor API_AVAILABLE(macos(14.0));
+/// quaternarySystemFillColor is appropriate for filling large areas, such as a group box or tab pane.
+@property (class, strong, readonly) NSColor *quaternarySystemFillColor API_AVAILABLE(macos(14.0));
+/// quinarySystemFillColor is appropriate for filling large areas that require subtle emphasis, such as content of a form..
+@property (class, strong, readonly) NSColor *quinarySystemFillColor API_AVAILABLE(macos(14.0));
 
 /*! A dynamic color that reflects the user's current preferred accent color. This color automatically updates when the accent color preference changes. Do not make assumptions about the color space of this color, which may change across releases. */
 @property (class, strong, readonly) NSColor *controlAccentColor API_AVAILABLE(macos(10.14));
@@ -338,7 +354,7 @@ typedef NS_ENUM(NSInteger, NSColorSystemEffect) {
 
 /* Return the image used for the pattern color. Will raise exception for colors other than type == NSColorTypePattern.
  */
-@property (readonly, strong) NSImage *patternImage;
+@property (readonly, copy) NSImage *patternImage;
 
 
 /* Get the alpha component. Valid on all colors; for colors which do not have alpha components, this will return 1.0 (opaque).
@@ -362,11 +378,11 @@ typedef NS_ENUM(NSInteger, NSColorSystemEffect) {
 @property (readonly) CGColorRef CGColor NS_RETURNS_INNER_POINTER API_AVAILABLE(macos(10.8));    // Returns an autoreleased CGColor. This will never be NULL, although the return value may be an approximation in some cases, so there isn't guaranteed round-trip fidelity.
 
 
-/* Global flag for determining whether an application supports alpha.  This flag is consulted when an application imports alpha (through color dragging, for instance). The value of this flag also determines whether the color panel has an opacity slider. This value is YES by default, indicating that the opacity components of imported colors will be set to 1.0. If an application wants alpha, it can either set the "NSIgnoreAlpha" default to NO or call the set method below.
+/* Global flag for determining whether an application supports alpha.  This flag is consulted when an application imports alpha (through color dragging, for instance). The value of this flag also determines whether the color panel has an opacity slider. This value is NO by default as of macOS 14.0.
 
-This method provides a global approach to removing alpha which might not always be appropriate. Applications which need to import alpha sometimes should set this flag to NO and explicitly make colors opaque in cases where it matters to them.
+This method provides a global approach to removing alpha which might not always be appropriate, and is deprecated as of macOS 14.0. Applications which need to disable alpha sometimes should use more fine-grained API to control alpha behavior for individual controls.
 */
-@property (class) BOOL ignoresAlpha;
+@property (class) BOOL ignoresAlpha NS_SWIFT_UI_ACTOR API_DEPRECATED("Use `showsAlpha` in `NSColorPanel` and `supportsAlpha` in `NSColorWell` to control alpha behavior for individual controls.", macos(10.0, 14.0));
 
 @end
 
@@ -441,4 +457,4 @@ This method provides a global approach to removing alpha which might not always 
 APPKIT_EXTERN NSNotificationName NSSystemColorsDidChangeNotification;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

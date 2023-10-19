@@ -1,7 +1,7 @@
 /*
 	NSInputServer.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -12,7 +12,7 @@
 
 /* These methods must be implemented by the delegate.
 */
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @protocol NSInputServiceProvider
@@ -70,4 +70,4 @@ API_DEPRECATED("", macos(10.0,10.6))
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

@@ -25,7 +25,7 @@
 #include <CoreVideo/CVBase.h>
 #include <OpenGL/OpenGL.h>
 
-typedef struct CV_BRIDGED_TYPE(id) __CVDisplayLink *CVDisplayLinkRef;
+typedef struct CV_BRIDGED_TYPE(id) __CVDisplayLink *CVDisplayLinkRef CV_SWIFT_NONSENDABLE;
 
 #if defined(__cplusplus)
 extern "C" {
@@ -45,7 +45,7 @@ typedef CVReturn (^CVDisplayLinkOutputHandler)(
 		const CVTimeStamp * CV_NONNULL inNow,
 		const CVTimeStamp * CV_NONNULL inOutputTime,
 		CVOptionFlags flagsIn,
-		CVOptionFlags * CV_NONNULL flagsOut );
+		CVOptionFlags * CV_NONNULL flagsOut ) CV_SWIFT_SENDABLE;
 #endif // __BLOCKS__
 
 CV_EXPORT CFTypeID CVDisplayLinkGetTypeID(void) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;

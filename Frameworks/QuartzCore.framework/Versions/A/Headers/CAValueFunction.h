@@ -3,6 +3,8 @@
    Copyright (c) 2008-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CABase.h>
 #import <Foundation/NSObject.h>
 
@@ -72,3 +74,5 @@ CA_EXTERN CAValueFunctionName const kCAValueFunctionTranslateZ
     API_AVAILABLE(macos(10.6), ios(3.0), watchos(2.0), tvos(9.0));
 
 NS_ASSUME_NONNULL_END
+
+#endif

@@ -19,14 +19,14 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
 
 + (instancetype)fetchCurrentUserRecordOperation;
 
-@property (nonatomic, copy, nullable) NSArray<CKRecordID *> *recordIDs;
+@property (nullable, copy, nonatomic) NSArray<CKRecordID *> *recordIDs;
 
 /*! @abstract Declares which user-defined keys should be fetched and added to the resulting CKRecords.
  *
  *  @discussion If nil, declares the entire record should be downloaded. If set to an empty array, declares that no user fields should be downloaded.
  *  Defaults to @c nil.
  */
-@property (nonatomic, copy, nullable) NSArray<CKRecordFieldKey> *desiredKeys;
+@property (nullable, copy, nonatomic) NSArray<CKRecordFieldKey> *desiredKeys;
 
 /*! @abstract Indicates the progress for each record.
  *
@@ -36,7 +36,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^perRecordProgressBlock)(CKRecordID *recordID, double progress);
+@property (nullable, copy, nonatomic) void (^perRecordProgressBlock)(CKRecordID *recordID, double progress);
 
 /*! @abstract Called on success or failure for each record.
  *
@@ -44,7 +44,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^perRecordCompletionBlock)(CKRecord * _Nullable record, CKRecordID * _Nullable recordID, NSError * _Nullable error)
+@property (nullable, copy, nonatomic) void (^perRecordCompletionBlock)(CKRecord * _Nullable record, CKRecordID * _Nullable recordID, NSError * _Nullable error)
 CK_SWIFT_DEPRECATED("Use perRecordResultBlock instead", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(3.0, 8.0));
 
 
@@ -57,7 +57,7 @@ CK_SWIFT_DEPRECATED("Use perRecordResultBlock instead", macos(10.10, 12.0), ios(
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchRecordsCompletionBlock)(NSDictionary<CKRecordID * , CKRecord *> * _Nullable recordsByRecordID, NSError * _Nullable operationError)
+@property (nullable, copy, nonatomic) void (^fetchRecordsCompletionBlock)(NSDictionary<CKRecordID * , CKRecord *> * _Nullable recordsByRecordID, NSError * _Nullable operationError)
 CK_SWIFT_DEPRECATED("Use fetchRecordsResultBlock instead", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(3.0, 8.0));
 
 @end

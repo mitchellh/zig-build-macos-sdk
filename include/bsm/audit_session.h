@@ -40,30 +40,6 @@
 
 #include <os/availability.h>
 
-/* Defined audit session flags for the ai_flags member of auditinfo_addr.
- * These are opaque to XNU itself, although some may be of interest to certain
- * kernel extensions, notably AU_SESSION_FLAG_HAS_CONSOLE_ACCESS.
- */
-enum audit_session_flags {
-        /* The initial session created by PID 1. */
-        AU_SESSION_FLAG_IS_INITIAL         = 0x0001,
-
-        /* The graphics subsystem (CoreGraphics, etc.) is available. */
-        AU_SESSION_FLAG_HAS_GRAPHIC_ACCESS = 0x0010,
-
-        /* /dev/tty is available. */
-        AU_SESSION_FLAG_HAS_TTY            = 0x0020,
-
-        /* The session was created for a remote connection. */
-        AU_SESSION_FLAG_IS_REMOTE          = 0x1000,
-
-        /* The console and associated devices are available. */
-        AU_SESSION_FLAG_HAS_CONSOLE_ACCESS = 0x2000,
-
-        /* An active, authenticated user is associated with the session. */
-        AU_SESSION_FLAG_HAS_AUTHENTICATED =  0x4000,
-};
-
 /*
  * Audit session device.
  */

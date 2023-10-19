@@ -343,9 +343,7 @@ __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
  
  @param transform The source transform.
  @returns A size structure that represents the transform's scale.
- @note This function computes the scale from the first three rows of the transform matrix and ignores the fourth row. The
- This function can't extract rotation from a non-scale-rotate-translate affine transform. In that case, the function
- returns @p SPRotation3DInvalid.
+ @note This function computes the scale from the first three rows of the transform matrix and ignores the fourth row.
 */
 SPATIAL_INLINE
 SPATIAL_OVERLOADABLE
@@ -357,9 +355,8 @@ __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
  
  @param transform The source transform.
  @returns A rotation structure that represents the transform's rotation.
- @note This function computes the rotation from the first three rows of the transform matrix and ignores the fourth row. The
- This function can't extract rotation from a non-scale-rotate-translate affine transform. In that case, the function
- returns @p SPRotation3DInvalid.
+ @note This function computes the rotation from the first three rows of the transform matrix and ignores the fourth row.
+ If the projective transform isn't an affine scale-rotate-translate transform, this function returns @p SPRotation3DInvalid.
 */
 SPATIAL_INLINE
 SPATIAL_OVERLOADABLE

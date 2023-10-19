@@ -24,17 +24,17 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *
  *  @discussion See the CKOperationConfiguration class description for info on how this configuration composes with CKOperationGroup.defaultConfiguration
  */
-@property (nonatomic, copy, null_resettable) CKOperationConfiguration *configuration API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0));
+@property (null_resettable, copy, nonatomic) CKOperationConfiguration *configuration API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0));
 
 /*! @abstract The group this operation is associated with
  */
-@property (nonatomic, strong, nullable) CKOperationGroup *group API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0));
+@property (nullable, strong, nonatomic) CKOperationGroup *group API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0));
 
 /*! @abstract This is an identifier unique to this CKOperation.
  *
  *  @discussion This value is chosen by the system, and will be unique to this instance of a CKOperation.  This identifier will be sent to Apple's servers, and can be used to identify any server-side logging associated with this operation.
  */
-@property (nonatomic, readonly, copy) CKOperationID operationID API_AVAILABLE(macos(10.12), ios(9.3), tvos(9.2), watchos(3.0));
+@property (readonly, copy, nonatomic) CKOperationID operationID API_AVAILABLE(macos(10.12), ios(9.3), tvos(9.2), watchos(3.0));
 
 /*! @abstract This callback is called after a long lived operation has begun running and is persisted.
  *
@@ -43,7 +43,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^longLivedOperationWasPersistedBlock)(void) API_AVAILABLE(macos(10.12), ios(9.3), tvos(9.2), watchos(3.0));
+@property (nullable, copy, nonatomic) void (^longLivedOperationWasPersistedBlock)(void) API_AVAILABLE(macos(10.12), ios(9.3), tvos(9.2), watchos(3.0));
 
 @end
 
@@ -68,11 +68,12 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  = allow cellular access
  */
 API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
+CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer apply
 // NS_SWIFT_SENDABLE on macos(13.3), macCatalyst(16.4), ios(16.4), tvos(16.4), watchos(9.4)
 @interface CKOperationConfiguration : NSObject
 
 /*! If no container is set, [CKContainer defaultContainer] is used */
-@property (atomic, strong, nullable) CKContainer *container;
+@property (nullable, strong) CKContainer *container;
 
 /*! @discussion CKOperations behave differently depending on how you set qualityOfService.
  *
@@ -98,11 +99,11 @@ API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
  *
  * CKOperations have a default qualityOfService of Default.
  */
-@property (atomic, assign) NSQualityOfService qualityOfService;
+@property (assign) NSQualityOfService qualityOfService;
 
 
 /*! Defaults to @c YES */
-@property (atomic, assign) BOOL allowsCellularAccess;
+@property (assign) BOOL allowsCellularAccess;
 
 /*! @discussion Long lived operations will continue running even if your process exits. If your process remains alive for the lifetime of the long lived operation its behavior is the same as a regular operation.
  *
@@ -113,21 +114,21 @@ API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
  *
  *  The default value for longLived is NO. Changing the value of longLived on an already started operation or on an outstanding long lived operation fetched from CKContainer has no effect.
  */
-@property (atomic, assign, getter=isLongLived) BOOL longLived;
+@property (assign, getter=isLongLived) BOOL longLived;
 
 /*! @discussion If non-zero, overrides the timeout interval for any network requests issued by this operation.
  *  The default value is 60.
  *
  * @see NSURLSessionConfiguration.timeoutIntervalForRequest
  */
-@property (atomic, assign) NSTimeInterval timeoutIntervalForRequest;
+@property (assign) NSTimeInterval timeoutIntervalForRequest;
 
 /*! @discussion If set, overrides the timeout interval for any network resources retrieved by this operation.
  *  If not explicitly set, defaults to a value based on the operation's @c qualityOfService
  *
  * @see NSURLSessionConfiguration.timeoutIntervalForResource
  */
-@property (atomic, assign) NSTimeInterval timeoutIntervalForResource;
+@property (assign) NSTimeInterval timeoutIntervalForResource;
 
 
 @end
@@ -136,11 +137,11 @@ API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
 
 /*! These deprecated properties now read and write from the CKOperation's configuration */
 @interface CKOperation (CKOperationDeprecated)
-@property (nonatomic, strong, nullable) CKContainer *container          API_DEPRECATED("Use CKOperationConfiguration", macos(10.10, 10.13), ios(8.0, 11.0), tvos(9.0, 11.0), watchos(3.0, 4.0));
-@property (nonatomic, assign) BOOL allowsCellularAccess                 API_DEPRECATED("Use CKOperationConfiguration", macos(10.10, 10.13), ios(8.0, 11.0), tvos(9.0, 11.0), watchos(3.0, 4.0));
-@property (nonatomic, assign, getter=isLongLived) BOOL longLived        API_DEPRECATED("Use CKOperationConfiguration", macos(10.12, 10.13), ios(9.3, 11.0), tvos(9.2, 11.0), watchos(3.0, 4.0));
-@property (nonatomic, assign) NSTimeInterval timeoutIntervalForRequest  API_DEPRECATED("Use CKOperationConfiguration", macos(10.12, 10.13), ios(10.0, 11.0), tvos(10.0, 11.0), watchos(3.0, 4.0));
-@property (nonatomic, assign) NSTimeInterval timeoutIntervalForResource API_DEPRECATED("Use CKOperationConfiguration", macos(10.12, 10.13), ios(10.0, 11.0), tvos(10.0, 11.0), watchos(3.0, 4.0));
+@property (nullable, strong, nonatomic) CKContainer *container          API_DEPRECATED("Use CKOperationConfiguration", macos(10.10, 10.13), ios(8.0, 11.0), tvos(9.0, 11.0), watchos(3.0, 4.0));
+@property (assign, nonatomic) BOOL allowsCellularAccess                 API_DEPRECATED("Use CKOperationConfiguration", macos(10.10, 10.13), ios(8.0, 11.0), tvos(9.0, 11.0), watchos(3.0, 4.0));
+@property (assign, nonatomic, getter=isLongLived) BOOL longLived        API_DEPRECATED("Use CKOperationConfiguration", macos(10.12, 10.13), ios(9.3, 11.0), tvos(9.2, 11.0), watchos(3.0, 4.0));
+@property (assign, nonatomic) NSTimeInterval timeoutIntervalForRequest  API_DEPRECATED("Use CKOperationConfiguration", macos(10.12, 10.13), ios(10.0, 11.0), tvos(10.0, 11.0), watchos(3.0, 4.0));
+@property (assign, nonatomic) NSTimeInterval timeoutIntervalForResource API_DEPRECATED("Use CKOperationConfiguration", macos(10.12, 10.13), ios(10.0, 11.0), tvos(10.0, 11.0), watchos(3.0, 4.0));
 @end
 
 NS_HEADER_AUDIT_END(nullability, sendability)

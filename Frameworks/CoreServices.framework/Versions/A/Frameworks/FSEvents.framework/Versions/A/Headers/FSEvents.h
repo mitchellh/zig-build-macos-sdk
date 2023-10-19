@@ -305,6 +305,14 @@ enum {
    * client process.
    */
   kFSEventStreamCreateFlagFullHistory __OSX_AVAILABLE_STARTING(__MAC_10_15, __IPHONE_13_0) = 0x00000080,
+  /*
+   * Requires kFSEventStreamCreateFlagUseCFTypes, kFSEventStreamCreateFlagUseExtendedData and instructs the
+   * framework to invoke your callback function with CF types but,
+   * instead of passing it a CFArrayRef of CFStringRefs, a CFArrayRef of
+   * CFDictionaryRefs is passed.  Each dictionary will contain the event
+   * path, fileID, and docID.
+   */
+  kFSEventStreamCreateWithDocID __OSX_AVAILABLE_STARTING(__MAC_10_15, __IPHONE_13_0) = 0x00000100,
 };
 
 /*
@@ -326,6 +334,13 @@ enum {
  * (Set only if you specified the FileEvents flag when creating the stream.)
  */
 #define kFSEventStreamEventExtendedFileIDKey        CFSTR("fileID")
+
+/*
+ * File system object docid number.
+ * Value of type CFNumberRef.
+ * (Set only if you specified the FileEvents flag when creating the stream.)
+ */
+#define kFSEventStreamEventExtendedDocIDKey        CFSTR("docID")
 
 /*
  *  FSEventStreamEventFlags

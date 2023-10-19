@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class NSURL;
 
 // Managed object IDs are opaque identifiers for managed objects.
-API_AVAILABLE(macosx(10.4),ios(3.0))
+API_AVAILABLE(macosx(10.4),ios(3.0)) NS_SWIFT_SENDABLE
 @interface NSManagedObjectID : NSObject <NSCopying> {
 }
 

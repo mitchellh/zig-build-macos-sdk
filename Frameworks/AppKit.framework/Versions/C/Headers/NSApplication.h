@@ -1,7 +1,7 @@
 /*
     NSApplication.h
     Application Kit
-    Copyright (c) 1994-2021, Apple Inc.
+    Copyright (c) 1994-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -20,7 +20,7 @@
 
 @protocol NSUserActivityRestoring;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSDate, NSDictionary, NSError, NSException, NSNotification;
@@ -116,43 +116,67 @@ static const NSModalResponse NSModalResponseStop API_AVAILABLE(macos(10.9)) = (-
 static const NSModalResponse NSModalResponseAbort API_AVAILABLE(macos(10.9)) = (-1001);
 static const NSModalResponse NSModalResponseContinue API_AVAILABLE(macos(10.9)) = (-1002);
 
-/* used with NSRunLoop's performSelector:target:argument:order:modes: */
+/// Used with `NSRunLoop`'s `-performSelector:target:argument:order:modes:`.
 enum {
     NSUpdateWindowsRunLoopOrdering		= 500000
 };
 
+/// Flags that comprise an application's @c presentationOptions.
 typedef NS_OPTIONS(NSUInteger, NSApplicationPresentationOptions) {
-/* Flags that comprise an application's presentationOptions */
     NSApplicationPresentationDefault                    = 0,
-    NSApplicationPresentationAutoHideDock               = (1 <<  0),    // Dock appears when moused to
-    NSApplicationPresentationHideDock                   = (1 <<  1),    // Dock is entirely unavailable
-
-    NSApplicationPresentationAutoHideMenuBar            = (1 <<  2),    // Menu Bar appears when moused to
-    NSApplicationPresentationHideMenuBar                = (1 <<  3),    // Menu Bar is entirely unavailable
-
-    NSApplicationPresentationDisableAppleMenu           = (1 <<  4),    // all Apple menu items are disabled
-    NSApplicationPresentationDisableProcessSwitching    = (1 <<  5),    // Cmd+Tab UI is disabled
-    NSApplicationPresentationDisableForceQuit           = (1 <<  6),    // Cmd+Opt+Esc panel is disabled
-    NSApplicationPresentationDisableSessionTermination  = (1 <<  7),    // PowerKey panel and Restart/Shut Down/Log Out disabled
-    NSApplicationPresentationDisableHideApplication     = (1 <<  8),    // Application "Hide" menu item is disabled
-    NSApplicationPresentationDisableMenuBarTransparency = (1 <<  9),    // Menu Bar's transparent appearance is disabled
-
-    NSApplicationPresentationFullScreen API_AVAILABLE(macos(10.7)) = (1 << 10),         // Application is in fullscreen mode
-    NSApplicationPresentationAutoHideToolbar API_AVAILABLE(macos(10.7)) = (1 << 11),    // Fullscreen window toolbar is detached from window and hides/shows on rollover.  May be used only when both NSApplicationPresentationFullScreen is also set
     
-    NSApplicationPresentationDisableCursorLocationAssistance API_AVAILABLE(macos(10.11.2)) = (1 << 12)    // "Shake mouse pointer to locate" is disabled for this application
+    /// Dock appears when moused to.
+    NSApplicationPresentationAutoHideDock               = (1 <<  0),
+    
+    /// Dock is entirely unavailable.
+    NSApplicationPresentationHideDock                   = (1 <<  1),
+
+    /// Menu Bar appears when moused to.
+    NSApplicationPresentationAutoHideMenuBar            = (1 <<  2),
+    
+    /// Menu Bar is entirely unavailable.
+    NSApplicationPresentationHideMenuBar                = (1 <<  3),
+
+    /// All Apple menu items are disabled.
+    NSApplicationPresentationDisableAppleMenu           = (1 <<  4),
+    
+    /// Cmd+Tab UI is disabled.
+    NSApplicationPresentationDisableProcessSwitching    = (1 <<  5),
+    
+    /// Cmd+Opt+Esc panel is disabled.
+    NSApplicationPresentationDisableForceQuit           = (1 <<  6),
+    
+    /// PowerKey panel and Restart/Shut Down/Log Out disabled.
+    NSApplicationPresentationDisableSessionTermination  = (1 <<  7),
+    
+    /// Application "Hide" menu item is disabled.
+    NSApplicationPresentationDisableHideApplication     = (1 <<  8),
+    
+    /// Menu Bar's transparent appearance is disabled.
+    NSApplicationPresentationDisableMenuBarTransparency = (1 <<  9),
+
+    /// Application is in fullscreen mode.
+    NSApplicationPresentationFullScreen API_AVAILABLE(macos(10.7)) = (1 << 10),
+    
+    /// Fullscreen window toolbar is detached from window and hides/shows on rollover.
+    /// May be used only when both @c NSApplicationPresentationFullScreen is also set.
+    NSApplicationPresentationAutoHideToolbar API_AVAILABLE(macos(10.7)) = (1 << 11),
+    
+    /// "Shake mouse pointer to locate" is disabled for this application.
+    NSApplicationPresentationDisableCursorLocationAssistance API_AVAILABLE(macos(10.11.2)) = (1 << 12)
 } API_AVAILABLE(macos(10.6));
 
 typedef NS_OPTIONS(NSUInteger, NSApplicationOcclusionState) {
-    // If set, at least part of any window owned by this application is visible. If not set, all parts of all windows owned by this application are completely occluded. The menu bar does not count as a window owned by this application, so if only the menu bar is showing then the application is considered not visible. Status items, however, have windows owned by your application. If the status item is present in the menu bar, your application will be considered visible as long as the menu bar is visible.
+    /// If set, at least part of any window owned by this application is visible. If not set, all parts of all windows owned by this application are completely occluded. The menu bar does not count as a window owned by this application, so if only the menu bar is showing then the application is considered not visible. Status items, however, have windows owned by your application. If the status item is present in the menu bar, your application will be considered visible as long as the menu bar is visible.
     NSApplicationOcclusionStateVisible = 1UL << 1,
 } API_AVAILABLE(macos(10.9));
 
 typedef NS_OPTIONS(NSInteger, NSWindowListOptions) {
-    NSWindowListOrderedFrontToBack = (1 << 0), /* Onscreen application windows in front to back order. By default, -[NSApp windows] is used. */
+    /// Onscreen application windows in front to back order. By default, -[NSApp windows] is used.
+    NSWindowListOrderedFrontToBack = (1 << 0),
 } API_AVAILABLE(macos(10.12));
 
-/* Information used by the system during modal sessions */
+/// Information used by the system during modal sessions.
 typedef struct _NSModalSession *NSModalSession;
 
 @interface NSApplication : NSResponder <NSUserInterfaceValidations, NSMenuItemValidation, NSAccessibilityElement, NSAccessibility>
@@ -161,17 +185,58 @@ APPKIT_EXTERN __kindof NSApplication * _Null_unspecified NSApp NS_SWIFT_UI_ACTOR
 
 @property (class, readonly, strong) __kindof NSApplication *sharedApplication;
 @property (nullable, weak) id<NSApplicationDelegate> delegate;
+
 - (void)hide:(nullable id)sender;
 - (void)unhide:(nullable id)sender;
 - (void)unhideWithoutActivation;
 - (nullable NSWindow *)windowWithWindowNumber:(NSInteger)windowNum;
+
 @property (nullable, readonly, weak) NSWindow *mainWindow;
 @property (nullable, readonly, weak) NSWindow *keyWindow;
 @property (getter=isActive, readonly) BOOL active;
 @property (getter=isHidden, readonly) BOOL hidden;
 @property (getter=isRunning, readonly) BOOL running;
+
+#pragma mark - Activation and Deactivation
+
 - (void)deactivate;
-- (void)activateIgnoringOtherApps:(BOOL)flag;
+
+/// Makes the receiver the active app.
+- (void)activateIgnoringOtherApps:(BOOL)flag API_DEPRECATED("This method will be deprecated in a future release. Use NSApp.activate instead.", macos(10.0, API_TO_BE_DEPRECATED));
+
+/// Makes the receiver the active app, if possible.
+///
+/// You shouldn’t assume the app will be active immediately
+/// after sending this message. The framework also does not
+/// guarantee that the app will be activated at all.
+///
+/// For cooperative activation, the other application should
+/// call `-yieldActivationToApplication:` or equivalent prior
+/// to the target application invoking `-activate`.
+///
+/// Invoking `-activate` on an already-active application
+/// cancels any pending activation yields by the receiver.
+- (void)activate API_AVAILABLE(macos(14.0));
+
+/// Explicitly allows another application to make itself active.
+///
+/// Calling this method will not deactivate the current app, nor
+/// will it activate the other app. For cooperative or coordinated
+/// activation, the other app should request to be activated at
+/// some point in the future by calling `activate` or equivalent.
+- (void)yieldActivationToApplication:(NSRunningApplication *)application API_AVAILABLE(macos(14.0)) NS_SWIFT_NAME(yieldActivation(to:));
+
+/// Same as `-yieldActivationToApplication:`, but the provided
+/// bundle identifier does not have to correspond to a currently
+/// running application.
+///
+/// This method should be used to yield activation to apps that
+/// may not be running at the time of invoking it. If it is known
+/// that the target application is currently running, use
+/// `-yieldActivationToApplication:` instead.
+- (void)yieldActivationToApplicationWithBundleIdentifier:(NSString *)bundleIdentifier API_AVAILABLE(macos(14.0)) NS_SWIFT_NAME(yieldActivation(toApplicationWithBundleIdentifier:));
+
+#pragma mark - Lifecycle
 
 - (void)hideOtherApplications:(nullable id)sender;
 - (void)unhideAllApplications:(nullable id)sender;
@@ -194,12 +259,11 @@ typedef NS_ENUM(NSUInteger, NSRequestUserAttentionType) {
       NSInformationalRequest = 10
 };
 
-/* inform the user that this application needs attention - call this method only if your application is not already active */
+/// Inform the user that this application needs attention - call this method only if your application is not already active.
 - (NSInteger)requestUserAttention:(NSRequestUserAttentionType)requestType;
 - (void)cancelUserAttentionRequest:(NSInteger)request;
 
-/*  Execute a block for each of the app's windows. Set *stop = YES if desired, to halt the enumeration early.
- */
+/// Execute a block for each of the app's windows. Set `*stop = YES` if desired, to halt the enumeration early.
 - (void)enumerateWindowsWithOptions:(NSWindowListOptions)options usingBlock:(void (NS_NOESCAPE ^)(NSWindow *window, BOOL *stop))block API_AVAILABLE(macos(10.12));
 
 - (void)preventWindowOrdering;
@@ -209,17 +273,18 @@ typedef NS_ENUM(NSUInteger, NSRequestUserAttentionType) {
 
 @property (nullable, strong) NSMenu *mainMenu;
 
-/* Set or get the Help menu for the app.  If a non-nil menu is set as the Help menu, Spotlight for Help will be installed in it; otherwise AppKit will install Spotlight for Help into a menu of its choosing (and that menu is not returned from -helpMenu).  If you wish to completely suppress Spotlight for Help, you can set a menu that does not appear in the menu bar.  NSApplication retains its Help menu and releases it when a different menu is set.
+/**
+ Set or get the Help menu for the app.  If a non-nil menu is set as the Help menu, Spotlight for Help will be installed in it; otherwise AppKit will install Spotlight for Help into a menu of its choosing (and that menu is not returned from `-helpMenu`).  If you wish to completely suppress Spotlight for Help, you can set a menu that does not appear in the menu bar.  @c NSApplication retains its Help menu and releases it when a different menu is set.
  */
 @property (nullable, strong) NSMenu *helpMenu API_AVAILABLE(macos(10.6));
 
 @property (null_resettable, strong) NSImage *applicationIconImage;
 
-/* Returns the activation policy of the application.
- */
+/// @return The activation policy of the application.
 - (NSApplicationActivationPolicy)activationPolicy API_AVAILABLE(macos(10.6));
 
-/* Attempts to modify the application's activation policy.  In OS X 10.9, any policy may be set; prior to 10.9, the activation policy may be changed to NSApplicationActivationPolicyProhibited or NSApplicationActivationPolicyRegular, but may not be changed to NSApplicationActivationPolicyAccessory.  This returns YES if setting the activation policy is successful, and NO if not.
+/**
+ Attempts to modify the application's activation policy.  In OS X 10.9, any policy may be set; prior to 10.9, the activation policy may be changed to @c NSApplicationActivationPolicyProhibited or @c NSApplicationActivationPolicyRegular, but may not be changed to @c NSApplicationActivationPolicyAccessory.  This returns @c YES if setting the activation policy is successful, and @c NO if not.
  */
 - (BOOL)setActivationPolicy:(NSApplicationActivationPolicy)activationPolicy API_AVAILABLE(macos(10.6));
 
@@ -229,7 +294,7 @@ typedef NS_ENUM(NSUInteger, NSRequestUserAttentionType) {
 - (void)reportException:(NSException *)exception;
 + (void)detachDrawingThread:(SEL)selector toTarget:(id)target withObject:(nullable id)argument;
 
-/* If an application delegate returns NSTerminateLater from -applicationShouldTerminate:, -replyToApplicationShouldTerminate: must be called with YES or NO once the application decides if it can terminate */
+/// If an application delegate returns NSTerminateLater from -applicationShouldTerminate:, -replyToApplicationShouldTerminate: must be called with YES or NO once the application decides if it can terminate.
 - (void)replyToApplicationShouldTerminate:(BOOL)shouldTerminate;
 
 typedef NS_ENUM(NSUInteger, NSApplicationDelegateReply) {
@@ -238,19 +303,21 @@ typedef NS_ENUM(NSUInteger, NSApplicationDelegateReply) {
     NSApplicationDelegateReplyFailure = 2
 };
 
-/* If an application delegate encounters an error while handling -application:openFiles: or -application:printFiles:, -replyToOpenOrPrint: should be called with NSApplicationDelegateReplyFailure.  If the user cancels the operation, NSApplicationDelegateReplyCancel should be used, and if the operation succeeds, NSApplicationDelegateReplySuccess should be used */
+/**
+ If an application delegate encounters an error while handling `-application:openFiles:` or` -application:printFiles:`, `-replyToOpenOrPrint:` should be called with @c NSApplicationDelegateReplyFailure.  If the user cancels the operation, @c NSApplicationDelegateReplyCancel should be used, and if the operation succeeds, @c NSApplicationDelegateReplySuccess should be used .
+*/
 - (void)replyToOpenOrPrint:(NSApplicationDelegateReply)reply;
 
-/* Opens the character palette
-*/
+/// Opens the character palette.
 - (void)orderFrontCharacterPalette:(nullable id)sender;
 
-/* Gets or sets the presentationOptions that should be in effect for the system when this application is the active application.  Only certain combinations of NSApplicationPresentationOptions flags are allowed, as detailed in the AppKit Release Notes and the reference documentation for -setPresentationOptions:.  When given an invalid combination of option flags, -setPresentationOptions: raises an exception.
+/**
+ Gets or sets the @c presentationOptions that should be in effect for the system when this application is the active application.  Only certain combinations of @c NSApplicationPresentationOptions flags are allowed, as detailed in the AppKit Release Notes and the reference documentation for `-setPresentationOptions:`.  When given an invalid combination of option flags, `-setPresentationOptions:` raises an exception.
 */
 @property NSApplicationPresentationOptions presentationOptions API_AVAILABLE(macos(10.6));
 
-/* Returns the set of application presentation options that are currently in effect for the system.  These are the presentation options that have been put into effect by the currently active application.
-*/
+/// @return The set of application presentation options that are currently in effect for the system.
+/// These are the presentation options that have been put into effect by the currently active application.
 @property (readonly) NSApplicationPresentationOptions currentSystemPresentationOptions API_AVAILABLE(macos(10.6));
 
 @property (readonly) NSApplicationOcclusionState occlusionState API_AVAILABLE(macos(10.9));
@@ -295,38 +362,40 @@ typedef NS_ENUM(NSUInteger, NSApplicationDelegateReply) {
 @end
 
 @interface NSApplication(NSFullKeyboardAccess)
-/* Use this method to get the status of Full Keyboard Access, as configured in the Keyboard preference pane. You may use this status to implement your own key loop or to implement in-control tabbing behavior similar to NSTableView. Because of the nature of the preference storage, you will not be notified of changes to the key if you attempt to observe it via key-value observing; however, calling this method is fairly inexpensive, so you should always call it when you need the underlying value instead of caching it.
+/**
+ Use this method to get the status of Full Keyboard Access, as configured in the Keyboard preference pane. You may use this status to implement your own key loop or to implement in-control tabbing behavior similar to @c NSTableView. Because of the nature of the preference storage, you will not be notified of changes to the key if you attempt to observe it via key-value observing; however, calling this method is fairly inexpensive, so you should always call it when you need the underlying value instead of caching it.
  */
 @property (getter=isFullKeyboardAccessEnabled, readonly) BOOL fullKeyboardAccessEnabled API_AVAILABLE(macos(10.6));
 @end
 
-// return values for -applicationShouldTerminate:
+/// Return values for `-applicationShouldTerminate:`.
 typedef NS_ENUM(NSUInteger, NSApplicationTerminateReply) {
-        NSTerminateCancel = 0,
-        NSTerminateNow = 1, 
-        NSTerminateLater = 2
+    NSTerminateCancel = 0,
+    NSTerminateNow = 1,
+    NSTerminateLater = 2
 };
 
-// return values for -application:printFiles:withSettings:showPrintPanels:.
+/// Return values for `-application:printFiles:withSettings:showPrintPanels:`.
 typedef NS_ENUM(NSUInteger, NSApplicationPrintReply) {
     NSPrintingCancelled = 0,
-    NSPrintingSuccess = 1, 
-    NSPrintingFailure = 3,
-    NSPrintingReplyLater = 2
+    NSPrintingSuccess = 1,
+    NSPrintingReplyLater = 2,
+    NSPrintingFailure = 3
 };
 
 @protocol NSApplicationDelegate <NSObject>
 @optional
-/* 
-    Allowable return values are:
-        NSTerminateNow - it is ok to proceed with termination
-        NSTerminateCancel - the application should not be terminated
-        NSTerminateLater - it may be ok to proceed with termination later.  The application must call -replyToApplicationShouldTerminate: with YES or NO once the answer is known
-            this return value is for delegates who need to provide document modal alerts (sheets) in order to decide whether to quit.
-*/
+/**
+ Allowable return values are:
+ @c NSTerminateNow - it is ok to proceed with termination
+ @c NSTerminateCancel - the application should not be terminated
+ @c NSTerminateLater - it may be ok to proceed with termination later.  The application must call `-replyToApplicationShouldTerminate:` with @c YES or @c NO once the answer is known
+ @note This return value is for delegates who need to provide document modal alerts (sheets) in order to decide whether to quit.
+ */
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender NS_SWIFT_UI_ACTOR;
 
-/* This will be called for any URLs your application is asked to open. This includes URL types (CFBundleURLTypes) defined in your Info.plist, and Document types (CFBundleDocumentTypes) that have no associated NSDocument class. Document URLs that have an associated NSDocument class will be opened through NSDocumentController. If this is implemented, application:openFiles: and application:openFile: will not be called.
+/**
+ This will be called for any URLs your application is asked to open. This includes URL types (CFBundleURLTypes) defined in your Info.plist, and Document types (@c CFBundleDocumentTypes) that have no associated @c NSDocument class. Document URLs that have an associated @c NSDocument class will be opened through @c NSDocumentController. If this is implemented, `-application:openFiles:` and `-application:openFile:` will not be called.
  */
 - (void)application:(NSApplication *)application openURLs:(NSArray<NSURL *> *)urls NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.13));
 
@@ -347,80 +416,87 @@ typedef NS_ENUM(NSUInteger, NSApplicationPrintReply) {
 - (void)application:(NSApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.7));
 - (void)application:(NSApplication *)application didReceiveRemoteNotification:(NSDictionary<NSString *, id> *)userInfo NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.7));
 
-/** Method to opt-in to secure restorable state.
+/**
+ Method to opt-in to secure restorable state.
  
-    When this returns YES:
-    * NSCoders that are passed into the various NSWindowRestoration methods will requiresSecureCoding and have a decodingFailurePolicy of NSDecodingFailurePolicySetErrorAndReturn.
-    * Any restorationClass set on a window must explicitly conform to NSWindowRestoration.
+ When this returns @c YES:
+ * NSCoders that are passed into the various @c NSWindowRestoration methods will @c requiresSecureCoding and have a @c decodingFailurePolicy of @c NSDecodingFailurePolicySetErrorAndReturn.
+ * Any @c restorationClass set on a window must explicitly conform to @c NSWindowRestoration.
  
-    This method will be called prior to any state encoding or restoration.
+ This method will be called prior to any state encoding or restoration.
 */
 - (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(12.0));
 
 /**
- Returns the object capable of handling the specified intent.
+ @return The object capable of handling the specified intent.
  */
 - (nullable id)application:(NSApplication *)application handlerForIntent:(INIntent *)intent NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(12.0));
 
-/* Method called by -[NSApplication encodeRestorableStateWithCoder:] to give the delegate a chance to encode any additional state into the NSCoder. If the restorable state managed by the delegate changes, you must call -[NSApplication invalidateRestorableState] so that it will be re-encoded. See the header NSWindowRestoration.h for more information.
+/**
+ Method called by `-[NSApplication encodeRestorableStateWithCoder:]` to give the delegate a chance to encode any additional state into the @c NSCoder. If the restorable state managed by the delegate changes, you must call `-[NSApplication invalidateRestorableState]` so that it will be re-encoded. See the header `NSWindowRestoration.h` for more information.
 */
 - (void)application:(NSApplication *)app willEncodeRestorableState:(NSCoder *)coder NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.7));
 
-/* Method called by -[NSApplication restoreStateWithCoder:] to give the delegate a chance to restore its own state, which it may decode from the NSCoder. See the header NSWindowRestoration.h for more information.
+/**
+ Method called by `-[NSApplication restoreStateWithCoder:]` to give the delegate a chance to restore its own state, which it may decode from the @c NSCoder. See the header `NSWindowRestoration.h` for more information.
 */
 - (void)application:(NSApplication *)app didDecodeRestorableState:(NSCoder *)coder NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.7));
 
-/* NSUserActivity support:
- */
+#pragma mark - NSUserActivity support
 
-/*
+/**
  
- This will be called on the main thread as soon as the user indicates they want to continue an activity in your application. The NSUserActivity object may not be available instantly, so use this as an opportunity to show the user that an activity will be continued shortly. Return YES to indicate that you are doing so. Return NO (or leave it unimplemented) and AppKit/UIKit will put up a default UI.
+ This will be called on the main thread as soon as the user indicates they want to continue an activity in your application. The @c NSUserActivity object may not be available instantly, so use this as an opportunity to show the user that an activity will be continued shortly. Return @c YES to indicate that you are doing so. Return @c NO (or leave it unimplemented) and AppKit/UIKit will put up a default UI.
  
- For each application:willContinueUserActivityWithType: invocation, you are guaranteed to get exactly one invocation of application:continueUserActivity:restorationHandler: on success, or application:didFailToContinueUserActivityWithType:error: if an error was encountered.
+ For each `-application:willContinueUserActivityWithType:` invocation, you are guaranteed to get exactly one invocation of `-application:continueUserActivity:restorationHandler:` on success, or `-application:didFailToContinueUserActivityWithType:error:` if an error was encountered.
  */
 - (BOOL)application:(NSApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.10));
 
-/*
- This will be called on the main thread after the NSUserActivity object is available. Use the data you stored in the NSUserActivity object to re-create what the user was doing. Return YES to indicate that the activity was handled. Return NO (or leave it unimplemented) and AppKit will attempt to continue the user activity.
+/**
+ This will be called on the main thread after the @c NSUserActivity object is available. Use the data you stored in the NSUserActivity object to re-create what the user was doing.
  
- You should create/fetch any restorable objects associated with the user activity, and pass them to the restorationHandler. They will then get the above restoreUserActivityState: method invoked with the user activity. Invoking the restorationHandler is optional. It may be copied and invoked later, but must be invoked on the main thread.
+ @return @c YES to indicate that the activity was handled. Return @c NO (or leave it unimplemented) and AppKit will attempt to continue the user activity.
  
- If this user activity was created automatically by having NSUbiquitousDocumentUserActivityType in a CFBundleDocumentTypes entry, AppKit can automatically restore the NSUserActivity on OS X if NO is returned, or this method is unimplemented. It will do so by creating a document of the appropriate type using the URL stored in the userInfo under the NSUserActivityDocumentURLKey. The document will have restoreUserActivity: called on it.
+ You should create/fetch any restorable objects associated with the user activity, and pass them to the restorationHandler. They will then get the above `-restoreUserActivityState:` method invoked with the user activity. Invoking the @c restorationHandler is optional. It may be copied and invoked later, but must be invoked on the main thread.
+ 
+ If this user activity was created automatically by having @c NSUbiquitousDocumentUserActivityType in a @c CFBundleDocumentTypes entry, AppKit can automatically restore the NSUserActivity on OS X if NO is returned, or this method is unimplemented. It will do so by creating a document of the appropriate type using the URL stored in the userInfo under the @c NSUserActivityDocumentURLKey. The document will have `-restoreUserActivity:` called on it.
  */
 - (BOOL)application:(NSApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray<id<NSUserActivityRestoring>> *restorableObjects))restorationHandler NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.10));
 
-/* There are instances where continuing a NSUserActivity may fail. This will get called on the main thread if it does so. If it is unimplemented, AppKit will present the error. */
+/**
+ There are instances where continuing a @c NSUserActivity may fail. This will get called on the main thread if it does so. If it is unimplemented, AppKit will present the error.
+ */
 - (void)application:(NSApplication *)application didFailToContinueUserActivityWithType:(NSString *)userActivityType error:(NSError *)error NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.10));
 
-/* This will be called on the main thread when a user activity managed by AppKit/UIKit has been updated. You should use this as a last chance to add additional data to the userActivity. */
+/**
+ This will be called on the main thread when a user activity managed by AppKit/UIKit has been updated. You should use this as a last chance to add additional data to the @c userActivity.
+ */
 - (void)application:(NSApplication *)application didUpdateUserActivity:(NSUserActivity *)userActivity NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.10));
 
 
-/* This will be called on the main thread after the user indicates they want to accept a CloudKit sharing invitation in your application.
+/**
+ This will be called on the main thread after the user indicates they want to accept a CloudKit sharing invitation in your application.
  
- You should use the CKShareMetadata object's shareURL and containerIdentifier to schedule a CKAcceptSharesOperation, then start using the resulting CKShare and its associated record(s), which will appear in the CKContainer's shared database in a zone matching that of the record's owner.
+ You should use the @c CKShareMetadata object's @c shareURL and containerIdentifier to schedule a @c CKAcceptSharesOperation, then start using the resulting @c CKShare and its associated record(s), which will appear in the @c CKContainer's shared database in a zone matching that of the record's owner.
 */
 - (void)application:(NSApplication *)application userDidAcceptCloudKitShareWithMetadata:(CKShareMetadata *)metadata NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.12));
 
-/* Key Value Coding support:
- */
+#pragma mark - Key Value Coding support
 
-/* Return YES if the receiving delegate object can respond to key value coding messages for a specific keyed attribute, to-one relationship, or to-many relationship.  Return NO otherwise.
-*/
+/// @return @c YES if the receiving delegate object can respond to key value coding messages for a specific keyed attribute, to-one relationship, or to-many relationship.  Return @c NO otherwise.
 - (BOOL)application:(NSApplication *)sender delegateHandlesKey:(NSString *)key NS_SWIFT_UI_ACTOR;
 
-/* NSMenu system-wide keyboard shortcut localization support
- */
+ #pragma mark - NSMenu system-wide keyboard shortcut localization support
 
-/* This method will be called once during application launch at [NSApplication finishLaunching].
+/**
+ This method will be called once during application launch at `-[NSApplication finishLaunching]`.
  
-   Return NO if the receiving delegate object wishes to opt-out of system-wide keyboard shortcut localization for all application-supplied menus. Return YES by default for apps linked against 12.0 and later SDK.
+ @return @c NO if the receiving delegate object wishes to opt-out of system-wide keyboard shortcut localization for all application-supplied menus. Return @c YES by default for apps linked against 12.0 and later SDK.
 */
 - (BOOL)applicationShouldAutomaticallyLocalizeKeyEquivalents:(NSApplication *)application NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(12.0));
 
-/* Notifications:
- */
+#pragma mark - Notifications
+
 - (void)applicationWillFinishLaunching:(NSNotification *)notification NS_SWIFT_UI_ACTOR;
 - (void)applicationDidFinishLaunching:(NSNotification *)notification NS_SWIFT_UI_ACTOR;
 - (void)applicationWillHide:(NSNotification *)notification NS_SWIFT_UI_ACTOR;
@@ -456,7 +532,7 @@ typedef NS_ENUM(NSUInteger, NSApplicationPrintReply) {
 @property (nullable, strong) id servicesProvider;
 @end
 
-/* Optional keys in -orderFrontStandardAboutPanelWithOptions: optionsDictionary */
+/// Optional keys in `-orderFrontStandardAboutPanelWithOptions:` @c optionsDictionary.
 typedef NSString * NSAboutPanelOptionKey NS_TYPED_ENUM;
 
 /// NSAttributedString displayed in the info area of the panel. If not specified, contents obtained from "Credits.rtf" (.rtfd, .html) in [NSBundle mainBundle]; if not available, blank. Note that  in applications built against the 10.14 SDK or earlier, the credits are shown in light appearance even when the application is running in dark appearance, except when the credits are specified as an attributed string, or come from a file are the text is just pure black. In applications built against the 10.15 SDK or newer, credits will be shown in dark appearance, using the "adaptive color mapping" setting in NSTextView.
@@ -475,8 +551,7 @@ APPKIT_EXTERN NSAboutPanelOptionKey const NSAboutPanelOptionApplicationVersion A
 - (void)orderFrontStandardAboutPanelWithOptions:(NSDictionary<NSAboutPanelOptionKey, id> *)optionsDictionary;
 @end
 
-/* Bi-directional User Interface
-*/
+#pragma mark - Bi-directional User Interface
 
 @interface NSApplication (NSApplicationLayoutDirection)
 @property (readonly) NSUserInterfaceLayoutDirection userInterfaceLayoutDirection API_AVAILABLE(macos(10.6)); // Returns the application-wide user interface layout direction.
@@ -484,11 +559,12 @@ APPKIT_EXTERN NSAboutPanelOptionKey const NSAboutPanelOptionApplicationVersion A
 
 @interface NSApplication (NSRestorableUserInterface)
 
-/* Disable or reenable relaunching this app on login, if the app was running at the time the user logged out.  These methods increment and decrement a counter respectively; if the counter is 0 at the time the user logs out, then the app may be relaunched when the user logs back in.  The counter is initially zero, so by default apps are relaunched.
+/**
+ Disable or reenable relaunching this app on login, if the app was running at the time the user logged out.  These methods increment and decrement a counter respectively; if the counter is 0 at the time the user logs out, then the app may be relaunched when the user logs back in.  The counter is initially zero, so by default apps are relaunched.
  
- If your app should not be relaunched because it launches via some other mechanism (e.g. launchd), then the recommended usage is to call [NSApp disableRelaunchOnLogin] once, and never pair it with an -enable call.
+ If your app should not be relaunched because it launches via some other mechanism (e.g. launchd), then the recommended usage is to call `-[NSApp disableRelaunchOnLogin]` once, and never pair it with an -enable call.
  
- If your app should not be relaunched because it triggers a restart (e.g. an installer), then the recommended usage is to call [NSApp disableRelaunchOnLogin] immediately before you attempt to trigger a restart, and [NSApp enableRelaunchOnLogin] immediately after.  This is because the user may cancel restarting; if the user later restarts for another reason, then your app should be brought back.
+ If your app should not be relaunched because it triggers a restart (e.g. an installer), then the recommended usage is to call `-[NSApp disableRelaunchOnLogin]` immediately before you attempt to trigger a restart, and `-[NSApp enableRelaunchOnLogin]` immediately after.  This is because the user may cancel restarting; if the user later restarts for another reason, then your app should be brought back.
  
  These methods are thread safe.
  */
@@ -496,8 +572,8 @@ APPKIT_EXTERN NSAboutPanelOptionKey const NSAboutPanelOptionApplicationVersion A
 - (void)enableRelaunchOnLogin API_AVAILABLE(macos(10.7));
 @end
 
-/* Soft deprecated. Please use NSApplication's registerForRemoteNotifications along with requestAuthorizationWithOptions: from the UserNotifications.framework to specify allowable notification types.
-*/
+/// Soft deprecated.
+/// Please use `NSApplication`'s `-registerForRemoteNotifications` along with `-requestAuthorizationWithOptions:` from the `UserNotifications.framework` to specify allowable notification types.
 typedef NS_OPTIONS(NSUInteger, NSRemoteNotificationType) {
     NSRemoteNotificationTypeNone API_AVAILABLE(macos(10.7))    = 0,
     NSRemoteNotificationTypeBadge API_AVAILABLE(macos(10.7))   = 1 << 0,
@@ -505,45 +581,44 @@ typedef NS_OPTIONS(NSUInteger, NSRemoteNotificationType) {
     NSRemoteNotificationTypeAlert API_AVAILABLE(macos(10.8))   = 1 << 2,
 };
 
-
 @interface NSApplication (NSRemoteNotifications)
 - (void)registerForRemoteNotifications API_AVAILABLE(macos(10.14));
 - (void)unregisterForRemoteNotifications API_AVAILABLE(macos(10.7));
 
-/* Returns YES if the application is currently registered for remote notifications, taking into account any systemwide settings; doesn't relate to connectivity.
-*/
+/// @return @c YES if the application is currently registered for remote notifications, taking into account any systemwide settings; doesn't relate to connectivity.
 @property(readonly, getter=isRegisteredForRemoteNotifications) BOOL registeredForRemoteNotifications API_AVAILABLE(macos(10.14));
 
-/* The following are soft deprecated. Please use the registerForRemoteNotifications above and requestAuthorizationWithOptions: from UserNotifications.framework
-*/
+/// The following are soft deprecated.
+/// Please use the `-registerForRemoteNotifications` above and `-requestAuthorizationWithOptions:` from `UserNotifications.framework`.
 - (void)registerForRemoteNotificationTypes:(NSRemoteNotificationType)types API_AVAILABLE(macos(10.7));
 @property (readonly) NSRemoteNotificationType enabledRemoteNotificationTypes API_AVAILABLE(macos(10.7));
 @end
 
-/* An Application's startup function */
-
+/// An Application's startup function.
 APPKIT_EXTERN int NSApplicationMain(int argc, const char *_Nonnull argv[_Nonnull]);
 
-/* NSApplicationLoad should be called when loading a Cocoa bundle in a Carbon app in order to initialize NSApplication and other Cocoa objects.  Redundant calls are ignored.
-*/  
+/// @c NSApplicationLoad should be called when loading a Cocoa bundle in a Carbon app in order to initialize @c NSApplication and other Cocoa objects.  Redundant calls are ignored.
 APPKIT_EXTERN BOOL NSApplicationLoad(void);
 
-/* NSShowsServicesMenuItem() always returns YES. */
+/// @c NSShowsServicesMenuItem() always returns @c YES.
 APPKIT_EXTERN BOOL NSShowsServicesMenuItem(NSString *itemName);
 
-/* NSSetShowsServicesMenuItem() has no effect, and always returns 0. */
+/// @c NSSetShowsServicesMenuItem() has no effect, and always returns 0.
 APPKIT_EXTERN NSInteger NSSetShowsServicesMenuItem(NSString *itemName, BOOL enabled);
 
-/* NSUpdateDynamicServices() causes the services information for the system to be updated.  This will only be necessary if your program adds dynamic services to the system (i.e. services not found in mach-o segments of executables).
-*/
+/// @c NSUpdateDynamicServices() causes the services information for the system to be updated.
+/// This will only be necessary if your program adds dynamic services to the system (i.e. services not found in mach-o segments of executables).
 APPKIT_EXTERN void NSUpdateDynamicServices(void);
 APPKIT_EXTERN BOOL NSPerformService(NSString *itemName, NSPasteboard * _Nullable pboard);
 
 typedef NSString * NSServiceProviderName NS_SWIFT_BRIDGED_TYPEDEF;
-APPKIT_EXTERN void NSRegisterServicesProvider(id _Nullable provider, NSServiceProviderName name); // apps should use -setServicesProvider
+
+/// Apps should use -setServicesProvider.
+APPKIT_EXTERN void NSRegisterServicesProvider(id _Nullable provider, NSServiceProviderName name);
 APPKIT_EXTERN void NSUnregisterServicesProvider(NSServiceProviderName name);
 
-/* Notifications */
+#pragma mark - Notification Names
+
 APPKIT_EXTERN NSNotificationName NSApplicationDidBecomeActiveNotification;
 APPKIT_EXTERN NSNotificationName NSApplicationDidHideNotification;
 APPKIT_EXTERN NSNotificationName NSApplicationDidFinishLaunchingNotification;
@@ -561,35 +636,47 @@ APPKIT_EXTERN NSNotificationName NSApplicationDidChangeScreenParametersNotificat
 APPKIT_EXTERN NSNotificationName NSApplicationProtectedDataWillBecomeUnavailableNotification API_AVAILABLE(macos(12.0));
 APPKIT_EXTERN NSNotificationName NSApplicationProtectedDataDidBecomeAvailableNotification API_AVAILABLE(macos(12.0));
 
-/* User info keys for NSApplicationDidFinishLaunchingNotification */
+#pragma mark - User info keys for NSApplicationDidFinishLaunchingNotification
 
-/* The following key is present in the userInfo of NSApplicationDidFinishLaunchingNotification.  Its value is an NSNumber containing a bool.  It will be NO if the app was launched to open or print a file, to perform a Service, if the app had saved state that will be restored, or if the app launch was in some other sense not a "default" launch.  Otherwise its value will be YES.
+/**
+ The following key is present in the userInfo of NSApplicationDidFinishLaunchingNotification.  Its value is an NSNumber containing a bool.  It will be NO if the app was launched to open or print a file, to perform a Service, if the app had saved state that will be restored, or if the app launch was in some other sense not a "default" launch.  Otherwise its value will be YES.
  */
 APPKIT_EXTERN NSString * const NSApplicationLaunchIsDefaultLaunchKey API_AVAILABLE(macos(10.7));
 
-/* The following key is present in the userInfo of NSApplicationDidFinishLaunchingNotification. It will be present if your application was launched because a user activated a notification in the Notification Center. Its value is an NSUserNotification object. */
+/**
+ The following key is present in the userInfo of NSApplicationDidFinishLaunchingNotification. It will be present if your application was launched because a user activated a notification in the Notification Center. Its value is an NSUserNotification object.
+ */
 APPKIT_EXTERN NSString * const NSApplicationLaunchUserNotificationKey API_AVAILABLE(macos(10.8));
 
-/* Deprecated Keys for NSApplicationDidFinishLaunchingNotification */
-/* NSApplicationLaunchRemoteNotificationKey is unimplemented.  Please use NSApplicationLaunchUserNotificationKey to get the NSUserNotification object.  The NSUserNotification object has an isRemote property to indicate whether this application was launched as a result of a remote notification */
+#pragma mark - Deprecated keys for NSApplicationDidFinishLaunchingNotification
+/**
+ NSApplicationLaunchRemoteNotificationKey is unimplemented.  Please use NSApplicationLaunchUserNotificationKey to get the NSUserNotification object.  The NSUserNotification object has an isRemote property to indicate whether this application was launched as a result of a remote notification
+ */
 APPKIT_EXTERN NSString * const NSApplicationLaunchRemoteNotificationKey API_DEPRECATED("", macos(10.7,10.8));
 
-/* Upon receiving this notification, you can query the NSApplication for its occlusion state. Note that this only notifies about changes in the state of the occlusion, not when the occlusion region changes. You can use this notification to increase responsiveness and save power, by halting any expensive calculations that the user can not see. */
+/**
+ Upon receiving this notification, you can query the NSApplication for its occlusion state. Note that this only notifies about changes in the state of the occlusion, not when the occlusion region changes. You can use this notification to increase responsiveness and save power, by halting any expensive calculations that the user can not see.
+ */
 APPKIT_EXTERN NSNotificationName const NSApplicationDidChangeOcclusionStateNotification API_AVAILABLE(macos(10.9));
 
 
-/* Deprecated Methods */
+#pragma mark -  Deprecated Methods
+
 @interface NSApplication (NSDeprecated)
 
-/* -runModalForWindow:relativeToWindow: was deprecated in Mac OS X 10.0. Please use -[NSWindow beginSheet:completionHandler:] instead.
+/**
+ `-runModalForWindow:relativeToWindow:` was deprecated in Mac OS X 10.0. Please use `-[NSWindow beginSheet:completionHandler:]` instead.
  */
 - (NSInteger)runModalForWindow:(null_unspecified NSWindow *)window relativeToWindow:(null_unspecified NSWindow *)docWindow API_DEPRECATED("Use -[NSWindow beginSheet:completionHandler:] instead", macos(10.0,10.0));
 
-/* -beginModalSessionForWindow:relativeToWindow: was deprecated in Mac OS X 10.0. Please use -[NSWindow beginSheet:completionHandler:] instead.
+/**
+ `-beginModalSessionForWindow:relativeToWindow:` was deprecated in Mac OS X 10.0. Please use `-[NSWindow beginSheet:completionHandler:]` instead.
  */
 - (NSModalSession)beginModalSessionForWindow:(null_unspecified NSWindow *)window relativeToWindow:(null_unspecified NSWindow *)docWindow NS_RETURNS_INNER_POINTER API_DEPRECATED("Use -[NSWindow beginSheet:completionHandler:] instead", macos(10.0,10.0));
 
-/* -application:printFiles: was deprecated in Mac OS X 10.4. Implement application:printFiles:withSettings:showPrintPanels: in your application delegate instead.
+/**
+ `-application:printFiles:` was deprecated in Mac OS X 10.4.
+ Implement `-application:printFiles:withSettings:showPrintPanels:` in your application delegate instead.
  */
 - (void)application:(null_unspecified NSApplication *)sender printFiles:(null_unspecified NSArray<NSString *> *)filenames API_DEPRECATED("", macos(10.3,10.4));
 
@@ -599,7 +686,8 @@ enum {
     NSRunContinuesResponse API_DEPRECATED("Use NSModalResponseContinue instead", macos(10.0,10.10)) = (-1002)
 };
 
-/* NSWindow's -beginSheet:completionHandler: and -endSheet:returnCode: should be used instead.  NSApplication's -beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo: will continue to work as it previously did, leaking contextInfo and failing when there is already an existing sheet.
+/**
+ `NSWindow`'s `-beginSheet:completionHandler:` and `-endSheet:returnCode:` should be used instead.  `NSApplication`'s `-beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:` will continue to work as it previously did, leaking contextInfo and failing when there is already an existing sheet.
  */
 - (void)beginSheet:(NSWindow *)sheet modalForWindow:(NSWindow *)docWindow modalDelegate:(nullable id)modalDelegate didEndSelector:(nullable SEL)didEndSelector contextInfo:(null_unspecified void *)contextInfo API_DEPRECATED("Use -[NSWindow beginSheet:completionHandler:] instead", macos(10.0,10.10));
 - (void)endSheet:(NSWindow *)sheet API_DEPRECATED("Use -[NSWindow endSheet:] instead", macos(10.0,10.10));
@@ -607,7 +695,8 @@ enum {
 
 - (nullable NSWindow *)makeWindowsPerform:(SEL)selector inOrder:(BOOL)flag API_DEPRECATED("Use -enumerateWindowsWithOptions:usingBlock: instead", macos(10.0,10.14));
 
-/* This method is deprecated as of macOS 10.12. Beginning in OS X 10.11 it would always return nil. Prior to this it would return an undefined graphics context that was not generally suitable for drawing.
+/**
+ This method is deprecated as of macOS 10.12. Beginning in OS X 10.11 it would always return nil. Prior to this it would return an undefined graphics context that was not generally suitable for drawing.
  */
 @property (nullable, readonly, strong) NSGraphicsContext *context API_DEPRECATED("This method always returns nil. If you need access to the current drawing context, use [NSGraphicsContext currentContext] inside of a draw operation.", macos(10.0,10.12));
 
@@ -616,4 +705,4 @@ enum {
 
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

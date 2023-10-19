@@ -1,7 +1,7 @@
 /*
         NSMenuItem.h
         Application Kit
-        Copyright (c) 1996-2021, Apple Inc.
+        Copyright (c) 1996-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -13,11 +13,12 @@
 #import <AppKit/NSView.h>
 #import <AppKit/NSCell.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
-@class NSMenu;
-@class NSImage, NSAttributedString, NSView;
+@class NSMenu, NSMenuItemBadge, NSImage, NSAttributedString, NSView;
+
+#pragma mark - NSMenuItem
 
 @interface NSMenuItem : NSObject <NSCopying, NSCoding, NSValidatedUserInterfaceItem, NSUserInterfaceItemIdentification, NSAccessibilityElement, NSAccessibility>
 
@@ -25,25 +26,31 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 + (NSMenuItem *)separatorItem;
 
+/// Creates a menu item representing a section header with the provided title.
+/// Section header items are used to provide context to a grouping of menu items.
+/// Items created using this method are non-interactive and do not perform an action.
++ (instancetype)sectionHeaderWithTitle:(NSString *)title API_AVAILABLE(macos(14.0)) NS_REFINED_FOR_SWIFT;
+
 - (instancetype)initWithTitle:(NSString *)string action:(nullable SEL)selector keyEquivalent:(NSString *)charCode NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
 
-/* Never call the set method directly it is there only for subclassers.
- */
+/// @note Never call the setter method directly: it is there only for subclassers.
 @property (nullable, assign) NSMenu *menu;
-
 
 @property (readonly) BOOL hasSubmenu;
 @property (nullable, strong) NSMenu *submenu;
 
-/* Returns the NSMenuItem whose submenu contains the receiver, or nil if the receiver does not have a parent item.
-*/
+/// @return The `NSMenuItem` whose submenu contains the receiver, or nil if the receiver does not have a parent item.
 @property (nullable, readonly, assign) NSMenuItem *parentItem API_AVAILABLE(macos(10.6));
 
 @property (copy) NSString *title;
 @property (nullable, copy) NSAttributedString *attributedTitle;
 
 @property (getter=isSeparatorItem, readonly) BOOL separatorItem;
+
+/// Indicates whether the item is a section header.
+/// Section header items are created using the `sectionHeader(title:)` class method.
+@property (getter=isSectionHeader, readonly) BOOL sectionHeader API_AVAILABLE(macos(14.0));
 
 @property (copy) NSString *keyEquivalent;
 @property NSEventModifierFlags keyEquivalentModifierMask;
@@ -95,10 +102,17 @@ When a menu item is copied via NSCopying, any attached view is copied via archiv
 @property (getter=isHidden) BOOL hidden API_AVAILABLE(macos(10.5));
 @property (getter=isHiddenOrHasHiddenAncestor, readonly) BOOL hiddenOrHasHiddenAncestor API_AVAILABLE(macos(10.5));
 
-
 @property (nullable, copy) NSString *toolTip;
 
+/// A badge used to provide additional quantitative information specific to
+/// the menu item, such as the number of available updates.
+///
+/// @note The default value of this property is @c nil.
+@property (nullable, copy) NSMenuItemBadge *badge API_AVAILABLE(macos(14.0));
+
 @end
+
+#pragma mark - NSViewEnclosingMenuItem
 
 @interface NSView (NSViewEnclosingMenuItem)
 /* Returns the menu item containing the receiver or any of its superviews in the view hierarchy, or nil if the receiver's view hierarchy is not in a menu item. */
@@ -108,9 +122,7 @@ When a menu item is copied via NSCopying, any attached view is copied via archiv
 APPKIT_EXTERN NSUserInterfaceItemIdentifier const NSMenuItemImportFromDeviceIdentifier API_AVAILABLE(macos(10.14)); // Continuity Camera menu item.
 
 // The NSMenuItem protocol is deprecated.  Use the NSMenuItem class in your code.
-#if defined(__GNUC__) && (__GNUC__ >= 4) && (__GNUC_MINOR__ >= 2)
 API_DEPRECATED("", macos(10.0,10.6))
-#endif
 @protocol NSMenuItem;
 
 /* The following methods are deprecated.  They have never done anything useful in Mac OS X. */
@@ -124,4 +136,4 @@ API_DEPRECATED("", macos(10.0,10.6))
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

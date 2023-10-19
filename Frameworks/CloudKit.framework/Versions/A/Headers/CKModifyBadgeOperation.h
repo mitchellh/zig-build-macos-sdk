@@ -15,7 +15,7 @@ API_DEPRECATED("No longer supported, will cease working at some point in the fut
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithBadgeValue:(NSUInteger)badgeValue;
 
-@property (nonatomic, assign) NSUInteger badgeValue;
+@property (assign, nonatomic) NSUInteger badgeValue;
 
 /*! @abstract This block is called when the operation completes.
  *
@@ -24,7 +24,7 @@ API_DEPRECATED("No longer supported, will cease working at some point in the fut
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^modifyBadgeCompletionBlock)(NSError * _Nullable operationError);
+@property (nullable, copy, nonatomic) void (^modifyBadgeCompletionBlock)(NSError * _Nullable operationError);
 
 @end
 

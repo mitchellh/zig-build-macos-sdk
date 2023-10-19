@@ -1,7 +1,7 @@
 /*
 	NSViewController.h
 	Application Kit
-	Copyright (c) 2006-2021, Apple Inc.
+	Copyright (c) 2006-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -18,7 +18,7 @@
 
 @protocol NSExtensionRequestHandling;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSBundle, NSPointerArray, NSView;
@@ -77,11 +77,19 @@ On 10.10 and higher, a nil nibName can be used, and NSViewController will automa
 */
 @property (strong) IBOutlet NSView *view;
 
+/* Returns the view controller's view, or nil if the view has not been loaded.
+*/
+@property(nullable, readonly, strong) NSView *viewIfLoaded API_AVAILABLE(macos(14.0));
+
 /* The default implementation of this method invokes [self nibName] and [self nibBundle] and then uses the NSNib class to load the nib with this object as the file's owner. If the "view" outlet of the file's owner in the nib is properly connected, the regular nib loading machinery will send this object a -setView: message. You can override this method to customize how nib loading is done, including merely adding new behavior immediately before or immediately after nib loading done by the default implementation. One can also use viewDidLoad to modify things after the view has been loaded. You should not invoke this method from other objects unless you take care to avoid redundant invocations; NSViewController's default implement can handle them but overrides in subclasses might not. (Typically other objects should instead invoke -view and let the view controller do whatever it takes to fulfill the request.) In general, you should not call this method, and let NSViewController call it when needed. If you need it called, simply call [viewController view].
  
 Prior to 10.10, -loadView would not have well defined behavior if [self nibName] returned nil. On 10.10 and later, if nibName is nil, NSViewController will automatically try to load a nib with the same name as the classname. This allows a convenience of doing [[MyViewController alloc] init] (which has a nil nibName) and having it automatically load a nib with the name "MyViewController".
 */
 - (void)loadView;
+
+/* If the view controller's view has not been loaded, loads the view.
+ */
+- (void)loadViewIfNeeded API_AVAILABLE(macos(14.0));
 
 /* Conformance to KVB's NSEditor informal protocol. The default implementations of these methods pass on the message to each registered editor, which are typically controls in the nib that are bound to the nib file's owner. You can override these methods to customize what is done when your view's presentation to the user is about to end because, for example, the user has selected another of a set of views or hit a panel's OK button (committing time) or because the user has hit a panel's Cancel button (discarding time). This class also conforms to KVB's NSEditorRegistration protocol, but you're not encouraged to override those methods.
 */
@@ -170,6 +178,10 @@ Prior to 10.10, -loadView would not have well defined behavior if [self nibName]
 /* Presents the viewController as a popover. The viewController is made the delegate and contentViewController of the popover while it is shown. NSPopover delegate methods can be used to customize the popover. This method calls [self presentViewController:viewController animator:] with an animator that controls the displaying of the popover. Call [presentingViewController dismissViewController:viewController] to close the viewController that was previously shown as a popover.
 */
 - (void)presentViewController:(NSViewController *)viewController asPopoverRelativeToRect:(NSRect)positioningRect ofView:(NSView *)positioningView preferredEdge:(NSRectEdge)preferredEdge behavior:(NSPopoverBehavior)behavior API_AVAILABLE(macos(10.10));
+
+/* This is the same as `presentViewController:asPopoverRelativeToRect:ofView:preferredEdge:behavior:`, except that it allows for configuring whether the popover has full size content or not. */
+- (void)presentViewController:(NSViewController *)viewController asPopoverRelativeToRect:(NSRect)positioningRect ofView:(NSView *)positioningView preferredEdge:(NSRectEdge)preferredEdge behavior:(NSPopoverBehavior)behavior hasFullSizeContent:(BOOL)hasFullSizeContent API_AVAILABLE(macos(14.0));
+
 
 /* This method can be used to transition between sibling child view controllers. The receiver of this method is their common parent view controller. (Use [NSViewController addChildViewController:] to create the parent/child relationship.) This method will add the toViewController's view to the superview of the fromViewController's view. The fromViewController's view will be removed from the parent at the appropriate time. It is important to allow this method to add and remove the views. This method will throw an exception/assertion if the parent view controllers are not the same as the receiver, or if fromViewController.view does not have a superview.
 */
@@ -266,4 +278,4 @@ Prior to 10.10, -loadView would not have well defined behavior if [self nibName]
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

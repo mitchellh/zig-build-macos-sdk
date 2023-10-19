@@ -18,7 +18,7 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #define NSOperationQualityOfServiceUtility NSQualityOfServiceUtility
 #define NSOperationQualityOfServiceBackground NSQualityOfServiceBackground
 
-
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 @interface NSOperation : NSObject
 #if !__OBJC2__
@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, NSOperationQueuePriority) {
 
 @property NSOperationQueuePriority queuePriority;
 
-@property (nullable, copy) void (^completionBlock)(void) API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
+@property (nullable, copy) void (NS_SWIFT_SENDABLE ^completionBlock)(void) API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
 
 - (void)waitUntilFinished API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0)) NS_SWIFT_UNAVAILABLE_FROM_ASYNC("Use completionBlock or a dependent Operation instead");
 
@@ -72,14 +72,14 @@ typedef NS_ENUM(NSInteger, NSOperationQueuePriority) {
 @end
 
 
-
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0))
 @interface NSBlockOperation : NSOperation
 
-+ (instancetype)blockOperationWithBlock:(void (^)(void))block;
++ (instancetype)blockOperationWithBlock:(void (NS_SWIFT_SENDABLE ^)(void))block;
 
-- (void)addExecutionBlock:(void (^)(void))block;
-@property (readonly, copy) NSArray<void (^)(void)> *executionBlocks;
+- (void)addExecutionBlock:(void (NS_SWIFT_SENDABLE ^)(void))block;
+@property (readonly, copy) NSArray<void (NS_SWIFT_SENDABLE ^)(void)> *executionBlocks;
 
 @end
 
@@ -102,6 +102,7 @@ FOUNDATION_EXPORT NSExceptionName const NSInvocationOperationCancelledException 
 
 static const NSInteger NSOperationQueueDefaultMaxConcurrentOperationCount = -1;
 
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 @interface NSOperationQueue : NSObject <NSProgressReporting>
 
@@ -126,14 +127,14 @@ API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 - (void)addOperation:(NSOperation *)op;
 
 - (void)addOperations:(NSArray<NSOperation *> *)ops waitUntilFinished:(BOOL)wait API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0)) NS_SWIFT_UNAVAILABLE_FROM_ASYNC("Use addBarrierBlock or a dependent Operations instead");
-- (void)addOperationWithBlock:(void (^)(void))block API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0)) NS_SWIFT_DISABLE_ASYNC;
+- (void)addOperationWithBlock:(void (NS_SWIFT_SENDABLE ^)(void))block API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0)) NS_SWIFT_DISABLE_ASYNC;
 
 /// @method addBarrierBlock:
 /// @param barrier      A block to execute
 /// @discussion         The `addBarrierBlock:` method executes the block when the NSOperationQueue has finished all enqueued operations and
 /// prevents any subsequent operations to be executed until the barrier has been completed. This acts similarly to the
 /// `dispatch_barrier_async` function.
-- (void)addBarrierBlock:(void (^)(void))barrier API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0));
+- (void)addBarrierBlock:(void (NS_SWIFT_SENDABLE ^)(void))barrier API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0));
 
 @property NSInteger maxConcurrentOperationCount;
 

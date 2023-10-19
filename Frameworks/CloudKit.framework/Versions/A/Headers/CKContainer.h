@@ -30,6 +30,7 @@ CK_EXTERN NSString * const CKOwnerDefaultName API_DEPRECATED_WITH_REPLACEMENT("C
  *  Each of these handlers and blocks is invoked on a non-main serial queue.  The receiver is responsible for handling the message on a different queue or thread if it is required.
  */
 API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
+// This class should not be subclassed. If it is, Sendable may no longer apply.
 NS_SWIFT_SENDABLE
 @interface CKContainer : NSObject
 
@@ -51,7 +52,7 @@ NS_SWIFT_SENDABLE
  */
 + (CKContainer *)containerWithIdentifier:(NSString *)containerIdentifier;
 
-@property (nonatomic, readonly, copy, nullable) NSString *containerIdentifier;
+@property (nullable, readonly, copy, nonatomic) NSString *containerIdentifier;
 
 - (void)addOperation:(CKOperation *)operation;
 
@@ -75,9 +76,9 @@ NS_SWIFT_SENDABLE
  */
 @interface CKContainer (Database)
 
-@property (nonatomic, readonly) CKDatabase *privateCloudDatabase;
-@property (nonatomic, readonly) CKDatabase *publicCloudDatabase;
-@property (nonatomic, readonly) CKDatabase *sharedCloudDatabase API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0));
+@property (readonly, strong, nonatomic) CKDatabase *privateCloudDatabase;
+@property (readonly, strong, nonatomic) CKDatabase *publicCloudDatabase;
+@property (readonly, strong, nonatomic) CKDatabase *sharedCloudDatabase API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0));
 
 /*! @abstract Convenience methods
  *
@@ -117,7 +118,7 @@ CK_EXTERN NSString * const CKAccountChangedNotification API_AVAILABLE(macos(10.1
 
 typedef NS_OPTIONS(NSUInteger, CKApplicationPermissions) {
     /*! Allows the user's record in CloudKit to be discoverable via the user's email address */
-    CKApplicationPermissionUserDiscoverability         = 1 << 0,
+    CKApplicationPermissionUserDiscoverability API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.0, 14.0), ios(8.0, 17.0), tvos(9.0, 17.0), watchos(3.0, 10.0)) = 1 << 0,
 } API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0));
 
 /*! @enum CKApplicationPermissionStatus
@@ -131,14 +132,14 @@ typedef NS_ENUM(NSInteger, CKApplicationPermissionStatus) {
     CKApplicationPermissionStatusCouldNotComplete      = 1,
     CKApplicationPermissionStatusDenied                = 2,
     CKApplicationPermissionStatusGranted               = 3,
-} API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0));
+} API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.10, 14.0), ios(8.0, 17.0), tvos(9.0, 17.0), watchos(3.0, 10.0));
 
-typedef void(^CKApplicationPermissionBlock)(CKApplicationPermissionStatus applicationPermissionStatus, NSError * _Nullable error);
+typedef void(^CKApplicationPermissionBlock)(CKApplicationPermissionStatus applicationPermissionStatus, NSError * _Nullable error) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.10, 14.0), ios(8.0, 17.0), tvos(9.0, 17.0), watchos(3.0, 10.0));
 
 @interface CKContainer (ApplicationPermission)
 
-- (void)statusForApplicationPermission:(CKApplicationPermissions)applicationPermission completionHandler:(NS_SWIFT_SENDABLE CKApplicationPermissionBlock)completionHandler NS_SWIFT_ASYNC_NAME(applicationPermissionStatus(for:));
-- (void)requestApplicationPermission:(CKApplicationPermissions)applicationPermission completionHandler:(NS_SWIFT_SENDABLE CKApplicationPermissionBlock)completionHandler;
+- (void)statusForApplicationPermission:(CKApplicationPermissions)applicationPermission completionHandler:(NS_SWIFT_SENDABLE CKApplicationPermissionBlock)completionHandler NS_SWIFT_ASYNC_NAME(applicationPermissionStatus(for:)) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.0, 14.0), ios(8.0, 17.0), tvos(9.0, 17.0), watchos(3.0, 10.0));
+- (void)requestApplicationPermission:(CKApplicationPermissions)applicationPermission completionHandler:(NS_SWIFT_SENDABLE CKApplicationPermissionBlock)completionHandler API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.0, 14.0), ios(8.0, 17.0), tvos(9.0, 17.0), watchos(3.0, 10.0));
 
 @end
 
@@ -154,25 +155,25 @@ typedef void(^CKApplicationPermissionBlock)(CKApplicationPermissionStatus applic
  *
  *  @discussion @c CKDiscoverAllUserIdentitiesOperation is the more configurable, @c CKOperation -based alternative to this methods
  */
-- (void)discoverAllIdentitiesWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKUserIdentity *> * _Nullable userIdentities, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), watchos(3.0)) API_UNAVAILABLE(tvos) NS_SWIFT_ASYNC_NAME(allUserIdentitiesFromContacts());
+- (void)discoverAllIdentitiesWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKUserIdentity *> * _Nullable userIdentities, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(allUserIdentitiesFromContacts()) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), watchos(3.0, 10.0)) API_UNAVAILABLE(tvos);
 
 /*! @abstract Fetches the user identity that corresponds to the given email address.
  *
  *  @discussion Only users who have opted-in to user discoverability will have their identities returned by this method.  If a user with the inputted email exists in iCloud, but has not opted-in to user discoverability, this method completes with a nil @c userInfo.  @c CKDiscoverUserIdentitiesOperation is the more configurable, @c CKOperation -based alternative to this method
  */
-- (void)discoverUserIdentityWithEmailAddress:(NSString *)email completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_SWIFT_ASYNC_NAME(userIdentity(forEmailAddress:));
+- (void)discoverUserIdentityWithEmailAddress:(NSString *)email completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(userIdentity(forEmailAddress:)) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0));
 
 /*! @abstract Fetches the user identity that corresponds to the given phone number.
  *
  *  @discussion Only users who have opted-in to user discoverability will have their identities returned by this method.  If a user with the inputted phone number exists in iCloud, but has not opted-in to user discoverability, this method completes with a nil @c userInfo.  @c CKDiscoverUserIdentitiesOperation is the more configurable, @c CKOperation -based alternative to this method
  */
-- (void)discoverUserIdentityWithPhoneNumber:(NSString *)phoneNumber completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_SWIFT_ASYNC_NAME(userIdentity(forPhoneNumber:));
+- (void)discoverUserIdentityWithPhoneNumber:(NSString *)phoneNumber completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(userIdentity(forPhoneNumber:)) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0));
 
 /*! @abstract Fetches the user identity that corresponds to the given user record id.
  *
  *  @discussion Only users who have opted-in to user discoverability will have their identities returned by this method.  If a user has not opted-in to user discoverability, this method completes with a nil @c userInfo.  @c CKDiscoverUserIdentitiesOperation is the more configurable, @c CKOperation -based alternative to this method
  */
-- (void)discoverUserIdentityWithUserRecordID:(CKRecordID *)userRecordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_SWIFT_ASYNC_NAME(userIdentity(forUserRecordID:));
+- (void)discoverUserIdentityWithUserRecordID:(CKRecordID *)userRecordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(userIdentity(forUserRecordID:)) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0));
 
 @end
 

@@ -20,7 +20,7 @@ API_AVAILABLE(macos(10.11), ios(9.2), tvos(9.1), watchos(3.0))
 - (instancetype)initWithAPIToken:(NSString *)APIToken;
 
 /*! APIToken is expected to be set before you begin this operation. */
-@property (nonatomic, copy, nullable) NSString *APIToken;
+@property (nullable, copy, nonatomic) NSString *APIToken;
 
 /*! @abstract This block is called when the operation completes.
  *
@@ -29,7 +29,7 @@ API_AVAILABLE(macos(10.11), ios(9.2), tvos(9.1), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchWebAuthTokenCompletionBlock)(NSString * _Nullable webAuthToken, NSError * _Nullable operationError) CK_SWIFT_DEPRECATED("Use fetchWebAuthTokenResultBlock instead", macos(10.11, 12.0), ios(9.2, 15.0), tvos(9.1, 15.0), watchos(3.0, 8.0));
+@property (nullable, copy, nonatomic) void (^fetchWebAuthTokenCompletionBlock)(NSString * _Nullable webAuthToken, NSError * _Nullable operationError) CK_SWIFT_DEPRECATED("Use fetchWebAuthTokenResultBlock instead", macos(10.11, 12.0), ios(9.2, 15.0), tvos(9.1, 15.0), watchos(3.0, 8.0));
 
 @end
 

@@ -38,23 +38,29 @@
 
 #ifdef __OBJC__
 #ifdef CI_SILENCE_GL_DEPRECATION
-  #define CI_GL_DEPRECATED_IOS(from, to)  NS_AVAILABLE_IOS(from)
-  #define CI_GL_DEPRECATED_MAC(from, to)  NS_AVAILABLE_MAC(from)
+  #if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+  #define CI_GL_DEPRECATED(...)  API_UNAVAILABLE(visionos)
+  #define CI_GL_DEPRECATED_IOS(...) API_UNAVAILABLE(visionos)
+  #else
   #define CI_GL_DEPRECATED(fromM,toM, fromI,toI)  NS_AVAILABLE(fromM,fromI)
+  #define CI_GL_DEPRECATED_IOS(from, to)  NS_AVAILABLE_IOS(from)
+  #endif
+  #define CI_GL_DEPRECATED_MAC(from, to)  NS_AVAILABLE_MAC(from)
   #define CIKL_DEPRECATED(fromM,toM, fromI,toI)  NS_AVAILABLE(fromM,fromI)
 #else
-  #define CI_GL_DEPRECATED_IOS(from, to)  NS_DEPRECATED_IOS(from, to, "Core Image OpenGLES API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings)")
-  #define CI_GL_DEPRECATED_MAC(from, to)  NS_DEPRECATED_MAC(from, to, "Core Image OpenGL API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings)")
+  #if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+  #define CI_GL_DEPRECATED(...)  API_UNAVAILABLE(visionos)
+  #define CI_GL_DEPRECATED_IOS(...) API_UNAVAILABLE(visionos)
+  #else
   #define CI_GL_DEPRECATED(fromM,toM, fromI,toI)  NS_DEPRECATED(fromM,toM, fromI,toI, "Core Image OpenGL API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings)")
+  #define CI_GL_DEPRECATED_IOS(from, to)  NS_DEPRECATED_IOS(from, to, "Core Image OpenGLES API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings)")
+  #endif
+  #define CI_GL_DEPRECATED_MAC(from, to)  NS_DEPRECATED_MAC(from, to, "Core Image OpenGL API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings)")
   #define CIKL_DEPRECATED(fromM,toM, fromI,toI)  NS_DEPRECATED(fromM,toM, fromI,toI, "Core Image Kernel Language API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings)")
 #endif
 #endif
 
-#if TARGET_OS_MAC || !TARGET_OS_SIMULATOR || defined(__IPHONE_13_0)
-  #define COREIMAGE_SUPPORTS_IOSURFACE 1
-#else
-  #define COREIMAGE_SUPPORTS_IOSURFACE 0
-#endif
+#define COREIMAGE_SUPPORTS_IOSURFACE 1
 
 #define UNIFIED_CORE_IMAGE 1
 

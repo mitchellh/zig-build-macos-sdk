@@ -44,6 +44,49 @@ typedef NS_ENUM(NSInteger, NSGrammaticalNumber) {
     NSGrammaticalNumberPluralMany,
 } API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0));
 
+typedef NS_ENUM(NSInteger, NSGrammaticalCase) {
+    NSGrammaticalCaseNotSet = 0,
+    NSGrammaticalCaseNominative,
+    NSGrammaticalCaseAccusative,
+    NSGrammaticalCaseDative,
+    NSGrammaticalCaseGenitive,
+    NSGrammaticalCasePrepositional,
+    NSGrammaticalCaseAblative,
+    NSGrammaticalCaseAdessive,
+    NSGrammaticalCaseAllative,
+    NSGrammaticalCaseElative,
+    NSGrammaticalCaseIllative,
+    NSGrammaticalCaseEssive,
+    NSGrammaticalCaseInessive,
+    NSGrammaticalCaseLocative,
+    NSGrammaticalCaseTranslative
+} API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+typedef NS_ENUM(NSInteger, NSGrammaticalPronounType) {
+    NSGrammaticalPronounTypeNotSet = 0,
+    NSGrammaticalPronounTypePersonal,
+    NSGrammaticalPronounTypeReflexive,
+    NSGrammaticalPronounTypePossessive
+} API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+typedef NS_ENUM(NSInteger, NSGrammaticalPerson) {
+    NSGrammaticalPersonNotSet = 0,
+    NSGrammaticalPersonFirst,
+    NSGrammaticalPersonSecond,
+    NSGrammaticalPersonThird
+} API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+typedef NS_ENUM(NSInteger, NSGrammaticalDetermination) {
+    NSGrammaticalDeterminationNotSet = 0,
+    NSGrammaticalDeterminationIndependent,
+    NSGrammaticalDeterminationDependent
+} API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+typedef NS_ENUM(NSInteger, NSGrammaticalDefiniteness) {
+    NSGrammaticalDefinitenessNotSet = 0,
+    NSGrammaticalDefinitenessIndefinite,
+    NSGrammaticalDefinitenessDefinite
+} API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
 
 API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0))
 NS_REFINED_FOR_SWIFT
@@ -52,23 +95,43 @@ NS_REFINED_FOR_SWIFT
 @property (nonatomic) NSGrammaticalGender grammaticalGender;
 @property (nonatomic) NSGrammaticalPartOfSpeech partOfSpeech;
 @property (nonatomic) NSGrammaticalNumber number;
+@property (nonatomic) NSGrammaticalCase grammaticalCase API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+@property (nonatomic) NSGrammaticalDetermination determination API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+@property (nonatomic) NSGrammaticalPerson grammaticalPerson API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+@property (nonatomic) NSGrammaticalPronounType pronounType API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+@property (nonatomic) NSGrammaticalDefiniteness definiteness API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
 
 @end
 
+API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0))
+NS_REFINED_FOR_SWIFT
+@interface NSMorphologyPronoun : NSObject <NSCopying, NSSecureCoding>
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithPronoun:(NSString*)pronoun
+                     morphology:(NSMorphology*)morphology
+            dependentMorphology:(nullable NSMorphology*)dependentMorphology;
+
+@property (readonly, copy) NSString* pronoun;
+@property (readonly, copy) NSMorphology* morphology;
+@property (readonly, copy, nullable) NSMorphology* dependentMorphology;
+@end
 
 // Per-language attribute support:
 
 @class NSMorphologyCustomPronoun;
 
-API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0))
+API_DEPRECATED("Use NSTermOfAddress instead", macos(12.0,14.0), ios(15.0,17.0), tvos(15.0,17.0), watchos(8.0,10.0))
 @interface NSMorphology (NSCustomPronouns)
 
-- (nullable NSMorphologyCustomPronoun *)customPronounForLanguage:(NSString *)language;
-- (BOOL)setCustomPronoun:(nullable NSMorphologyCustomPronoun *)features forLanguage:(NSString *)language error:(NSError **)error;
+- (nullable NSMorphologyCustomPronoun *)customPronounForLanguage:(NSString *)language
+API_DEPRECATED("Use NSTermOfAddress instead", macos(12.0,14.0), ios(15.0,17.0), tvos(15.0,17.0), watchos(8.0,10.0));
+- (BOOL)setCustomPronoun:(nullable NSMorphologyCustomPronoun *)features forLanguage:(NSString *)language error:(NSError **)error
+API_DEPRECATED("Use NSTermOfAddress instead", macos(12.0,14.0), ios(15.0,17.0), tvos(15.0,17.0), watchos(8.0,10.0));
 
 @end
 
-API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0))
+API_DEPRECATED("Use NSTermOfAddress instead", macos(12.0,14.0), ios(15.0,17.0), tvos(15.0,17.0), watchos(8.0,10.0))
 NS_REFINED_FOR_SWIFT
 @interface NSMorphologyCustomPronoun: NSObject <NSCopying, NSSecureCoding>
 

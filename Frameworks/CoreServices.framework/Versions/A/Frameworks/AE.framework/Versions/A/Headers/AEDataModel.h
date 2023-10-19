@@ -519,11 +519,11 @@ InvokeAECoercePtrUPP(
   AECoercePtrUPP  userUPP)                                    API_AVAILABLE( macos(10.0) ) API_UNAVAILABLE( ios, tvos, watchos );
 
 #if __MACH__
-  #ifdef __cplusplus
+	#ifdef __cplusplus
     inline AECoerceDescUPP                                      NewAECoerceDescUPP(AECoerceDescProcPtr userRoutine) { return userRoutine; }
     inline AECoercePtrUPP                                       NewAECoercePtrUPP(AECoercePtrProcPtr userRoutine) { return userRoutine; }
-    inline void                                                 DisposeAECoerceDescUPP(AECoerceDescUPP) { }
-    inline void                                                 DisposeAECoercePtrUPP(AECoercePtrUPP) { }
+    inline void                                                 DisposeAECoerceDescUPP(__unused AECoerceDescUPP upp) { }
+    inline void                                                 DisposeAECoercePtrUPP(__unused AECoercePtrUPP upp) { }
     inline OSErr                                                InvokeAECoerceDescUPP(const AEDesc * fromDesc, DescType toType, SRefCon handlerRefcon, AEDesc * toDesc, AECoerceDescUPP userUPP) { return (*userUPP)(fromDesc, toType, handlerRefcon, toDesc); }
     inline OSErr                                                InvokeAECoercePtrUPP(DescType typeCode, const void * dataPtr, Size dataSize, DescType toType, SRefCon handlerRefcon, AEDesc * result, AECoercePtrUPP userUPP) { return (*userUPP)(typeCode, dataPtr, dataSize, toType, handlerRefcon, result); }
   #else

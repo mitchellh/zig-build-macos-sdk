@@ -83,6 +83,8 @@
 
 #include <sys/_types/_fsid_t.h> /* file system id type */
 #include <sys/_types/_graftdmg_un.h>
+#include <sys/_types/_mount_t.h>
+#include <sys/_types/_vnode_t.h>
 
 /*
  * file system statistics
@@ -98,6 +100,7 @@
 #endif /* __DARWIN_64_BIT_INO_T */
 
 #define MNT_EXT_ROOT_DATA_VOL      0x00000001      /* Data volume of root volume group */
+#define MNT_EXT_FSKIT              0x00000002      /* this is an FSKit mount */
 
 #define __DARWIN_STRUCT_STATFS64 { \
 	uint32_t	f_bsize;        /* fundamental file system block size */ \
@@ -292,13 +295,6 @@ struct vfsstatfs {
 #define MNT_DWAIT       4       /* synchronized I/O data integrity completion */
 
 
-#if !defined(KERNEL) && !defined(_KERN_SYS_KERNELTYPES_H_) /* also defined in kernel_types.h */
-struct mount;
-typedef struct mount * mount_t;
-struct vnode;
-typedef struct vnode * vnode_t;
-#endif
-
 /* Reserved fields preserve binary compatibility */
 struct vfsconf {
 	uint32_t vfc_reserved1;         /* opaque */
@@ -410,21 +406,29 @@ typedef struct fhandle  fhandle_t;
  * cryptexes and cryptex_auth_type is currently used for authentication while mounting generic
  * cryptexes. We need to make sure we do not use the reserved values in each for a new authentication type.
  */
-
+// bump up the version for any change that has kext dependency
+#define CRYPTEX_AUTH_STRUCT_VERSION 1
 OS_ENUM(graftdmg_type, uint32_t,
     GRAFTDMG_CRYPTEX_BOOT = 1,
     GRAFTDMG_CRYPTEX_PREBOOT = 2,
-    GRAFTDMG_CRYPTEX_DOWNLEVEL = 3
+    GRAFTDMG_CRYPTEX_DOWNLEVEL = 3,
     // Reserved: CRYPTEX1_AUTH_ENV_GENERIC = 4,
-    // Reserved: CRYPTEX1_AUTH_ENV_GENERIC_SUPPLEMENTAL = 5
-    );
+    // Reserved: CRYPTEX1_AUTH_ENV_GENERIC_SUPPLEMENTAL = 5,
+    GRAFTDMG_CRYPTEX_PDI_NONCE = 6,
+    GRAFTDMG_CRYPTEX_EFFECTIVE_AP = 7,
+    // Update this when a new type is added
+    GRAFTDMG_CRYPTEX_MAX = 7);
 
 OS_ENUM(cryptex_auth_type, uint32_t,
     // Reserved: GRAFTDMG_CRYPTEX_BOOT = 1,
     // Reserved: GRAFTDMG_CRYPTEX_PREBOOT = 2,
     // Reserved: GRAFTDMG_CRYPTEX_DOWNLEVEL = 3,
     CRYPTEX1_AUTH_ENV_GENERIC = 4,
-    CRYPTEX1_AUTH_ENV_GENERIC_SUPPLEMENTAL = 5);
+    CRYPTEX1_AUTH_ENV_GENERIC_SUPPLEMENTAL = 5,
+    CRYPTEX_AUTH_PDI_NONCE = 6,
+    // Reserved: GRAFTDMG_CRYPTEX_EFFECTIVE_AP = 7
+    // Update this when a new type is added
+    CRYPTEX_AUTH_MAX = 7);
 
 
 __BEGIN_DECLS

@@ -1,7 +1,7 @@
 /*
         NSStatusBar.h
         Application Kit
-        Copyright (c) 1997-2021, Apple Inc.
+        Copyright (c) 1997-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -9,23 +9,23 @@
 #import <Foundation/NSGeometry.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSColor;
 @class NSFont;
-@class NSStatusItem;
 @class NSMutableArray;
+@class NSStatusItem;
 
 static const CGFloat NSVariableStatusItemLength = -1.0;
 static const CGFloat NSSquareStatusItemLength = -2.0;
 
 @interface NSStatusBar : NSObject
 
-@property (class, readonly, strong) NSStatusBar *systemStatusBar;
+@property (class, strong, readonly) NSStatusBar *systemStatusBar;
 
-- (NSStatusItem*)statusItemWithLength:(CGFloat)length;
-- (void)removeStatusItem:(NSStatusItem*)item;
+- (NSStatusItem *)statusItemWithLength:(CGFloat)length;
+- (void)removeStatusItem:(NSStatusItem *)item;
 
 @property (getter=isVertical, readonly) BOOL vertical;
 @property (readonly) CGFloat thickness;
@@ -33,4 +33,4 @@ static const CGFloat NSSquareStatusItemLength = -2.0;
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

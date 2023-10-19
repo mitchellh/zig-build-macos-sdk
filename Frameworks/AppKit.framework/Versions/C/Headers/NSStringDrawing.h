@@ -1,7 +1,7 @@
 #if !__has_include(<UIFoundation/NSStringDrawing.h>)
 /*
         NSStringDrawing.h
-        Copyright (c) 1994-2021, Apple Inc.  All rights reserved.
+        Copyright (c) 1994-2023, Apple Inc.  All rights reserved.
 */
 
 #import <Foundation/NSString.h>
@@ -9,7 +9,7 @@
 
 @class NSStringDrawingContext;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #if !TARGET_OS_IPHONE
 
 // When attributes=nil, the methods declared here uses the default behavior for each attribute described in <AppKit/NSAttributedString.h>. When stringDrawingContext=nil, it's equivalent of passing the default instance initialized with [[NSStringDrawingContext alloc] init].
@@ -76,7 +76,7 @@ typedef NS_OPTIONS(NSInteger, NSStringDrawingOptions) {
 @end
 
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSStringDrawing.h>
 #endif

@@ -1,13 +1,13 @@
 /*
     NSStepperTouchBarItem.h
     Application Kit
-    Copyright (c) 1995-2021, Apple Inc.
+    Copyright (c) 1995-2023, Apple Inc.
     All rights reserved.
 */
 
 #import <AppKit/NSTouchBarItem.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 API_AVAILABLE(macos(10.15), ios(13.0))
 @interface NSStepperTouchBarItem : NSTouchBarItem
@@ -45,4 +45,4 @@ API_AVAILABLE(macos(10.15), ios(13.0))
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

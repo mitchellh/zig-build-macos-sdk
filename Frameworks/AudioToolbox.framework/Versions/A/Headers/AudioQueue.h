@@ -516,6 +516,18 @@ typedef struct AudioQueueBuffer {
     UInt32                          mPacketDescriptionCount;
 #ifdef __cplusplus
     AudioQueueBuffer() : mAudioDataBytesCapacity(0), mAudioData(0), mPacketDescriptionCapacity(0), mPacketDescriptions(0) { }
+
+	AudioQueueBuffer(void* dataPtr, UInt32 dataCapacity, AudioStreamPacketDescription* packetDescs,
+		UInt32 packetDescCapacity)
+		: mAudioDataBytesCapacity(dataCapacity),
+		  mAudioData(dataPtr),
+		  mAudioDataByteSize(0),
+		  mUserData(nullptr),
+		  mPacketDescriptionCapacity(packetDescCapacity),
+		  mPacketDescriptions(packetDescs),
+		  mPacketDescriptionCount(0)
+	{
+	}
 #endif
 } AudioQueueBuffer;
 

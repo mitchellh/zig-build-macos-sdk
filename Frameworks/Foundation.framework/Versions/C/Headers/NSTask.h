@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, NSTaskTerminationReason) {
     NSTaskTerminationReasonUncaughtSignal = 2
 } API_AVAILABLE(macos(10.6)) API_UNAVAILABLE(ios, watchos, tvos);
 
+NS_SWIFT_SENDABLE
 @interface NSTask : NSObject
 
 // Create an NSTask which can be run at a later time

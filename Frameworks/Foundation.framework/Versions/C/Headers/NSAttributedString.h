@@ -20,6 +20,10 @@
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 typedef NSString * NSAttributedStringKey NS_TYPED_EXTENSIBLE_ENUM;
+typedef NSString * NSAttributedStringFormattingContextKey NS_TYPED_EXTENSIBLE_ENUM;
+
+FOUNDATION_EXPORT NSAttributedStringFormattingContextKey const NSInflectionConceptsKey
+API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
 
 API_AVAILABLE(macos(10.0), ios(3.2), watchos(2.0), tvos(9.0))
 @interface NSAttributedString : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
@@ -250,6 +254,36 @@ typedef NS_OPTIONS(NSUInteger, NSAttributedStringFormattingOptions) {
     NS_REFINED_FOR_SWIFT
     API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0));
 
+/// Formats the string using the specified locale (or the canonical one, if nil).
+- (instancetype)initWithFormat:(NSAttributedString *)format
+                       options:(NSAttributedStringFormattingOptions)options
+                        locale:(nullable NSLocale *)locale
+                       context:(NSDictionary<NSAttributedStringFormattingContextKey, id>*)context,...
+    NS_REFINED_FOR_SWIFT
+    API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+/// Formats the string using the arguments list and the specified locale (or the canonical one, if nil).
+- (instancetype)initWithFormat:(NSAttributedString *)format
+                       options:(NSAttributedStringFormattingOptions)options
+                        locale:(nullable NSLocale *)locale
+                       context:(NSDictionary<NSAttributedStringFormattingContextKey, id>*)context
+                     arguments:(va_list)arguments
+    NS_REFINED_FOR_SWIFT
+    API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+/// Formats the string using the current locale and default options.
++ (instancetype)localizedAttributedStringWithFormat:(NSAttributedString *)format
+                                            context:(NSDictionary<NSAttributedStringFormattingContextKey, id>*)context, ...
+    NS_REFINED_FOR_SWIFT
+    API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+/// Formats the string using the current locale and the specified options.
++ (instancetype)localizedAttributedStringWithFormat:(NSAttributedString *)format
+                                            options:(NSAttributedStringFormattingOptions)options
+                                            context:(NSDictionary<NSAttributedStringFormattingContextKey, id>*)context, ...
+    NS_REFINED_FOR_SWIFT
+    API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
 @end
 
 @interface NSMutableAttributedString (NSMutableAttributedStringFormatting)
@@ -286,6 +320,18 @@ FOUNDATION_EXPORT NSAttributedStringKey const NSMorphologyAttributeName
 FOUNDATION_EXPORT NSAttributedStringKey const NSInflectionRuleAttributeName
     NS_SWIFT_NAME(inflectionRule)
     API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0));
+
+FOUNDATION_EXPORT NSAttributedStringKey const NSInflectionAgreementArgumentAttributeName
+    NS_SWIFT_NAME(agreeWithArgument)
+    API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+FOUNDATION_EXPORT NSAttributedStringKey const NSInflectionAgreementConceptAttributeName
+    NS_SWIFT_NAME(agreeWithConcept)
+    API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
+
+FOUNDATION_EXPORT NSAttributedStringKey const NSInflectionReferentConceptAttributeName
+    NS_SWIFT_NAME(referentConcept)
+    API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0));
 
 FOUNDATION_EXPORT NSAttributedStringKey const NSInflectionAlternativeAttributeName
     NS_SWIFT_NAME(inflectionAlternative)

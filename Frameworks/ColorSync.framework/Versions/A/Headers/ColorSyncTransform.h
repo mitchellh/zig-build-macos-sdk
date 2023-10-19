@@ -159,7 +159,9 @@ CSEXTERN CFStringRef kColorSyncTransformTag CS_AVAILABLE_STARTING(10.4, 16.0);
 
 CSEXTERN CFStringRef kColorSyncBlackPointCompensation CS_AVAILABLE_STARTING(10.4, 16.0);
 CSEXTERN CFStringRef kColorSyncExtendedRange CS_AVAILABLE_STARTING(10.16, 16.0);
-
+CSEXTERN CFStringRef kColorSyncHDRDerivative CS_AVAILABLE_STARTING(14.0, 17.0);
+        CSEXTERN CFStringRef kColorSyncPQDerivative CS_AVAILABLE_STARTING(14.0, 17.0);
+        CSEXTERN CFStringRef kColorSyncHLGDerivative CS_AVAILABLE_STARTING(14.0, 17.0);
 
 /* Global transform options */
 CSEXTERN CFStringRef kColorSyncPreferredCMM CS_AVAILABLE_STARTING(10.4) CS_UNAVAILABLE_EMBEDDED; /* ColorSyncCMMRef of the preferred CMM */

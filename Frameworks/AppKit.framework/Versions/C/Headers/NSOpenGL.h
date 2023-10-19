@@ -1,7 +1,7 @@
 /*
         NSOpenGL.h
         Application Kit
-        Copyright (c) 2000-2021, Apple Inc.
+        Copyright (c) 2000-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <OpenGL/CGLTypes.h>
 #import <OpenGL/gltypes.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 #ifndef GL_SILENCE_DEPRECATION
@@ -273,4 +273,4 @@ static const NSOpenGLContextParameter NSOpenGLCPStateValidation API_DEPRECATED_W
 static const NSOpenGLContextParameter NSOpenGLCPSurfaceSurfaceVolatile API_DEPRECATED_WITH_REPLACEMENT("NSOpenGLContextParameterSurfaceSurfaceVolatile", macos(10.0,10.14)) = NSOpenGLContextParameterSurfaceSurfaceVolatile;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

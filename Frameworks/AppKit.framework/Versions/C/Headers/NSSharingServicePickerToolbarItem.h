@@ -1,7 +1,7 @@
 /*
  NSSharingServicePickerToolbarItem.h
  Application Kit
- Copyright (c) 2019-2021, Apple Inc.
+ Copyright (c) 2019-2023, Apple Inc.
  All rights reserved.
  */
 #import <TargetConditionals.h>
@@ -12,7 +12,7 @@
 @protocol NSSharingServicePickerToolbarItemDelegate;
 #endif
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 API_AVAILABLE(macos(10.15), ios(10.13))
 @interface NSSharingServicePickerToolbarItem : NSToolbarItem
@@ -32,4 +32,4 @@ API_AVAILABLE(macos(10.15), ios(10.13))
 @end
 #endif
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

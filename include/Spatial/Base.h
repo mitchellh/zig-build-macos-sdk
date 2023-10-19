@@ -65,4 +65,16 @@
 #define _sp_simd_sin sin
 #endif
 
+#ifdef __cplusplus
+#define _sp_simd_atan2 ::__tg_atan2
+#else
+#define _sp_simd_atan2 atan2
+#endif
+
+#ifdef __cplusplus
+#define _sp_simd_asin ::__tg_asin
+#else
+#define _sp_simd_asin asin
+#endif
+
 #endif /* Spatial_Base_h */

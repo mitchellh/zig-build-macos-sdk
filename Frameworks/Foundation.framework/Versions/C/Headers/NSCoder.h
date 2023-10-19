@@ -20,13 +20,11 @@ typedef NS_ENUM(NSInteger, NSDecodingFailurePolicy) {
 } API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0));
 
 @interface NSCoder : NSObject
-
 - (void)encodeValueOfObjCType:(const char *)type at:(const void *)addr;
 - (void)encodeDataObject:(NSData *)data;
 - (nullable NSData *)decodeDataObject;
 - (void)decodeValueOfObjCType:(const char *)type at:(void *)data size:(NSUInteger)size API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
 - (NSInteger)versionForClassName:(NSString *)className;
-
 @end
 
 @interface NSCoder (NSExtendedCoder)

@@ -6,7 +6,7 @@
 //  NSTextLayoutFragment.h
 //  Text Kit
 //
-//  Copyright (c) 2017-2021, Apple Inc. All rights reserved.
+//  Copyright (c) 2017-2023, Apple Inc. All rights reserved.
 //
 
 #import <Foundation/NSArray.h>
@@ -62,6 +62,12 @@ API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0)) API_UNAVAILABLE(watchos)
 // An array of NSTextLineFragments. Valid when NSTextLayoutFragmentStateLayoutAvailable. KVO-compliant
 @property (copy, readonly) NSArray<NSTextLineFragment *> *textLineFragments;
 
+// Returns the NSTextLineFragment containing verticalOffset if found. When requiresExactMatch=NO, it returns the closest line fragment beyond verticalOffset if no line fragment contains verticalOffset.
+- (nullable NSTextLineFragment *)textLineFragmentForVerticalOffset:(CGFloat)verticalOffset requiresExactMatch:(BOOL)requiresExactMatch API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos);
+
+// Returns the NSTextLineFragment containing textLocation. When isUpstreamAffinity=YES, it returns the text line fragment ending at textLocation.
+- (nullable NSTextLineFragment *)textLineFragmentForTextLocation:(id <NSTextLocation>)textLocation isUpstreamAffinity:(BOOL)isUpstreamAffinity API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos);
+
 // When non-nil, the layout operation is dispatched to the queue asynchronously.
 @property (nullable, strong) NSOperationQueue *layoutQueue;
 
@@ -75,7 +81,7 @@ API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0)) API_UNAVAILABLE(watchos)
 // The rect for tiling the layout fragment inside the target layout coordinate system typically in an NSTextContainer.
 @property (readonly) CGRect layoutFragmentFrame;
 
-// The bounds defining the area required for rendering the contents. The coordinate system is vertically flipped from the layoutFragmentFrame origin ({0,0} is at the upper left corner). The size should be larger than layoutFragmentFrame.size. The origin could be in the negative coordinate since the rendering could be stretched out of layoutFragmentFrame. Only valid when state > NSTextLayoutFragmentStateEstimatedUsageBounds.
+// The bounds defining the area required for rendering the contents. The coordinate system is relative to the layoutFragmentFrame. The coordinate system is vertically flipped, meaning origin ({0,0} is at the upper-left corner). The size should be larger than layoutFragmentFrame.size. The origin could be in the negative coordinate since the rendering could be stretched out of layoutFragmentFrame. Only valid when state > NSTextLayoutFragmentStateEstimatedUsageBounds.
 @property (readonly) CGRect renderingSurfaceBounds;
 
 #pragma mark Custom spacing

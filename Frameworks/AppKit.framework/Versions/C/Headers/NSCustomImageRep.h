@@ -1,14 +1,14 @@
 /*
 	NSCustomImageRep.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
 #import <AppKit/NSImageRep.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @interface NSCustomImageRep : NSImageRep
@@ -24,5 +24,5 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

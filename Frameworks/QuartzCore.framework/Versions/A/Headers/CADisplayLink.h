@@ -3,6 +3,8 @@
    Copyright (c) 2009-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CABase.h>
 #import <QuartzCore/CAFrameRateRange.h>
 #import <Foundation/NSObject.h>
@@ -12,8 +14,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /** Class representing a timer bound to the display vsync. **/
+API_AVAILABLE(ios(3.1), watchos(2.0), tvos(9.0))
 
-API_AVAILABLE(ios(3.1), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos)
+API_AVAILABLE(macos(14.0))
+
 @interface CADisplayLink : NSObject
 {
 @private
@@ -22,9 +26,11 @@ API_AVAILABLE(ios(3.1), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos)
 
 /* Create a new display link object for the main display. It will
  * invoke the method called 'sel' on 'target', the method has the
- * signature '(void)selector:(CADisplayLink *)sender'. */
+ * signature '(void)selector:(CADisplayLink *)sender'.
+ * For macOS, see NSView/NSWindow/NSScreen.displayLink(withTarget:selector:). */
 
-+ (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)sel;
++ (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)sel
+    API_UNAVAILABLE(macos);
 
 /* Adds the receiver to the given run-loop and mode. Unless paused, it
  * will fire every vsync until removed. Each object may only be added
@@ -70,8 +76,9 @@ API_AVAILABLE(ios(3.1), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos)
  * DEPRECATED - use preferredFramesPerSecond. */
 
 @property(nonatomic) NSInteger frameInterval
-  API_DEPRECATED("preferredFramesPerSecond", ios(3.1, 10.0), 
-                 watchos(2.0, 3.0), tvos(9.0, 10.0));
+  API_DEPRECATED("preferredFramesPerSecond", ios(3.1, 10.0),
+                 watchos(2.0, 3.0), tvos(9.0, 10.0))
+  API_UNAVAILABLE(macos);
 
 /* Defines the desired callback rate in frames-per-second for this display
  * link. If set to zero, the default value, the display link will fire at the
@@ -82,7 +89,8 @@ API_AVAILABLE(ios(3.1), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos)
   API_DEPRECATED_WITH_REPLACEMENT ("preferredFrameRateRange",
                                    ios(10.0, API_TO_BE_DEPRECATED),
                                    watchos(3.0, API_TO_BE_DEPRECATED),
-                                   tvos(10.0, API_TO_BE_DEPRECATED));
+                                   tvos(10.0, API_TO_BE_DEPRECATED))
+  API_UNAVAILABLE(macos);
 
 /* Defines the range of desired callback rate in frames-per-second for this
    display link. If the range contains the same minimum and maximum frame rate,
@@ -96,3 +104,5 @@ API_AVAILABLE(ios(3.1), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos)
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

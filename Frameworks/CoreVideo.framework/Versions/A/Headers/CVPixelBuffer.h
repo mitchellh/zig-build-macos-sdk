@@ -67,6 +67,7 @@ enum
   kCVPixelFormatType_4444YpCbCrA8R  = 'r408',     /* Component Y'CbCrA 8-bit 4:4:4:4, rendering format. full range alpha, zero biased YUV, ordered A Y' Cb Cr */
   kCVPixelFormatType_4444AYpCbCr8   = 'y408',     /* Component Y'CbCrA 8-bit 4:4:4:4, ordered A Y' Cb Cr, full range alpha, video range Y'CbCr. */
   kCVPixelFormatType_4444AYpCbCr16  = 'y416',     /* Component Y'CbCrA 16-bit 4:4:4:4, ordered A Y' Cb Cr, full range alpha, video range Y'CbCr, 16-bit little-endian samples. */
+  kCVPixelFormatType_4444AYpCbCrFloat    = 'r4fl',  /* Component AY'CbCr single precision floating-point 4:4:4:4 */
   kCVPixelFormatType_444YpCbCr8     = 'v308',     /* Component Y'CbCr 8-bit 4:4:4, ordered Cr Y' Cb, video range Y'CbCr */
   kCVPixelFormatType_422YpCbCr16    = 'v216',     /* Component Y'CbCr 10,12,14,16-bit 4:2:2 */
   kCVPixelFormatType_422YpCbCr10    = 'v210',     /* Component Y'CbCr 10-bit 4:2:2 */
@@ -84,7 +85,7 @@ enum
   kCVPixelFormatType_422YpCbCr8FullRange = 'yuvf', /* Component Y'CbCr 8-bit 4:2:2, full range, ordered Y'0 Cb Y'1 Cr */
   kCVPixelFormatType_OneComponent8  = 'L008',     /* 8 bit one component, black is zero */
   kCVPixelFormatType_TwoComponent8  = '2C08',     /* 8 bit two component, black is zero */
-  kCVPixelFormatType_30RGBLEPackedWideGamut = 'w30r', /* little-endian RGB101010, 2 MSB are zero, wide-gamut (384-895) */
+  kCVPixelFormatType_30RGBLEPackedWideGamut = 'w30r', /* little-endian RGB101010, 2 MSB are ignored, wide-gamut (384-895) */
   kCVPixelFormatType_ARGB2101010LEPacked = 'l10r',     /* little-endian ARGB2101010 full-range ARGB */
   kCVPixelFormatType_40ARGBLEWideGamut      = 'w40a', /* little-endian ARGB10101010, each 10 bits in the MSBs of 16bits, wide-gamut (384-895, including alpha) */
   kCVPixelFormatType_40ARGBLEWideGamutPremultiplied = 'w40m', /* little-endian ARGB10101010, each 10 bits in the MSBs of 16bits, wide-gamut (384-895, including alpha). Alpha premultiplied */
@@ -234,10 +235,10 @@ CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferCGImageCompatibilityKey API
 	CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferOpenGLCompatibilityKey API_AVAILABLE(macosx(10.4), ios(4.0), tvos(9.0), watchos(4.0));   // CFBoolean
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferPlaneAlignmentKey API_AVAILABLE(macosx(10.6), ios(4.0), tvos(9.0), watchos(4.0));		    // CFNumber
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfacePropertiesKey API_AVAILABLE(macosx(10.6), ios(4.0), tvos(9.0), watchos(4.0));     // CFDictionary; presence requests buffer allocation via IOSurface
-CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferOpenGLESCompatibilityKey API_AVAILABLE(ios(6.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) __WATCHOS_PROHIBITED;	    // CFBoolean
+CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferOpenGLESCompatibilityKey API_AVAILABLE(ios(6.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) API_UNAVAILABLE(visionos) __WATCHOS_PROHIBITED;	    // CFBoolean
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferMetalCompatibilityKey API_AVAILABLE(macosx(10.11), ios(8.0), tvos(9.0), watchos(4.0));	    // CFBoolean
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferOpenGLTextureCacheCompatibilityKey API_AVAILABLE(macosx(10.11)) API_UNAVAILABLE(ios, tvos, watchos);
-CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferOpenGLESTextureCacheCompatibilityKey API_AVAILABLE(ios(9.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) __WATCHOS_PROHIBITED;
+CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferOpenGLESTextureCacheCompatibilityKey API_AVAILABLE(ios(9.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) API_UNAVAILABLE(visionos) __WATCHOS_PROHIBITED;
 
 /*!
     @const      kCVPixelBufferVersatileBayerKey_BayerPattern
@@ -328,7 +329,7 @@ CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferProResRAWKey_MetadataExtens
     @abstract   Based on the image buffer type. The pixel buffer implements the memory storage for an image buffer.
 
 */
-typedef CVImageBufferRef CVPixelBufferRef;
+typedef CVImageBufferRef CVPixelBufferRef CV_SWIFT_NONSENDABLE;
 
 CV_EXPORT CFTypeID CVPixelBufferGetTypeID(void) __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_4_0);
 

@@ -2,109 +2,35 @@
  *  CLBeaconIdentityConstraint.h
  *  CoreLocation
  *
- *  Copyright (c) 2019 Apple Inc. All rights reserved.
+ *  Copyright (c) 2023 Apple Inc. All rights reserved.
  *
  */
 
+#pragma once
+
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CLAvailability.h>
+#import <CoreLocation/CLCondition.h>
+#import <CoreLocation/CLBeaconIdentityCondition.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 /*
- *  CLBeaconMajorValue
+ * @brief
+ *		CLBeaconIdentityConstraint
  *
- *  Discussion:
- *    Type represents the most significant value in a beacon.
- *
+ * @discussion
+ *		Refer to \ref CLBeaconIdentityCondition for more details.
  */
-typedef uint16_t CLBeaconMajorValue;
 
-/*
- *  CLBeaconMinorValue
- *
- *  Discussion:
- *    Type represents the least significant value in a beacon.
- *
- */
-typedef uint16_t CLBeaconMinorValue;
-
-
-/*
- *  CLBeaconIdentityConstraint
- *
- *  Discussion:
- *    A constraint that describes the identity caracteristics of a beacon.
- *
- *    A beacon identity is defined by UUID, major and minor values.
- *    UUID must be specified. If only UUID is specified, the major and
- *    minor values will be wildcarded and any beacons with the same
- *    UUID will satisfy the constraint. Similarly if only UUID and
- *    major value are specified, the minor value will be wildcarded
- *    and any beacons with the same UUID and major value will satisfy
- *    the constraint.
- *
- */
 CL_EXTERN
-API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
-@interface CLBeaconIdentityConstraint : NSObject <NSCopying, NSSecureCoding>
+API_DEPRECATED_WITH_REPLACEMENT("Use CLBeaconIdentityCondition", macos(10.15, API_TO_BE_DEPRECATED), ios(13.0, API_TO_BE_DEPRECATED))
+API_UNAVAILABLE(watchos, tvos)
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+API_UNAVAILABLE(visionos)
+#endif
+@interface CLBeaconIdentityConstraint : CLBeaconIdentityCondition<NSCopying, NSSecureCoding>
 
-/*
- *  UUID
- *
- *  Discussion:
- *    UUID associated with the beacon.
- *
- */
-@property (readonly, nonatomic, copy) NSUUID *UUID;
-
-/*
- *  major
- *
- *  Discussion:
- *    Most significant value associated with the beacon.
- *
- */
-@property (readonly, nonatomic, copy, nullable) NSNumber *major;
-
-/*
- *  minor
- *
- *  Discussion:
- *    Least significant value associated with the beacon.
- *
- */
-@property (readonly, nonatomic, copy, nullable) NSNumber *minor;
-
-/*
- *  initWithUUID:
- *
- *  Discussion:
- *    Initialize a beacon identity constraint with a UUID. Major and
- *    minor values will be wildcarded.
- *
- */
-- (instancetype)initWithUUID:(NSUUID *)uuid;
-
-/*
- *  initWithUUID:major:
- *
- *  Discussion:
- *    Initialize a beacon identity constraint with a UUID and major
- *    value.  Minor value will be wildcarded.
- *
- */
-- (instancetype)initWithUUID:(NSUUID *)uuid major:(CLBeaconMajorValue)major;
-
-/*
- *  initWithUUID:major:minor:
- *
- *  Discussion:
- *    Initialize a beacon identity constraint with a UUID, major, and
- *    minor values.
- *
- */
-- (instancetype)initWithUUID:(NSUUID *)uuid major:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor;
 @end
 
 NS_ASSUME_NONNULL_END

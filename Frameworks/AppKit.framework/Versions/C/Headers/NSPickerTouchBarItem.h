@@ -1,13 +1,13 @@
 /*
  NSPickerTouchBarItem.h
  Application Kit
- Copyright (c) 2019-2021, Apple Inc.
+ Copyright (c) 2019-2023, Apple Inc.
  All rights reserved.
  */
 
 #import <AppKit/NSTouchBarItem.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 #if !TARGET_OS_IPHONE
 @class NSImage, NSColor;
@@ -108,4 +108,4 @@ API_AVAILABLE(macos(10.15), ios(13.0))
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

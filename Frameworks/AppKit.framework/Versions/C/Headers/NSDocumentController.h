@@ -1,7 +1,7 @@
 /*
 	NSDocumentController.h
 	Application Kit
-	Copyright (c) 1997-2021, Apple Inc.
+	Copyright (c) 1997-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -12,7 +12,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDate.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSDocument, NSError, NSMenuItem, NSMutableDictionary, NSOpenPanel, NSURL, NSWindow;
@@ -302,4 +302,4 @@ For backward binary compatibility with Mac OS 10.4 and earlier, the default impl
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

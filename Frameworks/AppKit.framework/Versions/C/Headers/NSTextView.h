@@ -1,7 +1,7 @@
 /*
         NSTextView.h
         Application Kit
-        Copyright (c) 1994-2021, Apple Inc.
+        Copyright (c) 1994-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -27,13 +27,14 @@
 #import <AppKit/NSColorPanel.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSTextContent.h>
+#import <AppKit/NSTextCheckingClient.h>
 
 @protocol NSTextViewDelegate;
 @protocol NSTextLayoutOrientationProvider;
 @protocol NSTextAttachmentCell;
 @protocol QLPreviewItem;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSTextContainer;
@@ -334,7 +335,8 @@ NS_AUTOMATED_REFCOUNT_WEAK_UNAVAILABLE
 // Selected text attributes are applied as temporary attributes to selected text.  Candidates include those attributes that do not affect layout.
 @property (copy) NSDictionary<NSAttributedStringKey, id> *selectedTextAttributes;
 
-@property (copy) NSColor *insertionPointColor;
+// Returns the color of insertion point. Setting to nil resets to a color appropriate for the receiving text view.
+@property (copy, null_resettable) NSColor *insertionPointColor;
 
 - (void)updateInsertionPointStateAndRestartTimer:(BOOL)restartFlag;
 
@@ -470,6 +472,9 @@ NS_AUTOMATED_REFCOUNT_WEAK_UNAVAILABLE
 @property BOOL usesFindBar API_AVAILABLE(macos(10.7));
 
 @property (getter=isIncrementalSearchingEnabled) BOOL incrementalSearchingEnabled API_AVAILABLE(macos(10.7));
+
+// Allows clients to turn inline prediction on or off for this view. The default setting should be appropriate for most purposes, but in some cases clients may wish to set this explicitly.
+@property NSTextInputTraitType inlinePredictionType API_AVAILABLE(macos(14.0));
 
 @end
 
@@ -700,4 +705,4 @@ typedef NS_ENUM(NSUInteger, NSFindPanelSubstringMatchType) {
 };
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

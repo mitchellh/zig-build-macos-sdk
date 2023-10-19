@@ -1,7 +1,7 @@
 /*
 	NSImage.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -22,7 +22,7 @@
 #define NSIMAGE_UNAVAILABLE_MACCATALYST TARGET_OS_IPHONE
 
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSColor, NSImageRep, NSGraphicsContext, NSURL, NSImageSymbolConfiguration;
@@ -148,18 +148,12 @@ __attribute__((objc_subclassing_restricted))
 
 @property (getter=isValid, readonly) BOOL valid;
 
-- (void)lockFocus API_DEPRECATED("This method is incompatible with resolution-independent drawing and should not be used. Instead, use +[NSImage imageWithSize:flipped:drawingHandler:] to create a block-based image describing the desired image drawing, or use +[NSGraphicsContext graphicsContextWithBitmapImageRep:] to manipulate specific bitmap image representations.", macos(10.0, API_TO_BE_DEPRECATED));
-- (void)lockFocusFlipped:(BOOL)flipped API_DEPRECATED("This method is incompatible with resolution-independent drawing and should not be used. Instead, use +[NSImage imageWithSize:flipped:drawingHandler:] to create a block-based image describing the desired image drawing, or use +[NSGraphicsContext graphicsContextWithBitmapImageRep:] to manipulate specific bitmap image representations.", macos(10.6, API_TO_BE_DEPRECATED));
-- (void)unlockFocus API_DEPRECATED("This method is incompatible with resolution-independent drawing and should not be used. Instead, use +[NSImage imageWithSize:flipped:drawingHandler:] to create a block-based image describing the desired image drawing, or use +[NSGraphicsContext graphicsContextWithBitmapImageRep:] to manipulate specific bitmap image representations.", macos(10.0, API_TO_BE_DEPRECATED));
-
 @property (nullable, weak) id<NSImageDelegate> delegate;
 
 @property (class, readonly, copy) NSArray<NSString *> *imageTypes API_AVAILABLE(macos(10.5));
 @property (class, readonly, copy) NSArray<NSString *> *imageUnfilteredTypes API_AVAILABLE(macos(10.5));
 
 + (BOOL)canInitWithPasteboard:(NSPasteboard *)pasteboard;
-
-- (void)cancelIncrementalLoad;
 
 @property NSImageCacheMode cacheMode;
 
@@ -178,8 +172,12 @@ __attribute__((objc_subclassing_restricted))
  NSButtonCell applies effects to images based on the state of the button.  For example, images are shaded darker when the button is pressed.  If a template image is set on a cell, the cell can apply more sophisticated effects.  For example, it may be processed into an image that looks engraved when drawn into a cell whose interiorBackgroundStyle is NSBackgroundStyleRaised, like on a textured button.
  */
 #if defined(__cplusplus)
+#if defined(__swift__)
+@property (getter=isTemplate, setter=setTemplate:) BOOL _template NS_SWIFT_NAME(isTemplate) API_AVAILABLE(macos(10.5));
+#else
 - (BOOL)isTemplate API_AVAILABLE(macos(10.5));
 - (void)setTemplate:(BOOL)isTemplate API_AVAILABLE(macos(10.5));
+#endif
 #else
 @property (getter=isTemplate) BOOL template API_AVAILABLE(macos(10.5));
 #endif
@@ -237,6 +235,12 @@ __attribute__((objc_subclassing_restricted))
 
 @property (readonly, copy) NSImageSymbolConfiguration *symbolConfiguration API_AVAILABLE(macos(12.0));
 
+/// Creates and returns a new image with the specified locale. If the receiver contains locale-sensitive representations, the returned image will prefer to draw using representations appropriate for the specified locale. If locale is `nil`, the returned image uses the default behavior of choosing representations appropriate for the system’s currently-configured locale.
+- (NSImage *)imageWithLocale:(nullable NSLocale *)locale NS_SWIFT_NAME(withLocale(_:)) API_AVAILABLE(macos(14.0));
+
+/// The image’s preferred locale for resolving representations, if one has been specified using `-imageWithLocale:`. Otherwise, `nil`.
+@property (readonly, nullable, copy) NSLocale *locale API_AVAILABLE(macos(14.0));
+
 @end
 
 #if !NSIMAGE_UNAVAILABLE_MACCATALYST
@@ -253,10 +257,10 @@ API_AVAILABLE(macos(13.0))
 
 - (nullable NSImage *)imageDidNotDraw:(NSImage *)sender inRect:(NSRect)rect NS_SWIFT_NONISOLATED;
 
-- (void)image:(NSImage *)image willLoadRepresentation:(NSImageRep *)rep;
-- (void)image:(NSImage *)image didLoadRepresentationHeader:(NSImageRep *)rep;
-- (void)image:(NSImage *)image didLoadPartOfRepresentation:(NSImageRep *)rep withValidRows:(NSInteger)rows; 
-- (void)image:(NSImage *)image didLoadRepresentation:(NSImageRep *)rep withStatus:(NSImageLoadStatus)status;
+- (void)image:(NSImage *)image willLoadRepresentation:(NSImageRep *)rep API_DEPRECATED("This method is no longer called on 10.4 or later.", macos(10.0, 10.4));
+- (void)image:(NSImage *)image didLoadRepresentationHeader:(NSImageRep *)rep API_DEPRECATED("This method is no longer called on 10.4 or later.", macos(10.0, 10.4));
+- (void)image:(NSImage *)image didLoadPartOfRepresentation:(NSImageRep *)rep withValidRows:(NSInteger)rows API_DEPRECATED("This method is no longer called on 10.4 or later.", macos(10.0, 10.4));
+- (void)image:(NSImage *)image didLoadRepresentation:(NSImageRep *)rep withStatus:(NSImageLoadStatus)status API_DEPRECATED("This method is no longer called on 10.4 or later.", macos(10.0, 10.4));
 @end
 
 @interface NSBundle(NSBundleImageExtension)
@@ -268,49 +272,54 @@ API_AVAILABLE(macos(13.0))
 - (nullable NSURL *)URLForImageResource:(NSImageName)name API_AVAILABLE(macos(10.6)); /* May return nil if no file found */
 @end
 
-#pragma mark - Deprecated declarations
+#pragma mark - Deprecated Declarations
 
-@interface NSImage ()
-
-- (null_unspecified NSImageRep *)bestRepresentationForDevice:(null_unspecified NSDictionary *)deviceDescription API_DEPRECATED("Use -[NSImage bestRepresentationForRect:context:hints:] instead.  Any deviceDescription dictionary is also a valid hints dictionary.", macos(10.0,10.6));
+@interface NSImage (Deprecated)
 
 /* These return union of all the types registered with NSImageRep.
  */
-+ (NSArray<NSString *> *)imageUnfilteredFileTypes API_DEPRECATED("Use +imageUnfilteredTypes instead", macos(10.0,10.10));
-+ (NSArray<NSPasteboardType> *)imageUnfilteredPasteboardTypes API_DEPRECATED("Use +imageUnfilteredTypes instead", macos(10.0,10.10));
-+ (NSArray<NSString *> *)imageFileTypes API_DEPRECATED("Use +imageTypes instead", macos(10.0,10.10));
-+ (NSArray<NSPasteboardType> *)imagePasteboardTypes API_DEPRECATED("Use +imageTypes instead", macos(10.0,10.10));
++ (NSArray<NSString *> *)imageUnfilteredFileTypes API_DEPRECATED("Use +imageUnfilteredTypes instead", macos(10.0, 10.10));
++ (NSArray<NSPasteboardType> *)imageUnfilteredPasteboardTypes API_DEPRECATED("Use +imageUnfilteredTypes instead", macos(10.0, 10.10));
++ (NSArray<NSString *> *)imageFileTypes API_DEPRECATED("Use +imageTypes instead", macos(10.0, 10.10));
++ (NSArray<NSPasteboardType> *)imagePasteboardTypes API_DEPRECATED("Use +imageTypes instead", macos(10.0, 10.10));
 
 #if TARGET_OS_OSX
 - (instancetype)initWithIconRef:(IconRef)iconRef API_DEPRECATED("Use -[NSWorkspace iconForFile:], -[NSWorkspace iconForFiles:], -[NSWorkspace iconForFileType:], or +[NSImage imageNamed:] instead.", macos(10.5, 11.0));
 #endif // TARGET_OS_OSX
 
-- (void)setFlipped:(BOOL)flag API_DEPRECATED("The concept of flippedness for NSImage is deprecated.  Please see the AppKit 10.6 release notes for a discussion of why and for how to replace existing usage.", macos(10.0,10.6));
-- (BOOL)isFlipped API_DEPRECATED("The concept of flippedness for NSImage is deprecated.  Please see the AppKit 10.6 release notes for a discussion of why and for how to replace existing usage.", macos(10.0,10.6));
+- (null_unspecified NSImageRep *)bestRepresentationForDevice:(null_unspecified NSDictionary *)deviceDescription API_DEPRECATED("Use -[NSImage bestRepresentationForRect:context:hints:] instead.  Any deviceDescription dictionary is also a valid hints dictionary.", macos(10.0, 10.6));
+
+- (void)lockFocus API_DEPRECATED("This method is incompatible with resolution-independent drawing and should not be used. Instead, use +[NSImage imageWithSize:flipped:drawingHandler:] to create a block-based image describing the desired image drawing, or use +[NSGraphicsContext graphicsContextWithBitmapImageRep:] to manipulate specific bitmap image representations.", macos(10.0, API_TO_BE_DEPRECATED));
+- (void)lockFocusFlipped:(BOOL)flipped API_DEPRECATED("This method is incompatible with resolution-independent drawing and should not be used. Instead, use +[NSImage imageWithSize:flipped:drawingHandler:] to create a block-based image describing the desired image drawing, or use +[NSGraphicsContext graphicsContextWithBitmapImageRep:] to manipulate specific bitmap image representations.", macos(10.6, API_TO_BE_DEPRECATED));
+- (void)unlockFocus API_DEPRECATED("This method is incompatible with resolution-independent drawing and should not be used. Instead, use +[NSImage imageWithSize:flipped:drawingHandler:] to create a block-based image describing the desired image drawing, or use +[NSGraphicsContext graphicsContextWithBitmapImageRep:] to manipulate specific bitmap image representations.", macos(10.0, API_TO_BE_DEPRECATED));
+
+- (void)setFlipped:(BOOL)flag API_DEPRECATED("The concept of flippedness for NSImage is deprecated.  Please see the AppKit 10.6 release notes for a discussion of why and for how to replace existing usage.", macos(10.0, 10.6));
+- (BOOL)isFlipped API_DEPRECATED("The concept of flippedness for NSImage is deprecated.  Please see the AppKit 10.6 release notes for a discussion of why and for how to replace existing usage.", macos(10.0, 10.6));
+- (void)setScalesWhenResized:(BOOL)flag API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0, 10.6));
+- (BOOL)scalesWhenResized API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0, 10.6));
+- (void)setDataRetained:(BOOL)flag API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0, 10.6));
+- (BOOL)isDataRetained API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0, 10.6));
+- (void)setCachedSeparately:(BOOL)flag API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0, 10.6));
+- (BOOL)isCachedSeparately API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0, 10.6));
+- (void)setCacheDepthMatchesImageDepth:(BOOL)flag API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0, 10.6));
+- (BOOL)cacheDepthMatchesImageDepth API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0, 10.6));
 
 // These methods have surprising semantics.  Prefer to use the 'draw' methods (and note the new draw method taking respectContextIsFlipped as a parameter).  Please see the AppKit 10.6 release notes for exactly what's going on.
-- (void)dissolveToPoint:(NSPoint)point fraction:(CGFloat)fraction API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0,10.6));
-- (void)dissolveToPoint:(NSPoint)point fromRect:(NSRect)rect fraction:(CGFloat)fraction API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0,10.6));
-- (void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)op API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0,10.6));
-- (void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)op API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0,10.6));
-- (void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)op fraction:(CGFloat)delta API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0,10.6));
-- (void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)op fraction:(CGFloat)delta API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0,10.6));
+- (void)dissolveToPoint:(NSPoint)point fraction:(CGFloat)fraction API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0, 10.6));
+- (void)dissolveToPoint:(NSPoint)point fromRect:(NSRect)rect fraction:(CGFloat)fraction API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0, 10.6));
+- (void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0, 10.6));
+- (void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)operation API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0, 10.6));
+- (void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation fraction:(CGFloat)fraction API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0, 10.6));
+- (void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)operation fraction:(CGFloat)fraction API_DEPRECATED("Use -drawAtPoint:... or -drawInRect:... methods instead", macos(10.0, 10.6));
 
 // This method doesn't do what people expect.  See AppKit 10.6 release notes.  Briefly, you can replace invocation of this method with code that locks focus on the image and then draws the rep in the image.
-- (void)lockFocusOnRepresentation:(null_unspecified NSImageRep *)imageRepresentation API_DEPRECATED("Create an image using +[NSImage imageWithSize:flipped:drawingHandler:], and begin your custom drawing with -[NSImageRep drawInRect:] instead.", macos(10.0,10.6));
+- (void)lockFocusOnRepresentation:(null_unspecified NSImageRep *)imageRepresentation API_DEPRECATED("Create an image using +[NSImage imageWithSize:flipped:drawingHandler:], and begin your custom drawing with -[NSImageRep drawInRect:] instead.", macos(10.0, 10.6));
 
-- (void)setScalesWhenResized:(BOOL)flag API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0,10.6));
-- (BOOL)scalesWhenResized API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0,10.6));
-- (void)setDataRetained:(BOOL)flag API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0,10.6));
-- (BOOL)isDataRetained API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0,10.6));
-- (void)setCachedSeparately:(BOOL)flag API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0,10.6));
-- (BOOL)isCachedSeparately API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0,10.6));
-- (void)setCacheDepthMatchesImageDepth:(BOOL)flag API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0,10.6));
-- (BOOL)cacheDepthMatchesImageDepth API_DEPRECATED("You should be able to remove use of this method without any replacement.  See 10.6 AppKit release notes for details.", macos(10.0,10.6));
+- (void)cancelIncrementalLoad API_DEPRECATED("This method does not perform any operation on 10.4 or later.", macos(10.0, 10.4));
 
 @end
 
-#pragma mark - Standard images
+#pragma mark - Standard Images
 
 /* Standard images.
  
@@ -430,7 +439,7 @@ APPKIT_EXTERN NSImageName const NSImageNameMenuMixedStateTemplate API_AVAILABLE(
  */
 APPKIT_EXTERN NSImageName const NSImageNameApplicationIcon API_AVAILABLE(macos(10.6));
 
-#pragma mark - NSTouchBar images
+#pragma mark - NSTouchBar Images
 
 /* These images are appropriate for use only in NSTouchBar.
  */
@@ -594,4 +603,4 @@ API_AVAILABLE(macos(11.0)) NS_SWIFT_NAME(NSImage.SymbolConfiguration)
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

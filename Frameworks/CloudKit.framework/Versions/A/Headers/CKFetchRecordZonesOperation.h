@@ -19,7 +19,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithRecordZoneIDs:(NSArray<CKRecordZoneID *> *)zoneIDs;
 
-@property (nonatomic, copy, nullable) NSArray<CKRecordZoneID *> *recordZoneIDs;
+@property (nullable, copy, nonatomic) NSArray<CKRecordZoneID *> *recordZoneIDs;
 
 /*! @abstract Called on success or failure for each record zone.
  *
@@ -27,7 +27,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^perRecordZoneCompletionBlock)(CKRecordZoneID *zoneID, CKRecordZone * _Nullable recordZone, NSError * _Nullable error) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) NS_REFINED_FOR_SWIFT;
+@property (nullable, copy, nonatomic) void (^perRecordZoneCompletionBlock)(CKRecordZoneID *zoneID, CKRecordZone * _Nullable recordZone, NSError * _Nullable error) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) NS_REFINED_FOR_SWIFT;
 
 
 /*! @abstract This block is called when the operation completes.
@@ -39,7 +39,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchRecordZonesCompletionBlock)(NSDictionary<CKRecordZoneID *, CKRecordZone *> * _Nullable recordZonesByZoneID, NSError * _Nullable operationError)
+@property (nullable, copy, nonatomic) void (^fetchRecordZonesCompletionBlock)(NSDictionary<CKRecordZoneID *, CKRecordZone *> * _Nullable recordZonesByZoneID, NSError * _Nullable operationError)
 CK_SWIFT_DEPRECATED("Use fetchRecordZonesResultBlock instead", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(3.0, 8.0));
 
 @end

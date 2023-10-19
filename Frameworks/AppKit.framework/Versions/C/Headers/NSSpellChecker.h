@@ -1,7 +1,7 @@
 /*
         NSSpellChecker.h
         Application Kit
-        Copyright (c) 1990-2021, Apple Inc.
+        Copyright (c) 1990-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -13,12 +13,13 @@
 #import <Foundation/NSTextCheckingResult.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSString, NSOrthography, NSPanel, NSView, NSViewController, NSMenu;
+@protocol NSTextInputClient;
 
-/* Optional keys that may be used in the options dictionary with checkString:range:types:options:inSpellDocumentWithTag:orthography:wordCount:, requestCheckingOfString:range:types:options:inSpellDocumentWithTag:completionHandler:, and menuForResult:string:options:atLocation:inView:. */
+/* Optional keys that may be used in the options dictionary with checkString:range:types:options:inSpellDocumentWithTag:orthography:wordCount:, requestCheckingOfString:range:types:options:inSpellDocumentWithTag:completionHandler:, requestCandidatesForSelectedRange:inString:types:options:inSpellDocumentWithTag: completionHandler:, and menuForResult:string:options:atLocation:inView:. */
 typedef NSString * NSTextCheckingOptionKey NS_TYPED_ENUM;
 APPKIT_EXTERN NSTextCheckingOptionKey NSTextCheckingOrthographyKey        API_AVAILABLE(macos(10.6));  // NSOrthography indicating an orthography to be used as a starting point for orthography checking, or as the orthography if orthography checking is not enabled
 APPKIT_EXTERN NSTextCheckingOptionKey NSTextCheckingQuotesKey             API_AVAILABLE(macos(10.6));  // NSArray containing four strings to be used with NSTextCheckingTypeQuote (opening double quote, closing double quote, opening single quote, and closing single quote in that order); if not specified, values will be taken from user's preferences
@@ -30,6 +31,7 @@ APPKIT_EXTERN NSTextCheckingOptionKey NSTextCheckingDocumentTitleKey      API_AV
 APPKIT_EXTERN NSTextCheckingOptionKey NSTextCheckingDocumentAuthorKey     API_AVAILABLE(macos(10.6));  // NSString, name of an author to be associated with the document
 APPKIT_EXTERN NSTextCheckingOptionKey NSTextCheckingRegularExpressionsKey API_AVAILABLE(macos(10.7));  // NSArray of NSRegularExpressions to be matched in the text of the document
 APPKIT_EXTERN NSTextCheckingOptionKey NSTextCheckingSelectedRangeKey      API_AVAILABLE(macos(10.12)); // NSValue containing NSRange, should be the portion of the selected range intersecting the string being checked, or a zero-length range if there is an insertion point in or adjacent to the string being checked, or NSMakeRange(NSNotFound, 0) if the selection is entirely outside of the string being checked.
+APPKIT_EXTERN NSTextCheckingOptionKey NSTextCheckingGenerateInlinePredictionsKey API_AVAILABLE(macos(14.0));  // NSNumber evaluated as BOOL, to be used in the options passed to requestCandidates to request the inclusion of inline prediction candidates in the results.
 
 
 /* The NSSpellChecker object is used by a client (e.g. a document in an application) to spell-check a given NSString.  There is only one NSSpellChecker instance per application (since spell-checking is interactive and you only have one mouse and one keyboard).
@@ -136,6 +138,9 @@ typedef NS_ENUM(NSInteger, NSCorrectionIndicatorType) {
 
 - (void)dismissCorrectionIndicatorForView:(NSView *)view API_AVAILABLE(macos(10.7));
 
+/* Clients may use this to cause inline prediction candidates to be shown. The candidates passed in should come from calling requestCandidates with the NSTextCheckingGenerateInlinePredictionsKey option set. The inline prediction (if any) will be sent to the client for display using NSTextInputClient methods. */
+- (void)showInlinePredictionForCandidates:(NSArray<NSTextCheckingResult *> *)candidates client:(id <NSTextInputClient>)client API_AVAILABLE(macos(14.0));
+
 /* In some cases the next typing should prevent a pending correction (if it is an @, for example).  This method allows clients to recognize these cases in a standardized way. */
 - (BOOL)preventsAutocorrectionBeforeString:(NSString *)string language:(nullable NSString *)language API_AVAILABLE(macos(10.12));
 
@@ -155,7 +160,7 @@ typedef NS_ENUM(NSInteger, NSCorrectionIndicatorType) {
 - (BOOL)hasLearnedWord:(NSString *)word API_AVAILABLE(macos(10.5));
 - (void)unlearnWord:(NSString *)word API_AVAILABLE(macos(10.5));
 
-/* These methods allow clients to determine the global user preference settings for automatic text replacement, spelling correction, quote substitution, dash substitution, autocapitalization, and double-space-to-period substitution.  Text views by default will follow these automatically, but clients may override that by programmatically setting the values on the text view.  These methods will be useful for non-text view clients and others who wish to keep track of the settings.  Notifications are available (see below) when the settings change. */
+/* These methods allow clients to determine the global user preference settings for automatic text replacement, spelling correction, quote substitution, dash substitution, autocapitalization, double-space-to-period substitution, text completion, and inline prediction.  Text views by default will follow these automatically, but clients may override that by programmatically setting the values on the text view.  These methods will be useful for non-text view clients and others who wish to keep track of the settings.  Notifications are available (see below) when the settings change. */
 @property (class, readonly, getter=isAutomaticTextReplacementEnabled) BOOL automaticTextReplacementEnabled API_AVAILABLE(macos(10.7));
 @property (class, readonly, getter=isAutomaticSpellingCorrectionEnabled) BOOL automaticSpellingCorrectionEnabled API_AVAILABLE(macos(10.7));
 @property (class, readonly, getter=isAutomaticQuoteSubstitutionEnabled) BOOL automaticQuoteSubstitutionEnabled API_AVAILABLE(macos(10.9));
@@ -163,6 +168,7 @@ typedef NS_ENUM(NSInteger, NSCorrectionIndicatorType) {
 @property (class, readonly, getter=isAutomaticCapitalizationEnabled) BOOL automaticCapitalizationEnabled API_AVAILABLE(macos(10.12));
 @property (class, readonly, getter=isAutomaticPeriodSubstitutionEnabled) BOOL automaticPeriodSubstitutionEnabled API_AVAILABLE(macos(10.12));
 @property (class, readonly, getter=isAutomaticTextCompletionEnabled) BOOL automaticTextCompletionEnabled API_AVAILABLE(macos(10.12.2));
+@property (class, readonly, getter=isAutomaticInlinePredictionEnabled) BOOL automaticInlinePredictionEnabled API_AVAILABLE(macos(14.0));
 
 /* Use of the following methods is discouraged; ordinarily language identification should be allowed to take place automatically, or else a specific language should be passed in to the methods that take such an argument, if the language is known in advance.  -setLanguage: allows programmatic setting of the language to spell-check in, for compatibility use if other methods are called with no language specified.  -setLanguage: accepts any of the language formats used by NSBundle, and tries to find the closest match among the available languages.  If -setLanguage: has been called, then -language will return that match; otherwise, it will return Multilingual if there is more than one element in -userPreferredLanguages, or the one element in that array if there is only one.  */
 
@@ -179,6 +185,7 @@ APPKIT_EXTERN NSNotificationName const NSSpellCheckerDidChangeAutomaticDashSubst
 APPKIT_EXTERN NSNotificationName const NSSpellCheckerDidChangeAutomaticCapitalizationNotification API_AVAILABLE(macos(10.12));
 APPKIT_EXTERN NSNotificationName const NSSpellCheckerDidChangeAutomaticPeriodSubstitutionNotification API_AVAILABLE(macos(10.12));
 APPKIT_EXTERN NSNotificationName const NSSpellCheckerDidChangeAutomaticTextCompletionNotification API_AVAILABLE(macos(10.12.2));
+APPKIT_EXTERN NSNotificationName const NSSpellCheckerDidChangeAutomaticInlinePredictionNotification API_AVAILABLE(macos(14.0));
 
 
 @interface NSSpellChecker(NSDeprecated)
@@ -189,4 +196,4 @@ APPKIT_EXTERN NSNotificationName const NSSpellCheckerDidChangeAutomaticTextCompl
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

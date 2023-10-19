@@ -2,7 +2,7 @@
  *  CVMetalTexture.h
  *  CoreVideo
  *
- *  Copyright (c) 2011-2015 Apple Inc. All rights reserved.
+ *  Copyright (c) 2011-2022 Apple Inc. All rights reserved.
  *
  */
  
@@ -40,13 +40,13 @@ extern "C" {
     @discussion IMPORTANT NOTE: Clients should retain CVMetalTexture objects until they are done using the images in them.
                 Retaining a CVMetalTexture is your way to indicate that you're still using the image in the buffer, and that it should not be recycled yet.
 */
-typedef CVImageBufferRef CVMetalTextureRef;
+typedef CVImageBufferRef CVMetalTextureRef CV_SWIFT_NONSENDABLE;
 	
 CV_EXPORT CFTypeID CVMetalTextureGetTypeID(void) API_AVAILABLE(macosx(10.11), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 
 /*!
     @function   CVMetalTextureGetTexture
-    @abstract   Returns the Meta MTLTexture object of the CVMetalTextureRef
+    @abstract   Returns the Metal MTLTexture object of the CVMetalTextureRef
     @param      image Target CVMetalTexture
     @result     Metal texture
 */

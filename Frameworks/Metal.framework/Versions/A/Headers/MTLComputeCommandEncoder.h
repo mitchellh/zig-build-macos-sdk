@@ -77,6 +77,47 @@ API_AVAILABLE(macos(10.11), ios(8.0))
  */
 - (void)setBuffers:(const id <MTLBuffer> __nullable [__nonnull])buffers offsets:(const NSUInteger [__nonnull])offsets withRange:(NSRange)range;
 
+/*!
+  @brief
+    sets kernel buffer at specified index with provided offset and stride.
+    only call this when the kernel-buffer is part of the stageInputDescriptor
+    and has set its stride to `MTLBufferLayoutStrideDynamic`
+*/
+- (void) setBuffer:(id<MTLBuffer>)buffer
+            offset:(NSUInteger)offset
+   attributeStride:(NSUInteger)stride
+           atIndex:(NSUInteger)index
+API_AVAILABLE(macos(14.0), ios(17.0));
+/*!
+  @brief
+    sets an array of kernel buffers with provided offsets and strides with the
+    given bind point range. Only call this when at least one buffer is part of
+    the vertexDescriptor, other buffers must set `MTLAttributeStrideStatic`
+*/
+- (void) setBuffers:(const id<MTLBuffer> __nullable [__nonnull])buffers
+            offsets:(const NSUInteger [__nonnull])offsets
+   attributeStrides:(const NSUInteger [__nonnull])strides
+          withRange:(NSRange)range
+API_AVAILABLE(macos(14.0), ios(17.0));
+/*!
+  @brief
+    only call this when the buffer-index is part of the stageInputDescriptor
+    and has set its stride to `MTLBufferLayoutStrideDynamic`
+*/
+- (void) setBufferOffset:(NSUInteger)offset
+         attributeStride:(NSUInteger)stride
+                 atIndex:(NSUInteger)index
+API_AVAILABLE(macos(14.0), ios(17.0));
+/*!
+  @brief
+    only call this when the buffer-index is part of the stageInputDescriptor
+    and has set its stride to `MTLBufferLayoutStrideDynamic`
+*/
+- (void)setBytes:(void const *)bytes
+          length:(NSUInteger)length
+ attributeStride:(NSUInteger)stride
+         atIndex:(NSUInteger)index
+API_AVAILABLE(macos(14.0), ios(17.0));
 
 
 /*!

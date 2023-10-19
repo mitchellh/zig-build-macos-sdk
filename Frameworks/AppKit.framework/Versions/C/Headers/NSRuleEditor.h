@@ -1,7 +1,7 @@
 /*
         NSRuleEditor.h
 	Application Kit
-	Copyright (c) 2006-2021, Apple Inc.
+	Copyright (c) 2006-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -36,7 +36,7 @@ NSRuleEditor exposes one binding, "rows."  The "rows" binding may be bound to an
     These key paths can be set using the set*KeyPath: methods below
 */
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSIndexSet, NSView, NSPredicate, NSString, NSViewAnimation;
@@ -205,5 +205,5 @@ typedef NS_ENUM(NSUInteger, NSRuleEditorRowType) {
 APPKIT_EXTERN NSNotificationName const NSRuleEditorRowsDidChangeNotification;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

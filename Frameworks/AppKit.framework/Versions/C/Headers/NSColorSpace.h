@@ -1,7 +1,7 @@
 /*
 	NSColorSpace.h
 	Application Kit
-	Copyright (c) 2004-2021, Apple Inc.
+	Copyright (c) 2004-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -11,7 +11,7 @@
 #import <AppKit/AppKitDefines.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSData;
@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, NSColorSpaceModel) {
     NSColorSpaceModelPatterned
 };
 
+NS_SWIFT_SENDABLE
 @interface NSColorSpace : NSObject <NSSecureCoding>
 
 - (nullable instancetype)initWithICCProfileData:(NSData *)iccData;
@@ -82,7 +83,7 @@ static const NSColorSpaceModel NSIndexedColorSpaceModel API_DEPRECATED_WITH_REPL
 static const NSColorSpaceModel NSPatternColorSpaceModel API_DEPRECATED_WITH_REPLACEMENT("NSColorSpaceModelPatterned", macos(10.0,10.14)) = NSColorSpaceModelPatterned;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 
 
 

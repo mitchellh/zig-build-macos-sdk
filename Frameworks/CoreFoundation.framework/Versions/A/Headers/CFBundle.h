@@ -12,7 +12,7 @@
 #include <CoreFoundation/CFString.h>
 #include <CoreFoundation/CFURL.h>
 
-#if TARGET_OS_MAC
+#if TARGET_OS_MAC && !0
 #include <mach/machine.h>
 #endif
 
@@ -302,7 +302,7 @@ CFURLRef CFBundleCopyAuxiliaryExecutableURL(CFBundleRef bundle, CFStringRef exec
     /* app to ship versions of the tool for each platform as it does for the */
     /* main app executable. */
 
-#if TARGET_OS_MAC
+#if TARGET_OS_MAC && !0
 CF_EXPORT
 Boolean CFBundleIsExecutableLoadable(CFBundleRef bundle) API_AVAILABLE(macos(11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
@@ -311,7 +311,7 @@ Boolean CFBundleIsExecutableLoadableForURL(CFURLRef url) API_AVAILABLE(macos(11.
 
 CF_EXPORT
 Boolean CFBundleIsArchitectureLoadable(cpu_type_t arch) API_AVAILABLE(macos(11.0)) API_UNAVAILABLE(ios, watchos, tvos);
-#endif
+#endif 
 
 /* ==================== Getting a bundle's plugIn ==================== */
 

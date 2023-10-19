@@ -1,7 +1,7 @@
 /*
     NSOpenPanel.h
     Application Kit
-    Copyright (c) 1994-2021, Apple Inc.
+    Copyright (c) 1994-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -9,7 +9,7 @@
 #import <AppKit/NSSavePanel.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSString;
@@ -82,4 +82,4 @@ To provide the ideal user experience, you should set this property to NO and dow
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

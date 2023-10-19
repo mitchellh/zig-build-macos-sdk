@@ -1,7 +1,7 @@
 /*
     NSSplitViewItem.h
     Application Kit
-    Copyright (c) 2014-2021, Apple Inc.
+    Copyright (c) 2014-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <AppKit/NSAnimation.h>
 #import <AppKit/NSWindow.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSViewController;
@@ -18,7 +18,8 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 typedef NS_ENUM(NSInteger, NSSplitViewItemBehavior) {
     NSSplitViewItemBehaviorDefault,
     NSSplitViewItemBehaviorSidebar,
-    NSSplitViewItemBehaviorContentList
+    NSSplitViewItemBehaviorContentList,
+    NSSplitViewItemBehaviorInspector API_AVAILABLE(macos(11.0))
 } API_AVAILABLE(macos(10.11));
 
 typedef NS_ENUM(NSInteger, NSSplitViewItemCollapseBehavior) {
@@ -76,6 +77,16 @@ API_AVAILABLE(macos(10.10))
  */
 + (instancetype)contentListWithViewController:(NSViewController *)viewController API_AVAILABLE(macos(10.11));
 
+/*!
+ * Creates a split view item representing an inspector for the provided ViewController.
+ * On macOS 14.0 and above inspectors have the following standard system behavior:
+ *  - canCollapse is set to YES
+ *  - minimumThickness and maximumThickness are set to the standard inspector size (270) and are not resizable by default
+ * \param viewController The view controller used to set the viewController property
+ * \return An autoreleased SplitViewItem that acts as an inspector.
+ */
++ (instancetype)inspectorWithViewController:(NSViewController *)viewController API_AVAILABLE(macos(11.0));
+
 /// The standard behavior type of the receiver. See initializers for descriptions of each behavior.
 @property (readonly) NSSplitViewItemBehavior behavior API_AVAILABLE(macos(10.11));
 
@@ -111,7 +122,12 @@ API_AVAILABLE(macos(10.10))
 /// If YES, the split view item can be temporarily uncollapsed during a drag by hovering or deep clicking on its neighboring divider. Defaults to NO.
 @property (getter=isSpringLoaded) BOOL springLoaded API_AVAILABLE(macos(10.11));
 
-/// Whether or not a sidebar is allowed to be full height in the window when the `NSFullSizeContentViewWindowMask` style mask is also set. Only applies to NSSplitViewItemBehaviorSidebar. Defaults to YES
+/// If YES, the item can be collapsed from a window resize. This can differ from `canCollapse`, to allow divider collapsing but not window resize collapsing or vice versa.
+/// Defaults to YES for Sidebars and NO for Inspectors.
+/// - Note: Setting `canCollapse` for sidebars will reset this value to that new value.
+@property BOOL canCollapseFromWindowResize API_AVAILABLE(macos(10.14));
+
+/// Whether or not a sidebar or inspector is allowed to be full height in the window when the `NSFullSizeContentViewWindowMask` style mask is also set. Only applies to NSSplitViewItemBehaviorSidebar and NSSplitViewItemBehaviorInspector. Defaults to YES.
 @property BOOL allowsFullHeightLayout API_AVAILABLE(macos(11.0));
 
 /// Specifies a preference for the style of separator displayed between the titlebar and the content of the split view item.
@@ -123,4 +139,4 @@ API_AVAILABLE(macos(10.10))
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

@@ -20,7 +20,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(6.0))
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithSubscriptionIDs:(NSArray<CKSubscriptionID> *)subscriptionIDs;
 
-@property (nonatomic, copy, nullable) NSArray<CKSubscriptionID> *subscriptionIDs;
+@property (nullable, copy, nonatomic) NSArray<CKSubscriptionID> *subscriptionIDs;
 
 /*! @abstract Called on success or failure for each subscriptionID.
  *
@@ -28,7 +28,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(6.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^perSubscriptionCompletionBlock)(CKSubscriptionID subscriptionID, CKSubscription * _Nullable subscription, NSError * _Nullable error) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) NS_REFINED_FOR_SWIFT;
+@property (nullable, copy, nonatomic) void (^perSubscriptionCompletionBlock)(CKSubscriptionID subscriptionID, CKSubscription * _Nullable subscription, NSError * _Nullable error) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) NS_REFINED_FOR_SWIFT;
 
 /*! @abstract This block is called when the operation completes.
  *
@@ -39,7 +39,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(6.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchSubscriptionCompletionBlock)(NSDictionary<CKSubscriptionID, CKSubscription *> * _Nullable subscriptionsBySubscriptionID, NSError * _Nullable operationError)
+@property (nullable, copy, nonatomic) void (^fetchSubscriptionCompletionBlock)(NSDictionary<CKSubscriptionID, CKSubscription *> * _Nullable subscriptionsBySubscriptionID, NSError * _Nullable operationError)
 CK_SWIFT_DEPRECATED("Use fetchSubscriptionsResultBlock instead", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(6.0, 8.0));
 
 @end

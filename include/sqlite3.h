@@ -35,14 +35,6 @@
 #include <stdarg.h>     /* Needed for the definition of va_list */
 
 /*
-** Make sure we can call this stuff from C++.
-*/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-/*
 ** Facilitate override of interface linkage and calling conventions.
 ** Be aware that these macros may not be used within this particular
 ** translation of the amalgamation and its associated header file.
@@ -127,6 +119,13 @@ extern "C" {
 #endif
 #ifdef SQLITE_VERSION_NUMBER
 # undef SQLITE_VERSION_NUMBER
+#endif
+
+/*
+** Make sure we can call this stuff from C++.
+*/
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 /*

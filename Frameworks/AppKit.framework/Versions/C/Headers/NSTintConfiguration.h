@@ -1,13 +1,13 @@
 /*
         NSTintConfiguration.h
         Application Kit
-        Copyright (c) 2020-2021, Apple Inc.
+        Copyright (c) 2020-2023, Apple Inc.
         All rights reserved.
 */
 
 #import <AppKit/NSColor.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 API_AVAILABLE(macos(11.0))
@@ -56,4 +56,4 @@ API_AVAILABLE(macos(11.0))
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

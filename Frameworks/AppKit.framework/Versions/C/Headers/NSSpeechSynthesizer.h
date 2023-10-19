@@ -1,7 +1,7 @@
 /*
 	NSSpeechSynthesizer.h
 	Application Kit
-	Copyright (c) 2003-2021, Apple Inc.
+	Copyright (c) 2003-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -11,10 +11,12 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSRange.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSString, NSURL, NSError;
+
+API_DEPRECATED_BEGIN("Use AVSpeechSynthesizer in AVFoundation instead", macos(10.3, 14.0))
 @protocol NSSpeechSynthesizerDelegate;
 
 typedef NSString * NSSpeechSynthesizerVoiceName NS_TYPED_ENUM;
@@ -159,8 +161,9 @@ typedef NSString * NSSpeechCommandDelimiterKey NS_TYPED_ENUM;
 APPKIT_EXTERN NSSpeechCommandDelimiterKey const NSSpeechCommandPrefix API_AVAILABLE(macos(10.5));  // NSString
 APPKIT_EXTERN NSSpeechCommandDelimiterKey const NSSpeechCommandSuffix API_AVAILABLE(macos(10.5));  // NSString
 
+API_DEPRECATED_END
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 
 
 

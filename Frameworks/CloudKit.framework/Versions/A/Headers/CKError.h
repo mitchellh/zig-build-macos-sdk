@@ -21,9 +21,30 @@ CK_EXTERN NSString * const CKErrorDomain;
  */
 CK_EXTERN NSString * const CKPartialErrorsByItemIDKey;
 
-/*! If the server rejects a record save because it has been modified since the last time it was read, a @c CKErrorServerRecordChanged error will be returned and it will contain versions of the record in its userInfo dictionary. Apply your custom conflict resolution logic to the server record under @c CKServerRecordKey and attempt a save of that record. */
+/*! If the server rejects a record save because it has been modified since the last time it was read,
+ *  a @c CKErrorServerRecordChanged will be returned.  The error's @c userInfo dictionary will contain
+ *  a @c CKRecord keyed by @c CKRecordChangedErrorAncestorRecordKey.  This is the original
+ *  record used as a basis for making your changes.
+ *
+ *  Note that if you had attempted to save a new @c CKRecord instance, this record may not have any
+ *  key / value pairs set on it, as there was no @c CKRecord instance that represents an ancestor point.
+ */
 CK_EXTERN NSString * const CKRecordChangedErrorAncestorRecordKey;
+
+/*! If the server rejects a record save because it has been modified since the last time it was read,
+ *  a @c CKErrorServerRecordChanged will be returned.  The error's @c userInfo dictionary will contain
+ *  a @c CKRecord keyed by @c CKRecordChangedErrorServerRecordKey.  This is the record
+ *  object that was found on the server.
+ *
+ *  Use this record as the basis for merging your changes.
+ */
 CK_EXTERN NSString * const CKRecordChangedErrorServerRecordKey;
+
+/*! If the server rejects a record save because it has been modified since the last time it was read,
+ *  a @c CKErrorServerRecordChanged will be returned.  The error's @c userInfo dictionary will contain
+ *  a @c CKRecord keyed by @c CKRecordChangedErrorClientRecordKey.  This is the record
+ *  object that you tried to save.
+ */
 CK_EXTERN NSString * const CKRecordChangedErrorClientRecordKey;
 
 /* On error CKErrorZoneNotFound, the userInfo dictionary may contain a NSNumber instance that specifies a boolean value representing if the error is caused by the user having reset all encrypted data for their account */
@@ -142,7 +163,9 @@ typedef NS_ENUM(NSInteger, CKErrorCode) {
     CKErrorAssetNotAvailable              API_AVAILABLE(macos(10.13), ios(11.3), tvos(11.3), watchos(4.3)) = 35,
 
     /*! The current account is in a state that may need user intervention to recover from. The user should be directed to check the Settings app. Listen for CKAccountChangedNotifications to know when to re-check account status and retry. */
-    CKErrorAccountTemporarilyUnavailable  API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) = 36
+    CKErrorAccountTemporarilyUnavailable  API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) = 36,
+    
+
 };
 
 API_AVAILABLE_END // (macos(10.10), ios(8.0), watchos(3.0))

@@ -241,7 +241,7 @@ API_AVAILABLE(ios(15.0), watchos(8.0), tvos(15.0), macos(12.0))
  *    Represents a geographical coordinate along with accuracy and timestamp information.
  */
 CL_EXTERN
-API_AVAILABLE(macos(10.6), ios(2.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.6), ios(2.0))
 @interface CLLocation : NSObject <NSCopying, NSSecureCoding>
 {
 @private
@@ -424,8 +424,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *  Discussion:
  *    Deprecated. Use -distanceFromLocation: instead.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (CLLocationDistance)getDistanceFrom:(const CLLocation *)location API_DEPRECATED_WITH_REPLACEMENT("-distanceFromLocation:", ios(2.0, 3.2), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (CLLocationDistance)getDistanceFrom:(const CLLocation *)location API_DEPRECATED_WITH_REPLACEMENT("-distanceFromLocation:", ios(2.0, 3.2), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  distanceFromLocation:
  *

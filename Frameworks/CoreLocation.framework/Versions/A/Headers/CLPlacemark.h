@@ -56,7 +56,11 @@ API_AVAILABLE(macos(10.8), ios(5.0))
  *  Discussion:
  *    Returns the geographic region associated with the placemark.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (nonatomic, readonly, copy, nullable) CLRegion *region API_UNAVAILABLE(visionos);
+#else
 @property (nonatomic, readonly, copy, nullable) CLRegion *region;
+#endif
 
 /*
  *  timeZone
@@ -73,7 +77,11 @@ API_AVAILABLE(macos(10.8), ios(5.0))
  *    This dictionary can be formatted as an address using ABCreateStringWithAddressDictionary,
  *    defined in the AddressBookUI framework.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (nonatomic, readonly, copy, nullable) NSDictionary *addressDictionary API_DEPRECATED("Use @properties", macos(10.8, 10.13), ios(5.0, 11.0), watchos(1.0, 4.0)) API_UNAVAILABLE(visionos);
+#else
 @property (nonatomic, readonly, copy, nullable) NSDictionary *addressDictionary API_DEPRECATED("Use @properties", macos(10.8, 10.13), ios(5.0, 11.0), watchos(1.0, 4.0));
+#endif
 
 // address dictionary properties
 @property (nonatomic, readonly, copy, nullable) NSString *name; // eg. Apple Inc.

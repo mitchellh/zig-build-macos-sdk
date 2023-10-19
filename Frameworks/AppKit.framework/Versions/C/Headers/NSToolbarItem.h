@@ -1,7 +1,7 @@
 /*
 	NSToolbarItem.h
 	Application Kit
-	Copyright (c) 2000-2021, Apple Inc.
+	Copyright (c) 2000-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -20,7 +20,7 @@
 @class UIImage;
 #endif
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 @class NSMenuItem, NSView, NSImage, CKShare;
 
@@ -183,11 +183,17 @@ APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarPrintItemIdentifier API_AVAILABLE
 /* A standard item that is configured to send -toggleSidebar: to the firstResponder when invoked. */
 APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarToggleSidebarItemIdentifier API_AVAILABLE(macos(10.11), ios(13.0));
 
+/* A standard item that is configured to send -toggleInspector: to the firstResponder when invoked. */
+APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarToggleInspectorItemIdentifier API_AVAILABLE(macos(14.0), ios(17.0));
+
 /* A standard item for cloud sharing via NSSharingServiceNameCloudSharing. It validates itself and modifies its appearance by using the NSCloudSharingValidation protocol. It sends -performCloudSharing: to the firstResponder. */
 APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarCloudSharingItemIdentifier API_AVAILABLE(macos(10.12));
 
 /* Creates a new NSTrackingSeparatorToolbarItem and automatically configures it to track the divider of the sidebar if one is discovered. */
 APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarSidebarTrackingSeparatorItemIdentifier API_AVAILABLE(macos(11.0)) API_UNAVAILABLE(ios);
+
+/* Creates a new NSTrackingSeparatorToolbarItem and automatically configures it to track the divider of the inspector if one is discovered. */
+APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarInspectorTrackingSeparatorItemIdentifier API_AVAILABLE(macos(14.0)) API_UNAVAILABLE(ios);
 
 /*
  Deprecated Item Identifiers
@@ -195,4 +201,4 @@ APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarSidebarTrackingSeparatorItemIdent
 APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarSeparatorItemIdentifier API_DEPRECATED("This item is no longer recommended and will be ignored on 10.7 and later.", macos(10.0, 11.0)) API_UNAVAILABLE(ios);
 APPKIT_EXTERN NSToolbarItemIdentifier NSToolbarCustomizeToolbarItemIdentifier API_DEPRECATED("This item is no longer recommended and will be ignored on 10.7 and later.", macos(10.0, 11.0)) API_UNAVAILABLE(ios);
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

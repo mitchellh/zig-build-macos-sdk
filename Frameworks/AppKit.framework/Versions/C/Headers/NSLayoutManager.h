@@ -2,7 +2,7 @@
 /*
         NSLayoutManager.h
         Application Kit
-        Copyright (c) 1994-2021, Apple Inc.
+        Copyright (c) 1994-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -23,7 +23,7 @@
 
 @protocol NSLayoutManagerDelegate;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 #if !TARGET_OS_IPHONE
 
@@ -496,7 +496,7 @@ typedef NS_ENUM(NSUInteger, NSGlyphInscription) {
 
 
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSLayoutManager.h>
 #endif

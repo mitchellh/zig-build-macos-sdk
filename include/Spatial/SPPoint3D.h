@@ -172,7 +172,11 @@ __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
 SPATIAL_INLINE
 SPATIAL_OVERLOADABLE
 SPRotation3D SPPoint3DRotationToPoint(SPPoint3D point, SPPoint3D other)
-__API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
+__API_DEPRECATED("Use `SPVector3DRotationToVector`.",
+                 macos(13.0, 14.0),
+                 ios(16.0, 17.0),
+                 watchos(9.0, 10.0),
+                 tvos(16.0, 17.0));
 
 /*!
  @abstract Returns the @p x, @p y, and @p z components of the point expressed as a simd vector.

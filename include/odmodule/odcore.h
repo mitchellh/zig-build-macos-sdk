@@ -21,6 +21,7 @@
 #include <odmodule/odrequest.h>
 #include <odmodule/odconnection.h>
 #include <odmodule/odcredential.h>
+#include <odmodule/odcstr.h>
 
 /*!
     @header     odcore
@@ -151,29 +152,6 @@ odcontext_get_data(od_context_t context);
 
 #pragma mark -
 #pragma mark Utility functions
-
-/*!
-    @function   od_cstr_from_cfstring
-    @abstract   get a C string from a CF String as UTF8
-    @discussion get a C string from a CF String as UTF8
-    @param      inCFStr the CFString to extract
-    @param      ioCStr must be freed if it is non-NULL
-    @result     a constant C string that should not be freed as it may be internal storage from the CFString
-*/
-OS_EXPORT OS_NOTHROW OS_WARN_RESULT
-const char *
-od_cstr_from_cfstring(CFStringRef inCFStr, char **ioCStr);
-
-/*!
-    @function	od_cstr_from_cfstring_or_cfdata
-    @abstract   fetches a standard C-string from a CFDataRef or CFStringRef passed to APIs
-    @discussion fetches a standard C-string from a CFDataRef or CFStringRef passed to APIs
-    @param      value is a CFDataRef or CFStringRef to extract the string from
-    @result     a pointer to a char string that must be freed
-*/
-OS_EXPORT OS_NOTHROW OS_WARN_RESULT OS_MALLOC
-char *
-od_cstr_from_cfstring_or_cfdata(CFTypeRef value);
 
 
 /*!

@@ -354,6 +354,7 @@ XPC_EXPORT
 XPC_TYPE(_xpc_type_rich_error);
 XPC_DECL(xpc_rich_error);
 
+__END_DECLS
 XPC_ASSUME_NONNULL_END
 #if !defined(__XPC_BUILDING_XPC__) || !__XPC_BUILDING_XPC__
 #include <xpc/endpoint.h>
@@ -363,11 +364,13 @@ XPC_ASSUME_NONNULL_END
 #include <xpc/connection.h>
 #include <xpc/rich_error.h>
 #include <xpc/session.h>
+#include <xpc/listener.h>
 #endif // __BLOCKS__
 #undef __XPC_INDIRECT__
 #include <launch.h>
 #endif // !defined(__XPC_BUILDING_XPC__) || !__XPC_BUILDING_XPC__
 XPC_ASSUME_NONNULL_BEGIN
+__BEGIN_DECLS
 
 #pragma mark XPC Object Protocol
 /*!
@@ -2512,7 +2515,7 @@ xpc_dictionary_get_string(xpc_object_t xdict, const char *key);
  * The key whose value is to be obtained.
  *
  * @result
- * The underlying <code>uuid_t</code> value for the specified key. NULL is the
+ * The underlying <code>uuid_t</code> value for the specified key. NULL if the
  * value at the specified index is not a UUID value. The returned pointer may be
  * safely passed to the uuid(3) APIs.
  */

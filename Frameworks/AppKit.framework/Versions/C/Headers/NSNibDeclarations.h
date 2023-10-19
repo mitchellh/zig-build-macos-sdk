@@ -1,7 +1,7 @@
 /*
         NSNibDeclarations.h
         Application Kit
-        Copyright (c) 1996-2021, Apple Inc.
+        Copyright (c) 1996-2023, Apple Inc.
         All rights reserved.
 */
 

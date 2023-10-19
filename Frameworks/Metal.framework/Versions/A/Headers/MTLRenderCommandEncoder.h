@@ -163,6 +163,50 @@ API_AVAILABLE(macos(10.11), ios(8.0))
 - (void)setVertexBuffers:(const id <MTLBuffer> __nullable [__nonnull])buffers offsets:(const NSUInteger [__nonnull])offsets withRange:(NSRange)range;
 
 /*!
+  @brief
+    sets vertex buffer at specified index with provided offset and stride. Only
+    call this when the buffer-index is part of the vertexDescriptor and has set
+    its stride to `MTLBufferLayoutStrideDynamic`
+*/
+- (void) setVertexBuffer:(nullable id<MTLBuffer>)buffer
+                  offset:(NSUInteger)offset
+         attributeStride:(NSUInteger)stride
+                 atIndex:(NSUInteger)index
+API_AVAILABLE(macos(14.0), ios(17.0));
+/*!
+  @brief
+    sets an array of vertex buffers with provided offsets and strides with the
+    given bind point range.
+    only call this when at least one buffer is part of the
+    vertexDescriptor, other buffers must set their value relative to the
+    `attributeStrides` array to `MTLAttributeStrideStatic`
+*/
+- (void) setVertexBuffers:(id<MTLBuffer> const __nullable [__nonnull])buffers
+                  offsets:(NSUInteger const [__nonnull])offsets
+         attributeStrides:(NSUInteger const [__nonnull])strides
+                withRange:(NSRange)range
+API_AVAILABLE(macos(14.0), ios(17.0));
+/*!
+  @brief
+    only call this when the buffer-index is part of the vertexDescriptor and
+    has set its stride to `MTLBufferLayoutStrideDynamic`
+*/
+- (void) setVertexBufferOffset:(NSUInteger)offset
+               attributeStride:(NSUInteger)stride
+                       atIndex:(NSUInteger)index
+API_AVAILABLE(macos(14.0), ios(17.0));
+/*!
+  @brief
+    only call this when the buffer-index is part of the vertexDescriptor and
+    has set its stride to `MTLBufferLayoutStrideDynamic`
+*/
+- (void) setVertexBytes:(void const *)bytes
+                 length:(NSUInteger)length
+        attributeStride:(NSUInteger)stride
+                atIndex:(NSUInteger)index
+API_AVAILABLE(macos(14.0), ios(17.0));
+
+/*!
  @method setVertexTexture:atIndex:
  @brief Set a global texture for all vertex shaders at the given bind point index.
  */

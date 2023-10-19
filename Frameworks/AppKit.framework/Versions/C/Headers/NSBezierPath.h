@@ -1,7 +1,7 @@
 /*
         NSBezierPath.h
         Application Kit
-        Copyright (c) 1997-2021, Apple Inc.
+        Copyright (c) 1997-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <AppKit/NSFont.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSAffineTransform;
@@ -35,8 +35,10 @@ typedef NS_ENUM(NSUInteger, NSWindingRule) {
 typedef NS_ENUM(NSUInteger, NSBezierPathElement) {
     NSBezierPathElementMoveTo,
     NSBezierPathElementLineTo,
-    NSBezierPathElementCurveTo,
-    NSBezierPathElementClosePath
+    NSBezierPathElementCubicCurveTo API_AVAILABLE(macos(14.0)),
+    NSBezierPathElementClosePath,
+    NSBezierPathElementQuadraticCurveTo API_AVAILABLE(macos(14.0)),
+    NSBezierPathElementCurveTo API_DEPRECATED_WITH_REPLACEMENT("NSBezierPathElementCubicCurveTo", macos(11.0, 14.0)) = NSBezierPathElementCubicCurveTo,
 };
 
 @interface NSBezierPath : NSObject <NSCopying, NSSecureCoding>
@@ -47,6 +49,13 @@ typedef NS_ENUM(NSUInteger, NSBezierPathElement) {
 + (NSBezierPath *)bezierPathWithRect:(NSRect)rect;
 + (NSBezierPath *)bezierPathWithOvalInRect:(NSRect)rect;
 + (NSBezierPath *)bezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)xRadius yRadius:(CGFloat)yRadius API_AVAILABLE(macos(10.5));
++ (NSBezierPath *)bezierPathWithCGPath:(CGPathRef)cgPath API_AVAILABLE(macos(14.0));
+
+// Getting the CGPath property returns a copied, autoreleasing, immutable CGPathRef;  The CGPathRef will
+// only match the NSBezierPath until the NSBezierPath is mutated.
+// Setting the CGPath property will create an immutable copy of the provided CGPathRef; Any further
+// mutations of the path will not effect the NSBezierPath.
+@property (nonnull) CGPathRef CGPath API_AVAILABLE(macos(14.0)) CF_RETURNS_NOT_RETAINED;
 
 // Immediate mode drawing of common paths.
 
@@ -73,6 +82,8 @@ typedef NS_ENUM(NSUInteger, NSBezierPathElement) {
 - (void)curveToPoint:(NSPoint)endPoint
        controlPoint1:(NSPoint)controlPoint1
        controlPoint2:(NSPoint)controlPoint2;
+- (void)curveToPoint:(NSPoint)endPoint
+        controlPoint:(NSPoint)controlPoint API_AVAILABLE(macos(14.0));
 - (void)closePath;
 
 - (void)removeAllPoints;
@@ -84,6 +95,8 @@ typedef NS_ENUM(NSUInteger, NSBezierPathElement) {
 - (void)relativeCurveToPoint:(NSPoint)endPoint
 	       controlPoint1:(NSPoint)controlPoint1
 	       controlPoint2:(NSPoint)controlPoint2;
+- (void)relativeCurveToPoint:(NSPoint)endPoint
+                controlPoint:(NSPoint)controlPoint API_AVAILABLE(macos(14.0));
 
 // Path rendering parameters.
 
@@ -196,4 +209,4 @@ static const NSBezierPathElement NSCurveToBezierPathElement API_DEPRECATED_WITH_
 static const NSBezierPathElement NSClosePathBezierPathElement API_DEPRECATED_WITH_REPLACEMENT("NSBezierPathElementClosePath", macos(10.0, 11.0)) = NSBezierPathElementClosePath;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

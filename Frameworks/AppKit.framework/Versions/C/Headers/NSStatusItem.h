@@ -1,7 +1,7 @@
 /*
     NSStatusItem.h
     Application Kit
-    Copyright (c) 1997-2021, Apple Inc.
+    Copyright (c) 1997-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -9,7 +9,7 @@
 #import <AppKit/NSEvent.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 typedef NSString * NSStatusItemAutosaveName NS_SWIFT_BRIDGED_TYPEDEF;
@@ -91,5 +91,5 @@ typedef NS_OPTIONS(NSUInteger, NSStatusItemBehavior) {
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

@@ -25,16 +25,16 @@ API_DEPRECATED("Instead of iterating notifications to enumerate changed record z
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithPreviousServerChangeToken:(nullable CKServerChangeToken *)previousServerChangeToken;
 
-@property (nonatomic, copy, nullable) CKServerChangeToken *previousServerChangeToken;
+@property (nullable, copy, nonatomic) CKServerChangeToken *previousServerChangeToken;
 
-@property (nonatomic, assign) NSUInteger resultsLimit;
+@property (assign, nonatomic) NSUInteger resultsLimit;
 
 /*! @abstract If true, then the server wasn't able to return all the changes in this response.
  *
  *  @discussion Will be set before @c fetchNotificationChangesCompletionBlock is called.
  *  Another @c CKFetchNotificationChangesOperation operation should be run with the updated @c serverChangeToken token from this operation.
  */
-@property (nonatomic, readonly, assign) BOOL moreComing;
+@property (readonly, assign, nonatomic) BOOL moreComing;
 
 /*! @abstract Called once for each updated notification fetch from the server
  *
@@ -42,7 +42,7 @@ API_DEPRECATED("Instead of iterating notifications to enumerate changed record z
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^notificationChangedBlock)(CKNotification *notification);
+@property (nullable, copy, nonatomic) void (^notificationChangedBlock)(CKNotification *notification);
 
 /*! @abstract This block is called when the operation completes.
  *
@@ -53,7 +53,7 @@ API_DEPRECATED("Instead of iterating notifications to enumerate changed record z
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchNotificationChangesCompletionBlock)(CKServerChangeToken * _Nullable serverChangeToken, NSError * _Nullable operationError);
+@property (nullable, copy, nonatomic) void (^fetchNotificationChangesCompletionBlock)(CKServerChangeToken * _Nullable serverChangeToken, NSError * _Nullable operationError);
 
 @end
 

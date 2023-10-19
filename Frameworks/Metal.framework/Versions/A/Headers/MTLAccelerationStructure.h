@@ -57,7 +57,9 @@ typedef NS_OPTIONS(uint32_t, MTLAccelerationStructureInstanceOptions) {
     MTLAccelerationStructureInstanceOptionDisableTriangleCulling = (1 << 0),
 
     /**
-     * @brief Disable triangle back or front face culling
+     * @brief Override triangle front-facing winding. By default, the winding is
+     * assumed to be clockwise unless overridden by the intersector object. This overrides
+     * the intersector's winding order.
      */
     MTLAccelerationStructureInstanceOptionTriangleFrontFacingWindingCounterClockwise = (1 << 1),
 
@@ -397,6 +399,312 @@ MTL_EXPORT API_AVAILABLE(macos(12.0), ios(15.0))
 @end
 
 
+/**
+ * @brief Curve types
+ */
+typedef NS_ENUM(NSInteger, MTLCurveType) {
+    /**
+     * @brief Curve with a circular cross-section. These curves have the
+     * advantage of having a real 3D shape consistent across different ray
+     * directions, well-defined surface normals, etc. However, they may be
+     * slower to intersect. These curves are ideal for viewing close-up.
+     */
+    MTLCurveTypeRound = 0,
+    
+    /**
+     * @brief Curve with a flat cross-section aligned with the ray direction.
+     * These curves may be faster to intersect but do not have a consistent
+     * 3D structure across different rays. These curves are ideal for viewing
+     * at a distance or curves with a small radius such as hair and fur.
+     */
+    MTLCurveTypeFlat = 1,
+} API_AVAILABLE(macos(14.0), ios(17.0));
+
+/**
+ * @brief Basis function to use to interpolate curve control points
+ */
+typedef NS_ENUM(NSInteger, MTLCurveBasis) {
+    /**
+     * @brief B-Spline basis. Each curve segment must have 3 or 4 control
+     * points. Curve segments join with C^(N - 2) continuity, where N is
+     * the number of control points. The curve does not necessarily pass
+     * through the control points without additional control points at the
+     * beginning and end of the curve. Each curve segment can overlap
+     * N-1 control points.
+     */
+    MTLCurveBasisBSpline = 0,
+    
+    /**
+     * @brief Catmull-Rom basis. Curves represented in this basis can also be
+     * easily converted to and from the Bézier basis. Each curve segment must
+     * have 4 control points. Each index in the control point index buffer
+     * points to the first of 4 consecutive control points in the control point
+     * buffer.
+    * 
+     * The tangent at each control point is given by
+     * (P_(i+1) - P_(i-1)) / 2. Therefore, the curve does not pass through the
+     * first and last control point of each connected sequence of curve
+     * segments. Instead, the first and last control point are used to control
+     * the tangent vector at the beginning and end of the curve.
+     * 
+     * Curve segments join with C^1 continuity and the
+     * curve passes through the control points. Each curve segment can overlap
+     * 3 control points.
+     */
+    MTLCurveBasisCatmullRom = 1,
+    
+    /**
+     * @brief Linear basis. The curve is made of a sequence of connected line
+     * segments each with 2 control points.
+     */
+    MTLCurveBasisLinear = 2,
+
+    /**
+     * @brief Bezier basis
+     */
+    MTLCurveBasisBezier = 3,
+} API_AVAILABLE(macos(14.0), ios(17.0));
+
+/**
+ * @brief Type of end cap to insert at the beginning and end of each connected
+ * sequence of curve segments.
+ */
+typedef NS_ENUM(NSInteger, MTLCurveEndCaps) {
+    /**
+    * @brief No end caps
+    */
+    MTLCurveEndCapsNone = 0,
+    
+    /**
+     * @brief Disk end caps
+     */
+    MTLCurveEndCapsDisk = 1,
+    
+    /**
+     * @brief Spherical end caps
+     */
+    MTLCurveEndCapsSphere = 2,
+} API_AVAILABLE(macos(14.0), ios(17.0));
+
+/**
+ * @brief Acceleration structure geometry descriptor describing geometry
+ * made of curve primitives
+ */
+MTL_EXPORT API_AVAILABLE(macos(14.0), ios(17.0))
+@interface MTLAccelerationStructureCurveGeometryDescriptor : MTLAccelerationStructureGeometryDescriptor
+
+/**
+ * @brief Buffer containing curve control points. Each control point must
+ * be of the format specified by the control point format. Must not be
+ * nil when the acceleration structure is built.
+ */
+@property (nonatomic, retain, nullable) id <MTLBuffer> controlPointBuffer;
+
+/**
+ * @brief Control point buffer offset. Must be a multiple of the control
+ * point format's element size and must be aligned to the platform's
+ * buffer offset alignment.
+ */
+@property (nonatomic) NSUInteger controlPointBufferOffset;
+
+/**
+ * @brief Number of control points in the control point buffer
+ */
+@property (nonatomic) NSUInteger controlPointCount;
+
+/**
+ * @brief Stride, in bytes, between control points in the control point
+ * buffer. Must be a multiple of the control point format's element size
+ * and must be at least the control point format's size. Defaults to 0
+ * bytes, indicating that the control points are tightly packed.
+ */
+@property (nonatomic) NSUInteger controlPointStride;
+
+/**
+ * @brief Format of the control points in the control point buffer.
+ * Defaults to MTLAttributeFormatFloat3 (packed).
+ */
+@property (nonatomic) MTLAttributeFormat controlPointFormat;
+
+/**
+ * @brief Buffer containing the curve radius for each control point. Each
+ * radius must be of the type specified by the radius format. Each radius
+ * must be at least zero. Must not be nil when the acceleration structure
+ * is built.
+ */
+@property (nonatomic, retain, nullable) id <MTLBuffer> radiusBuffer;
+
+/**
+ * @brief Radius buffer offset. Must be a multiple of the radius format
+ * size and must be aligned to the platform's buffer offset alignment.
+ */
+@property (nonatomic) NSUInteger radiusBufferOffset;
+
+/**
+ * @brief Format of the radii in the radius buffer. Defaults to 
+ * MTLAttributeFormatFloat.
+ */
+@property (nonatomic) MTLAttributeFormat radiusFormat;
+
+/**
+ * @brief Stride, in bytes, between radii in the radius buffer. Must be
+ * a multiple of the radius format size. Defaults to 0 bytes, indicating
+ * that the radii are tightly packed.
+ */
+@property (nonatomic) NSUInteger radiusStride;
+
+/**
+ * Index buffer containing references to control points in the control
+ * point buffer. Must not be nil when the acceleration structure is built.
+ */
+@property (nonatomic, retain, nullable) id <MTLBuffer> indexBuffer;
+
+/**
+ * @brief Index buffer offset. Must be a multiple of the index data type
+ * size and must be aligned to both the index data type's alignment and
+ * the platform's buffer offset alignment.
+ */
+@property (nonatomic) NSUInteger indexBufferOffset;
+
+/**
+ * @brief Index type
+ */
+@property (nonatomic) MTLIndexType indexType;
+
+/**
+ * @brief Number of curve segments
+ */
+@property (nonatomic) NSUInteger segmentCount;
+
+/**
+ * @brief Number of control points per curve segment. Must be 2, 3, or 4.
+ */
+@property (nonatomic) NSUInteger segmentControlPointCount;
+
+/**
+ * @brief Curve type. Defaults to MTLCurveTypeRound.
+ */
+@property (nonatomic) MTLCurveType curveType;
+
+/**
+ * @brief Curve basis. Defaults to MTLCurveBasisBSpline.
+ */
+@property (nonatomic) MTLCurveBasis curveBasis;
+
+/**
+ * @brief Type of curve end caps. Defaults to MTLCurveEndCapsNone.
+ */
+@property (nonatomic) MTLCurveEndCaps curveEndCaps;
+
++ (instancetype)descriptor;
+
+@end
+
+/**
+ * @brief Acceleration structure motion geometry descriptor describing
+ * geometry made of curve primitives
+ */
+MTL_EXPORT API_AVAILABLE(macos(14.0), ios(17.0))
+@interface MTLAccelerationStructureMotionCurveGeometryDescriptor : MTLAccelerationStructureGeometryDescriptor
+
+/**
+ * @brief Buffers containing curve control points for each keyframe.
+ * Each control point must be of the format specified by the control
+ * point format. Buffer offsets musts be multiples of the control
+ * point format's element size and must be aligned to the platform's
+ * buffer offset alignment. Must not be nil when the acceleration
+ * structure is built.
+ */
+@property (nonatomic, copy) NSArray <MTLMotionKeyframeData *> *controlPointBuffers;
+
+/**
+ * @brief Number of control points in the control point buffers
+ */
+@property (nonatomic) NSUInteger controlPointCount;
+
+/**
+ * @brief Stride, in bytes, between control points in the control point
+ * buffer. Must be a multiple of the control point format's element size
+ * and must be at least the control point format's size. Defaults to 0
+ * bytes, indicating that the control points are tightly packed.
+ */
+@property (nonatomic) NSUInteger controlPointStride;
+
+/**
+ * @brief Format of the control points in the control point buffer.
+ * Defaults to MTLAttributeFormatFloat3 (packed).
+ */
+@property (nonatomic) MTLAttributeFormat controlPointFormat;
+
+/**
+ * @brief Buffers containing the curve radius for each control point for
+ * each keyframe. Each radius must be of the type specified by the radius
+ * format. Buffer offsets must be multiples of the radius format size
+ * and must be aligned to the platform's buffer offset alignment. Each radius
+ * must be at least zero. Must not be nil when the acceleration structure
+ * is built.
+ */
+@property (nonatomic, copy) NSArray <MTLMotionKeyframeData *> *radiusBuffers;
+
+/**
+ * @brief Format of the radii in the radius buffer. Defaults to 
+ * MTLAttributeFormatFloat.
+ */
+@property (nonatomic) MTLAttributeFormat radiusFormat;
+
+/**
+ * @brief Stride, in bytes, between radii in the radius buffer. Must be
+ * a multiple of 4 bytes. Defaults to 4 bytes.
+ */
+@property (nonatomic) NSUInteger radiusStride;
+
+/**
+ * Index buffer containing references to control points in the control
+ * point buffer. Must not be nil.
+ */
+@property (nonatomic, retain, nullable) id <MTLBuffer> indexBuffer;
+
+/**
+ * @brief Index buffer offset. Must be a multiple of the index data type
+ * size and must be aligned to both the index data type's alignment and
+ * the platform's buffer offset alignment.
+ */
+@property (nonatomic) NSUInteger indexBufferOffset;
+
+/**
+ * @brief Index type
+ */
+@property (nonatomic) MTLIndexType indexType;
+
+/**
+ * @brief Number of curve segments
+ */
+@property (nonatomic) NSUInteger segmentCount;
+
+/**
+ * @brief Number of control points per curve segment. Must be 2, 3, or 4.
+ */
+@property (nonatomic) NSUInteger segmentControlPointCount;
+
+/**
+ * @brief Curve type. Defaults to MTLCurveTypeRound.
+ */
+@property (nonatomic) MTLCurveType curveType;
+
+/**
+ * @brief Curve basis. Defaults to MTLCurveBasisBSpline.
+ */
+@property (nonatomic) MTLCurveBasis curveBasis;
+
+/**
+ * @brief Type of curve end caps. Defaults to MTLCurveEndCapsNone.
+ */
+@property (nonatomic) MTLCurveEndCaps curveEndCaps;
+
++ (instancetype)descriptor;
+
+@end
+
 typedef struct {
     /**
      * @brief Transformation matrix describing how to transform the bottom-level acceleration structure.
@@ -472,6 +780,16 @@ typedef NS_ENUM(NSUInteger, MTLAccelerationStructureInstanceDescriptorType) {
      * @brief Instance descriptor with support for motion
      */
     MTLAccelerationStructureInstanceDescriptorTypeMotion = 2,
+    
+    /**
+     * @brief Instance descriptor with a resource handle for the instanced acceleration structure
+     */
+    MTLAccelerationStructureInstanceDescriptorTypeIndirect API_AVAILABLE(macos(14.0), ios(17.0)) = 3,
+    
+    /**
+     * @brief Motion instance descriptor with a resource handle for the instanced acceleration structure.
+     */
+    MTLAccelerationStructureInstanceDescriptorTypeIndirectMotion API_AVAILABLE(macos(14.0), ios(17.0)) = 4,
 } API_AVAILABLE(macos(12.0), ios(15.0));
 
 typedef struct {
@@ -537,6 +855,101 @@ typedef struct {
 } MTLAccelerationStructureMotionInstanceDescriptor API_AVAILABLE(macos(12.0), ios(15.0));
 
 
+typedef struct {
+    /**
+     * @brief Transformation matrix describing how to transform the bottom-level acceleration structure.
+     */
+    MTLPackedFloat4x3 transformationMatrix;
+
+    /**
+     * @brief Instance options
+     */
+    MTLAccelerationStructureInstanceOptions options;
+
+    /**
+     * @brief Instance mask used to ignore geometry during ray tracing
+     */
+    uint32_t mask;
+
+    /**
+     * @brief Used to index into intersection function tables
+     */
+    uint32_t intersectionFunctionTableOffset;
+
+    /**
+     * @brief User-assigned instance ID to help identify this instance in an
+     * application-defined way
+     */
+    uint32_t userID;
+
+    /**
+     * @brief Acceleration structure resource handle to use for this instance
+     */
+    MTLResourceID accelerationStructureID;
+} MTLIndirectAccelerationStructureInstanceDescriptor API_AVAILABLE(macos(14.0), ios(17.0));
+
+typedef struct {
+    /**
+     * @brief Instance options
+     */
+    MTLAccelerationStructureInstanceOptions options;
+
+    /**
+     * @brief Instance mask used to ignore geometry during ray tracing
+     */
+    uint32_t mask;
+
+    /**
+     * @brief Used to index into intersection function tables
+     */
+    uint32_t intersectionFunctionTableOffset;
+
+    /**
+     * @brief User-assigned instance ID to help identify this instance in an
+     * application-defined way
+     */
+    uint32_t userID;
+    
+    /**
+     * @brief Acceleration structure resource handle to use for this instance
+     */
+    MTLResourceID accelerationStructureID;
+
+    /**
+     * @brief The index of the first set of transforms describing one keyframe of the animation.
+     * These transforms are stored in a separate buffer and they are uniformly distributed over
+     * time time span of the motion.
+     */
+    uint32_t motionTransformsStartIndex;
+
+    /**
+     * @brief The count of motion transforms belonging to this motion which are stored in consecutive
+     * memory addresses at the separate motionTransforms buffer.
+     */
+    uint32_t motionTransformsCount;
+    /**
+     * @brief Motion border mode describing what happens if acceleration structure is sampled
+     * before motionStartTime
+     */
+    MTLMotionBorderMode motionStartBorderMode;
+
+    /**
+     * @brief Motion border mode describing what happens if acceleration structure is sampled
+     * after motionEndTime
+     */
+    MTLMotionBorderMode motionEndBorderMode;
+
+    /**
+     * @brief Motion start time of this instance
+     */
+    float motionStartTime;
+
+    /**
+     * @brief Motion end time of this instance
+     */
+    float motionEndTime;
+} MTLIndirectAccelerationStructureMotionInstanceDescriptor API_AVAILABLE(macos(14.0), ios(17.0));
+
 /**
  * @brief Descriptor for an instance acceleration structure
  */
@@ -592,6 +1005,87 @@ MTL_EXPORT API_AVAILABLE(macos(11.0), ios(14.0))
  * @brief Number of motion transforms
  */
 @property (nonatomic) NSUInteger motionTransformCount API_AVAILABLE(macos(12.0), ios(15.0));
+
++ (instancetype)descriptor;
+
+@end
+
+/**
+ * @brief Descriptor for an instance acceleration structure built with an indirected buffer of instances.
+ */
+MTL_EXPORT API_AVAILABLE(macos(14.0), ios(17.0))
+@interface MTLIndirectInstanceAccelerationStructureDescriptor : MTLAccelerationStructureDescriptor
+
+/**
+ * @brief Buffer containing instance descriptors of the type specified by the instanceDescriptorType property
+ */
+@property (nonatomic, retain, nullable) id <MTLBuffer> instanceDescriptorBuffer;
+
+/**
+ * @brief Offset into the instance descriptor buffer. Must be a multiple of 64 bytes and must be
+ * aligned to the platform's buffer offset alignment.
+ */
+@property (nonatomic) NSUInteger instanceDescriptorBufferOffset;
+
+/**
+ * @brief Stride, in bytes, between instance descriptors in the instance descriptor buffer. Must
+ * be at least the size of the instance descriptor type and must be a multiple of 4 bytes.
+ * Defaults to the size of the instance descriptor type.
+ */
+@property (nonatomic) NSUInteger instanceDescriptorStride;
+
+/**
+ * @brief Maximum number of instance descriptors
+ */
+@property (nonatomic) NSUInteger maxInstanceCount;
+
+/**
+ * @brief Buffer containing the instance count as a uint32_t value. Value at build time
+ * must be less than or equal to maxInstanceCount.
+ */
+@property (nonatomic, retain, nullable) id <MTLBuffer> instanceCountBuffer;
+
+/**
+ * @brief Offset into the instance count buffer. Must be a multiple of 4 bytes and must be
+ * aligned to the platform's buffer offset alignment.
+ */
+@property (nonatomic) NSUInteger instanceCountBufferOffset;
+
+/**
+ * @brief Type of instance descriptor in the instance descriptor buffer. Defaults to
+ * MTLAccelerationStructureInstanceDescriptorTypeIndirect. Must be
+ * MTLAccelerationStructureInstanceDescriptorTypeIndirect or
+ * MTLAccelerationStructureInstanceDescriptorTypeIndirectMotion.
+ */
+@property (nonatomic) MTLAccelerationStructureInstanceDescriptorType instanceDescriptorType;
+
+/**
+ * @brief Buffer containing transformation information for motion
+ */
+@property (nonatomic, retain, nullable) id <MTLBuffer> motionTransformBuffer;
+
+/**
+ * @brief Offset into the instance motion descriptor buffer. Must be a multiple of 64 bytes and
+ * must be aligned to the platform's buffer offset alignment.
+ */
+@property (nonatomic) NSUInteger motionTransformBufferOffset;
+
+/**
+ * @brief Maximum number of motion transforms
+ */
+@property (nonatomic) NSUInteger maxMotionTransformCount;
+
+/**
+ * @brief Buffer containing the motion transform count as a uint32_t value. Value at build time
+ * must be less than or equal to maxMotionTransformCount.
+ */
+@property (nonatomic, retain, nullable) id <MTLBuffer> motionTransformCountBuffer;
+
+/**
+ * @brief Offset into the motion transform count buffer. Must be a multiple of 4 bytes and must be
+ * aligned to the platform's buffer offset alignment.
+ */
+@property (nonatomic) NSUInteger motionTransformCountBufferOffset;
 
 + (instancetype)descriptor;
 

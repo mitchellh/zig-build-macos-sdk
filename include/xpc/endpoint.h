@@ -1,6 +1,8 @@
 #ifndef __XPC_ENDPOINT_H__
 #define __XPC_ENDPOINT_H__
 
+__BEGIN_DECLS
+
 /*!
  * @function xpc_endpoint_create
  * Creates a new endpoint from a connection that is suitable for embedding into
@@ -19,4 +21,6 @@ XPC_EXPORT XPC_MALLOC XPC_RETURNS_RETAINED XPC_WARN_RESULT XPC_NONNULL1
 xpc_endpoint_t _Nonnull
 xpc_endpoint_create(xpc_connection_t _Nonnull connection);
 
-#endif // __XPC_ENDPOINT_H__ 
+__END_DECLS
+
+#endif // __XPC_ENDPOINT_H__

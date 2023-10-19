@@ -1,7 +1,7 @@
 /*
     NSWindow.h
     Application Kit
-    Copyright (c) 1994-2021, Apple Inc.
+    Copyright (c) 1994-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -24,10 +24,10 @@
 
 #import <ApplicationServices/ApplicationServices.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
-@class NSButton, NSButtonCell, NSColor, NSImage, NSScreen, NSNotification, NSText, NSView, NSMutableSet, NSSet, NSDate, NSToolbar, NSGraphicsContext, NSURL, NSColorSpace, NSDockTile, NSViewController, NSTitlebarAccessoryViewController, NSEvent, NSWindowController, NSWindowTab, NSWindowTabGroup;
+@class CADisplayLink, NSButton, NSButtonCell, NSColor, NSImage, NSScreen, NSNotification, NSText, NSView, NSMutableSet, NSSet, NSDate, NSToolbar, NSGraphicsContext, NSURL, NSColorSpace, NSDockTile, NSViewController, NSTitlebarAccessoryViewController, NSEvent, NSWindowController, NSWindowTab, NSWindowTabGroup;
     
 @protocol NSWindowDelegate;
 
@@ -294,7 +294,7 @@ typedef NSString * NSWindowTabbingIdentifier NS_SWIFT_BRIDGED_TYPEDEF;
 
 - (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSWindowStyleMask)style backing:(NSBackingStoreType)backingStoreType defer:(BOOL)flag NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSWindowStyleMask)style backing:(NSBackingStoreType)backingStoreType defer:(BOOL)flag screen:(nullable NSScreen *)screen;
-- (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE; // Use initWithContentRect:. This method will throw an exception for coders that support allowsKeyedCoding, and is only available for compatability with non keyed coding.
+- (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE; // Use initWithContentRect:. This method will throw an exception for coders that support allowsKeyedCoding, and is only available for compatibility with non keyed coding.
 
 @property (copy) NSString *title;
 
@@ -404,7 +404,7 @@ typedef NSString * NSWindowTabbingIdentifier NS_SWIFT_BRIDGED_TYPEDEF;
 - (void)setAutorecalculatesContentBorderThickness:(BOOL)flag forEdge:(NSRectEdge)edge API_AVAILABLE(macos(10.5));
 - (BOOL)autorecalculatesContentBorderThicknessForEdge:(NSRectEdge)edge API_AVAILABLE(macos(10.5));
 
-/* Calling -setMovable with a flag of NO will disable server-side dragging of the window via titlebar or background.  -setMovableByWindowBackground:YES is ignored on a window that returns NO from -isMovable.  When a window returns NO for -isMovable, it can be assigned to a different space with its relative screen position preserved.  Note that a resizable window may still be resized, and the window frame may be changed programmatically.  Applications may choose to enable application-controlled window dragging after disabling server-side dragging (perhaps to achieve snapping or pinnning) by handling the mouseDown/mouseDragged/mouseUp sequence in -sendEvent: in an NSWindow subclass.  Note that a non movable window will also not be moved (or resized) by the system in response to a display reconfiguration. */
+/* Calling -setMovable with a flag of NO will disable server-side dragging of the window via titlebar or background.  -setMovableByWindowBackground:YES is ignored on a window that returns NO from -isMovable.  When a window returns NO for -isMovable, it can be assigned to a different space with its relative screen position preserved.  Note that a resizable window may still be resized, and the window frame may be changed programmatically.  Applications may choose to enable application-controlled window dragging after disabling server-side dragging (perhaps to achieve snapping or pinning) by handling the mouseDown/mouseDragged/mouseUp sequence in -sendEvent: in an NSWindow subclass.  Note that a non movable window will also not be moved (or resized) by the system in response to a display reconfiguration. */
 @property (getter=isMovable) BOOL movable API_AVAILABLE(macos(10.6));
 
 @property (getter=isMovableByWindowBackground) BOOL movableByWindowBackground;
@@ -433,11 +433,29 @@ typedef NSString * NSWindowTabbingIdentifier NS_SWIFT_BRIDGED_TYPEDEF;
 @property (getter=isMainWindow, readonly) BOOL mainWindow;
 @property (readonly) BOOL canBecomeKeyWindow;
 @property (readonly) BOOL canBecomeMainWindow;
+
+/*! Makes the window key and main if eligible, updating NSAppication's `-keyWindow` and `-mainWindow` properties.
+ */
 - (void)makeKeyWindow;
+
+/*! Makes the window main if eligible. Updates NSApplication's `-mainWindow` property.
+ */
 - (void)makeMainWindow;
+
+/*! Informs the window that it has become the key window. This method exists as an override point. Do not invoke directly. Instead, invoke `-makeKeyWindow`.
+ */
 - (void)becomeKeyWindow;
+
+/*! Informs the window that it has stopped being the key window. This method exists as an override point. Do not invoke directly. Windows automatically receive this message when deactivating or when another window has become key.
+ */
 - (void)resignKeyWindow;
+
+/*! Informs the window that it has become the main window. This method exists as an override point. Do not invoke directly. Instead, invoke `-makeMainWindow`.
+ */
 - (void)becomeMainWindow;
+
+/*! Informs the window that it has stopped being the main window. This method exists as an override point. Do not invoke directly. Windows automatically receive this message when deactivating or when another window has become main.
+ */
 - (void)resignMainWindow;
 
 @property (readonly) BOOL worksWhenModal;
@@ -780,6 +798,13 @@ typedef NSString * NSWindowTabbingIdentifier NS_SWIFT_BRIDGED_TYPEDEF;
 @property (readonly) void * /* WindowRef */windowRef NS_RETURNS_INNER_POINTER;
 @end
 
+API_AVAILABLE(macos(14.0))
+@interface NSWindow (NSDisplayLink)
+/*
+    Returns a new display link whose callback will be invoked in-sync with the display the window is on. If the window is not on any display the callback will not be invoked.
+*/
+- (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)selector NS_SWIFT_NAME(displayLink(target:selector:));
+@end
 
 @protocol NSWindowDelegate <NSObject>
 @optional
@@ -1017,5 +1042,5 @@ static const NSWindowLevel NSDockWindowLevel API_DEPRECATED("", macos(10.0,10.13
 
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

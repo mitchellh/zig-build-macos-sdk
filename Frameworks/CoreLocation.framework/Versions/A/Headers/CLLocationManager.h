@@ -10,6 +10,10 @@
 #import <CoreLocation/CLAvailability.h>
 #import <CoreLocation/CLLocation.h>
 #import <CoreLocation/CLRegion.h>
+#import <CoreLocation/CLLocationUpdater.h>
+#import <CoreLocation/CLMonitor.h>
+#import <CoreLocation/CLMonitoringEvent.h>
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -57,8 +61,11 @@ typedef NS_ENUM(int, CLAuthorizationStatus) {
 	//
 	// This value should be used on iOS, tvOS and watchOS.  It is available on
 	// MacOS, but kCLAuthorizationStatusAuthorized is synonymous and preferred.
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+	kCLAuthorizationStatusAuthorizedAlways API_AVAILABLE(macos(10.12), ios(8.0)) API_UNAVAILABLE(visionos),
+#else
 	kCLAuthorizationStatusAuthorizedAlways API_AVAILABLE(macos(10.12), ios(8.0)),
-
+#endif
 	// User has granted authorization to use their location only while
 	// they are using your app.  Note: You can reflect the user's
 	// continued engagement with your app using
@@ -72,7 +79,11 @@ typedef NS_ENUM(int, CLAuthorizationStatus) {
 	//
 	// This value is deprecated or prohibited on iOS, tvOS and watchOS.
 	// It should be used on MacOS.
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+	kCLAuthorizationStatusAuthorized API_DEPRECATED("Use kCLAuthorizationStatusAuthorizedAlways", ios(2.0, 8.0)) API_AVAILABLE(macos(10.6)) API_UNAVAILABLE(watchos, tvos, visionos) = kCLAuthorizationStatusAuthorizedAlways
+#else
 	kCLAuthorizationStatusAuthorized API_DEPRECATED("Use kCLAuthorizationStatusAuthorizedAlways", ios(2.0, 8.0)) API_AVAILABLE(macos(10.6)) API_UNAVAILABLE(watchos, tvos) = kCLAuthorizationStatusAuthorizedAlways
+#endif
 };
 
 typedef NS_ENUM(NSInteger, CLAccuracyAuthorization) {
@@ -126,6 +137,8 @@ typedef NS_ENUM(NSInteger, CLActivityType) {
 @class CLHeading;
 @class CLBeaconRegion;
 @class CLBeaconIdentityConstraint;
+@class CLMonitorConfiguration;
+@class CLBackgroundActivitySession;
 @protocol CLLocationManagerDelegate;
 
 /*
@@ -254,7 +267,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *  Discussion:
  *      Deprecated. Use +locationServicesEnabled instead.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property(readonly, nonatomic) BOOL locationServicesEnabled API_DEPRECATED_WITH_REPLACEMENT("+locationServicesEnabled", ios(2.0, 4.0), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 @property(readonly, nonatomic) BOOL locationServicesEnabled API_DEPRECATED_WITH_REPLACEMENT("+locationServicesEnabled", ios(2.0, 4.0), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  purpose
@@ -266,8 +283,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *
  *      Deprecated.  Set the purpose string in Info.plist using key NSLocationUsageDescription.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property(copy, nonatomic, nullable) NSString *purpose API_DEPRECATED("Set the purpose string in Info.plist using key NSLocationUsageDescription", ios(3.2, 6.0), macos(10.7, 11.0)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 @property(copy, nonatomic, nullable) NSString *purpose API_DEPRECATED("Set the purpose string in Info.plist using key NSLocationUsageDescription", ios(3.2, 6.0), macos(10.7, 11.0)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *	activityType
  *
@@ -334,8 +354,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      See -requestWhenInUseAuthorization and -requestAlwaysAuthorization for
  *      more details on possible authorization values.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property(assign, nonatomic) BOOL allowsBackgroundLocationUpdates API_AVAILABLE(ios(9.0), macos(10.15), watchos(4.0)) API_UNAVAILABLE(tvos, visionos);
+#else
 @property(assign, nonatomic) BOOL allowsBackgroundLocationUpdates API_AVAILABLE(ios(9.0), macos(10.15), watchos(4.0)) API_UNAVAILABLE(tvos);
-
+#endif
 /*
  *  showsBackgroundLocationIndicator
  *
@@ -370,8 +393,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *  Discussion:
  *      Deprecated. Use +headingAvailable instead.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property(readonly, nonatomic) BOOL headingAvailable API_DEPRECATED_WITH_REPLACEMENT("+headingAvailable", ios(3.0, 4.0), macos(10.15, 10.15), visionos(1.0, 1.0)) API_UNAVAILABLE(watchos, tvos);
+#else
 @property(readonly, nonatomic) BOOL headingAvailable API_DEPRECATED_WITH_REPLACEMENT("+headingAvailable", ios(3.0, 4.0), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  headingFilter
  *  
@@ -380,8 +406,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      be notified of updates less than the stated filter value. Pass in kCLHeadingFilterNone to be
  *      notified of all updates. By default, 1 degree is used.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property(assign, nonatomic) CLLocationDegrees headingFilter API_AVAILABLE(ios(3.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos, visionos);
+#else
 @property(assign, nonatomic) CLLocationDegrees headingFilter API_AVAILABLE(ios(3.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos);
-
+#endif
 /*
  *  headingOrientation
  *  
@@ -391,16 +420,22 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      CLDeviceOrientationFaceDown are ignored.
  *      
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property(assign, nonatomic) CLDeviceOrientation headingOrientation API_AVAILABLE(ios(4.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos, visionos);
+#else
 @property(assign, nonatomic) CLDeviceOrientation headingOrientation API_AVAILABLE(ios(4.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos);
-
+#endif
 /*
  *  heading
  *  
  *  Discussion:
  *      Returns the latest heading update received, or nil if none is available.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property(readonly, nonatomic, copy, nullable) CLHeading *heading API_AVAILABLE(ios(4.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos, visionos);
+#else
 @property(readonly, nonatomic, copy, nullable) CLHeading *heading API_AVAILABLE(ios(4.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos);
-
+#endif
 /*
  *  maximumRegionMonitoringDistance
  *  
@@ -409,8 +444,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *       Attempts to register a region larger than this will generate a kCLErrorRegionMonitoringFailure.
  *       This value may vary based on the hardware features of the device, as well as on dynamically changing resource constraints.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (readonly, nonatomic) CLLocationDistance maximumRegionMonitoringDistance API_AVAILABLE(ios(4.0), macos(10.8)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 @property (readonly, nonatomic) CLLocationDistance maximumRegionMonitoringDistance API_AVAILABLE(ios(4.0), macos(10.8)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  monitoredRegions
  *  
@@ -419,15 +457,22 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *       has been instructed to monitor a region, during this or previous launches of your application, it will
  *       be present in this set.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (readonly, nonatomic, copy) NSSet<__kindof CLRegion *> *monitoredRegions API_AVAILABLE(ios(4.0), macos(10.8)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 @property (readonly, nonatomic, copy) NSSet<__kindof CLRegion *> *monitoredRegions API_AVAILABLE(ios(4.0), macos(10.8)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  rangedRegions
  *
  *  Discussion:
  *       Retrieve a set of objects representing the regions for which this location manager is actively providing ranging.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (readonly, nonatomic, copy) NSSet<__kindof CLRegion *> *rangedRegions API_DEPRECATED("Use -rangedBeaconConstraints", ios(7.0, 13.0), macos(10.15, 10.15), macCatalyst(14.0, 14.0)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 @property (readonly, nonatomic, copy) NSSet<__kindof CLRegion *> *rangedRegions API_DEPRECATED("Use -rangedBeaconConstraints", ios(7.0, 13.0), macos(10.15, 10.15), macCatalyst(14.0, 14.0)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  rangedBeaconConstraints
@@ -435,8 +480,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *  Discussion:
  *      Retrieve a set of beacon constraints for which this location manager is actively providing ranging.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (readonly, nonatomic, copy) NSSet<CLBeaconIdentityConstraint *> *rangedBeaconConstraints API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 @property (readonly, nonatomic, copy) NSSet<CLBeaconIdentityConstraint *> *rangedBeaconConstraints API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  requestWhenInUseAuthorization
  *
@@ -510,8 +558,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      Info.plist; otherwise, this method will do nothing, as your app will be
  *      assumed not to support Always authorization.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)requestAlwaysAuthorization API_AVAILABLE(ios(8.0), macos(10.15)) API_UNAVAILABLE(tvos, visionos);
+#else
 - (void)requestAlwaysAuthorization API_AVAILABLE(ios(8.0), macos(10.15)) API_UNAVAILABLE(tvos);
-
+#endif
 /*
  *  requestTemporaryFullAccuracyAuthorizationWithPurposeKey:completion:
  *
@@ -620,24 +671,33 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *  Discussion:
  *      Start updating heading.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)startUpdatingHeading API_AVAILABLE(ios(3.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos, visionos);
+#else
 - (void)startUpdatingHeading API_AVAILABLE(ios(3.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos);
-
+#endif
 /*
  *  stopUpdatingHeading
  *
  *  Discussion:
  *      Stop updating heading.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)stopUpdatingHeading API_AVAILABLE(ios(3.0), watchos(2.0)) API_UNAVAILABLE(tvos, macos, visionos);
+#else
 - (void)stopUpdatingHeading API_AVAILABLE(ios(3.0), watchos(2.0)) API_UNAVAILABLE(tvos, macos);
-
+#endif
 /*
  *  dismissHeadingCalibrationDisplay
  *  
  *  Discussion:
  *      Dismiss the heading calibration immediately.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)dismissHeadingCalibrationDisplay API_AVAILABLE(ios(3.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos, visionos);
+#else
 - (void)dismissHeadingCalibrationDisplay API_AVAILABLE(ios(3.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos);
-
+#endif
 /*
  *  startMonitoringSignificantLocationChanges
  *
@@ -647,8 +707,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      location service.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)startMonitoringSignificantLocationChanges API_AVAILABLE(ios(4.0), macos(10.7)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (void)startMonitoringSignificantLocationChanges API_AVAILABLE(ios(4.0), macos(10.7)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  stopMonitoringSignificantLocationChanges
  *
@@ -656,8 +719,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      Stop monitoring significant location changes.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)stopMonitoringSignificantLocationChanges API_AVAILABLE(ios(4.0), macos(10.7)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (void)stopMonitoringSignificantLocationChanges API_AVAILABLE(ios(4.0), macos(10.7)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  startMonitoringLocationPushes
  *
@@ -665,8 +731,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *   	Request an Apple Push Notification service token to be used to send location pushes. Incoming location pushes launch the app's Location Push Service Extension. Requires the com.apple.developer.location.push entitlement.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)startMonitoringLocationPushesWithCompletion:(void(^ _Nullable)(NSData * _Nullable token, NSError * _Nullable))completion API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, watchos, visionos);
+#else
 - (void)startMonitoringLocationPushesWithCompletion:(void(^ _Nullable)(NSData * _Nullable token, NSError * _Nullable))completion API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, watchos);
-
+#endif
 /*
  *  stopMonitoringLocationPushes
  *
@@ -674,8 +743,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *		Stop monitoring for location pushes.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)stopMonitoringLocationPushes API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, watchos, visionos);
+#else
 - (void)stopMonitoringLocationPushes API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, watchos);
-
+#endif
 /*
  *  startMonitoringForRegion:desiredAccuracy:
  *
@@ -692,7 +764,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      This is done asynchronously and may not be immediately reflected in monitoredRegions.
  */
 - (void)startMonitoringForRegion:(CLRegion *)region
-                 desiredAccuracy:(CLLocationAccuracy)accuracy API_DEPRECATED_WITH_REPLACEMENT("-startMonitoringForRegion:", ios(4.0, 6.0), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos);
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+				 desiredAccuracy:(CLLocationAccuracy)accuracy API_DEPRECATED_WITH_REPLACEMENT("-startMonitoringForRegion:", ios(4.0, 6.0), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
+desiredAccuracy:(CLLocationAccuracy)accuracy API_DEPRECATED_WITH_REPLACEMENT("-startMonitoringForRegion:", ios(4.0, 6.0), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  stopMonitoringForRegion:
@@ -703,7 +779,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *
  *      This is done asynchronously and may not be immediately reflected in monitoredRegions.
  */
-- (void)stopMonitoringForRegion:(CLRegion *)region API_AVAILABLE(ios(4.0), macos(10.8)) API_UNAVAILABLE(watchos, tvos);
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)stopMonitoringForRegion:(CLRegion *)region API_DEPRECATED_WITH_REPLACEMENT("Use CLMonitor to start or stop monitoring constraint", ios(5.0, API_TO_BE_DEPRECATED), macos(10.8, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
+- (void)stopMonitoringForRegion:(CLRegion *)region API_DEPRECATED_WITH_REPLACEMENT("Use CLMonitor to start or stop monitoring constraint", ios(5.0, API_TO_BE_DEPRECATED), macos(10.8, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  startMonitoringForRegion:
@@ -717,7 +797,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *
  *      This is done asynchronously and may not be immediately reflected in monitoredRegions.
  */
-- (void)startMonitoringForRegion:(CLRegion *)region API_AVAILABLE(ios(5.0), macos(10.8)) API_UNAVAILABLE(watchos, tvos);
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)startMonitoringForRegion:(CLRegion *)region API_DEPRECATED_WITH_REPLACEMENT("Use CLMonitor to start or stop monitoring constraint", ios(5.0, API_TO_BE_DEPRECATED), macos(10.8, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
+- (void)startMonitoringForRegion:(CLRegion *)region API_DEPRECATED_WITH_REPLACEMENT("Use CLMonitor to start or stop monitoring constraint", ios(5.0, API_TO_BE_DEPRECATED), macos(10.8, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  requestStateForRegion:
@@ -726,7 +810,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      Asynchronously retrieve the cached state of the specified region. The state is returned to the delegate via
  *      locationManager:didDetermineState:forRegion:.
  */
-- (void)requestStateForRegion:(CLRegion *)region API_AVAILABLE(ios(7.0), macos(10.10)) API_UNAVAILABLE(watchos, tvos);
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)requestStateForRegion:(CLRegion *)region API_DEPRECATED_WITH_REPLACEMENT("Use CLMonitor to track and query the state for monitored constraints", ios(5.0, API_TO_BE_DEPRECATED), macos(10.8, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
+- (void)requestStateForRegion:(CLRegion *)region API_DEPRECATED_WITH_REPLACEMENT("Use CLMonitor to track and query the state for monitored constraints", ios(5.0, API_TO_BE_DEPRECATED), macos(10.8, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  startRangingBeaconsInRegion:
@@ -734,16 +822,22 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *  Discussion:
  *      Start calculating ranges for beacons in the specified region.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)startRangingBeaconsInRegion:(CLBeaconRegion *)region API_DEPRECATED("Use -startRangingBeaconsSatisfyingConstraint:", ios(7.0, 13.0), macos(11.0, 11.0), macCatalyst(14.0, 14.0)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (void)startRangingBeaconsInRegion:(CLBeaconRegion *)region API_DEPRECATED("Use -startRangingBeaconsSatisfyingConstraint:", ios(7.0, 13.0), macos(11.0, 11.0), macCatalyst(14.0, 14.0)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  stopRangingBeaconsInRegion:
  *
  *  Discussion:
  *      Stop calculating ranges for the specified region.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)stopRangingBeaconsInRegion:(CLBeaconRegion *)region API_DEPRECATED("Use -stopRangingBeaconsSatisfyingConstraint:", ios(7.0, 13.0), macos(11.0, 11.0), macCatalyst(14.0, 14.0)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (void)stopRangingBeaconsInRegion:(CLBeaconRegion *)region API_DEPRECATED("Use -stopRangingBeaconsSatisfyingConstraint:", ios(7.0, 13.0), macos(11.0, 11.0), macCatalyst(14.0, 14.0)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  startRangingBeaconsSatisfyingConstraint:
  *
@@ -752,7 +846,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      the provided constraint.  Ranging will continue until you pass
  *      an equivalent constraint to stopRangingBeaconsSatisfyingConstraint:.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)startRangingBeaconsSatisfyingConstraint:(CLBeaconIdentityConstraint *)constraint API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (void)startRangingBeaconsSatisfyingConstraint:(CLBeaconIdentityConstraint *)constraint API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  stopRangingBeaconsSatisfyingConstraint:
@@ -760,7 +858,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *  Discussion:
  *      Stop an earlier beacon ranging request.  See startRangingBeaconsSatisfyingConstraint:.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)stopRangingBeaconsSatisfyingConstraint:(CLBeaconIdentityConstraint *)constraint API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (void)stopRangingBeaconsSatisfyingConstraint:(CLBeaconIdentityConstraint *)constraint API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *	allowDeferredLocationUpdatesUntilTraveled:timeout:
@@ -796,8 +898,13 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *		will be returned if the manager will not defer updates and the exit
  *		criteria have not been met.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
 - (void)allowDeferredLocationUpdatesUntilTraveled:(CLLocationDistance)distance
-                                          timeout:(NSTimeInterval)timeout API_DEPRECATED("You can remove calls to this method", ios(6.0, 13.0), macos(10.15, 10.15))  API_UNAVAILABLE(watchos, tvos);
+										  timeout:(NSTimeInterval)timeout API_DEPRECATED("You can remove calls to this method", ios(6.0, 13.0), macos(10.15, 10.15))  API_UNAVAILABLE(watchos, tvos, visionos);
+#else
+- (void)allowDeferredLocationUpdatesUntilTraveled:(CLLocationDistance)distance
+										  timeout:(NSTimeInterval)timeout API_DEPRECATED("You can remove calls to this method", ios(6.0, 13.0), macos(10.15, 10.15))  API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *	disallowDeferredLocationUpdates
@@ -806,7 +913,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *		Disallow deferred location updates if previously enabled. Any outstanding
  *		updates will be sent and regular location updates will resume.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (void)disallowDeferredLocationUpdates API_DEPRECATED("You can remove calls to this method", ios(6.0, 13.0), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (void)disallowDeferredLocationUpdates API_DEPRECATED("You can remove calls to this method", ios(6.0, 13.0), macos(10.15, 10.15)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  deferredLocationUpdatesAvailable
@@ -814,7 +925,11 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *  Discussion:
  *      Returns YES if the device supports deferred location updates, otherwise NO.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
++ (BOOL)deferredLocationUpdatesAvailable API_DEPRECATED("You can remove calls to this method", ios(6.0, 13.0), macos(10.9, 10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 + (BOOL)deferredLocationUpdatesAvailable API_DEPRECATED("You can remove calls to this method", ios(6.0, 13.0), macos(10.9, 10.15)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  requestHistoricalLocationsWithPurposeKey:sampleCount:completionHandler:
@@ -857,7 +972,6 @@ API_AVAILABLE(macos(10.6), ios(2.0))
 	NS_SWIFT_ASYNC_NAME(historicalLocations(purposeKey:sampleCount:))
 #endif
 	;
-
 @end
 
 NS_ASSUME_NONNULL_END

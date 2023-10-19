@@ -26,8 +26,8 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithRecordZoneIDs:(NSArray<CKRecordZoneID *> *)recordZoneIDs configurationsByRecordZoneID:(nullable NSDictionary<CKRecordZoneID *, CKFetchRecordZoneChangesConfiguration *> *)configurationsByRecordZoneID API_AVAILABLE(macos(10.14), ios(12.0), tvos(12.0), watchos(5.0));
 
-@property (nonatomic, copy, nullable) NSArray<CKRecordZoneID *> *recordZoneIDs;
-@property (nonatomic, copy, nullable) NSDictionary<CKRecordZoneID *, CKFetchRecordZoneChangesConfiguration *> *configurationsByRecordZoneID API_AVAILABLE(macos(10.14), ios(12.0), tvos(12.0), watchos(5.0));
+@property (nullable, copy, nonatomic) NSArray<CKRecordZoneID *> *recordZoneIDs;
+@property (nullable, copy, nonatomic) NSDictionary<CKRecordZoneID *, CKFetchRecordZoneChangesConfiguration *> *configurationsByRecordZoneID API_AVAILABLE(macos(10.14), ios(12.0), tvos(12.0), watchos(5.0));
 
 /*! @abstract Determines if the operation should fetch all changes from the server before completing.
  *
@@ -37,27 +37,27 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *
  *  @c fetchAllChanges is YES by default
  */
-@property (nonatomic, assign) BOOL fetchAllChanges;
+@property (assign, nonatomic) BOOL fetchAllChanges;
 
 /*! @discussion If the replacement callback @c recordWasChangedBlock is set, this callback block is ignored.
  *  Each @c CKOperation instance has a private serial queue. This queue is used for all callback block invocations.
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordChangedBlock)(CKRecord *record) API_DEPRECATED("Use recordWasChangedBlock instead, which surfaces per-record errors", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
+@property (nullable, copy, nonatomic) void (^recordChangedBlock)(CKRecord *record) API_DEPRECATED("Use recordWasChangedBlock instead, which surfaces per-record errors", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
 
 /*! @discussion If a record fails in post-processing (say, a network failure materializing a @c CKAsset record field), the per-record error will be passed here.
  *  Each @c CKOperation instance has a private serial queue. This queue is used for all callback block invocations.
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordWasChangedBlock)(CKRecordID *recordID, CKRecord * _Nullable record, NSError * _Nullable error) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) NS_REFINED_FOR_SWIFT;
+@property (nullable, copy, nonatomic) void (^recordWasChangedBlock)(CKRecordID *recordID, CKRecord * _Nullable record, NSError * _Nullable error) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) NS_REFINED_FOR_SWIFT;
 
 /*! @discussion Each @c CKOperation instance has a private serial queue. This queue is used for all callback block invocations.
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordWithIDWasDeletedBlock)(CKRecordID *recordID, CKRecordType recordType);
+@property (nullable, copy, nonatomic) void (^recordWithIDWasDeletedBlock)(CKRecordID *recordID, CKRecordType recordType);
 
 /*! @discussion Clients are responsible for saving this per-recordZone @c serverChangeToken and passing it in to the next call to @c CKFetchRecordZoneChangesOperation.
  *  Note that a fetch can fail partway. If that happens, an updated change token may be returned in this block so that already fetched records don't need to be re-downloaded on a subsequent operation.
@@ -69,8 +69,8 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordZoneChangeTokensUpdatedBlock)(CKRecordZoneID *recordZoneID, CKServerChangeToken * _Nullable serverChangeToken, NSData * _Nullable clientChangeTokenData);
-@property (nonatomic, copy, nullable) void (^recordZoneFetchCompletionBlock)(CKRecordZoneID *recordZoneID, CKServerChangeToken * _Nullable serverChangeToken, NSData * _Nullable clientChangeTokenData, BOOL moreComing, NSError * _Nullable recordZoneError) CK_SWIFT_DEPRECATED("Use recordZoneFetchResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
+@property (nullable, copy, nonatomic) void (^recordZoneChangeTokensUpdatedBlock)(CKRecordZoneID *recordZoneID, CKServerChangeToken * _Nullable serverChangeToken, NSData * _Nullable clientChangeTokenData);
+@property (nullable, copy, nonatomic) void (^recordZoneFetchCompletionBlock)(CKRecordZoneID *recordZoneID, CKServerChangeToken * _Nullable serverChangeToken, NSData * _Nullable clientChangeTokenData, BOOL moreComing, NSError * _Nullable recordZoneError) CK_SWIFT_DEPRECATED("Use recordZoneFetchResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
 
 /*! @abstract This block is called when the operation completes.
  *
@@ -80,7 +80,7 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchRecordZoneChangesCompletionBlock)(NSError * _Nullable operationError) CK_SWIFT_DEPRECATED("Use fetchRecordZoneChangesResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
+@property (nullable, copy, nonatomic) void (^fetchRecordZoneChangesCompletionBlock)(NSError * _Nullable operationError) CK_SWIFT_DEPRECATED("Use fetchRecordZoneChangesResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
 
 @end
 
@@ -89,34 +89,35 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
 - (instancetype)initWithRecordZoneIDs:(NSArray<CKRecordZoneID *> *)recordZoneIDs optionsByRecordZoneID:(nullable NSDictionary<CKRecordZoneID *, CKFetchRecordZoneChangesOptions *> *)optionsByRecordZoneID
 API_DEPRECATED_WITH_REPLACEMENT("initWithRecordZoneIDs:configurationsByRecordZoneID:", macos(10.12, 10.14), ios(10.0, 12.0), tvos(10.0, 12.0), watchos(3.0, 5.0));
 
-@property (nonatomic, copy, nullable) NSDictionary<CKRecordZoneID *, CKFetchRecordZoneChangesOptions *> *optionsByRecordZoneID
+@property (nullable, copy, nonatomic) NSDictionary<CKRecordZoneID *, CKFetchRecordZoneChangesOptions *> *optionsByRecordZoneID
 API_DEPRECATED_WITH_REPLACEMENT("configurationsByRecordZoneID", macos(10.12, 10.14), ios(10.0, 12.0), tvos(10.0, 12.0), watchos(3.0, 5.0));
 @end
 
 
 API_AVAILABLE(macos(10.14), ios(12.0), tvos(12.0), watchos(5.0))
+CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer apply
 // NS_SWIFT_SENDABLE on macos(13.3), macCatalyst(16.4), ios(16.4), tvos(16.4), watchos(9.4)
 @interface CKFetchRecordZoneChangesConfiguration : NSObject <NSSecureCoding, NSCopying>
 
-@property (atomic, copy, nullable) CKServerChangeToken *previousServerChangeToken;
+@property (nullable, copy) CKServerChangeToken *previousServerChangeToken;
 
-@property (atomic, assign) NSUInteger resultsLimit;
+@property (assign) NSUInteger resultsLimit;
 
 /*! @abstract Declares which user-defined keys should be fetched and added to the resulting CKRecords.
  *
  *  @discussion If nil, declares the entire record should be downloaded. If set to an empty array, declares that no user fields should be downloaded.
  *  Defaults to @c nil.
  */
-@property (atomic, copy, nullable) NSArray<CKRecordFieldKey> *desiredKeys;
+@property (nullable, copy) NSArray<CKRecordFieldKey> *desiredKeys;
 @end
 
 
 
 API_DEPRECATED_WITH_REPLACEMENT("CKFetchRecordZoneChangesConfiguration", macos(10.12, 10.14), ios(10.0, 12.0), tvos(10.0, 12.0), watchos(3.0, 5.0))
 @interface CKFetchRecordZoneChangesOptions : NSObject <NSSecureCoding, NSCopying>
-@property (nonatomic, copy, nullable) CKServerChangeToken *previousServerChangeToken;
-@property (nonatomic, assign) NSUInteger resultsLimit;
-@property (nonatomic, copy, nullable) NSArray<CKRecordFieldKey> *desiredKeys;
+@property (nullable, copy, nonatomic) CKServerChangeToken *previousServerChangeToken;
+@property (assign, nonatomic) NSUInteger resultsLimit;
+@property (nullable, copy, nonatomic) NSArray<CKRecordFieldKey> *desiredKeys;
 @end
 
 NS_HEADER_AUDIT_END(nullability, sendability)

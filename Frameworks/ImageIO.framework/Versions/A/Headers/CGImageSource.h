@@ -16,6 +16,8 @@ typedef struct IIO_BRIDGED_TYPE(id) CGImageSource * CGImageSourceRef;
 
 CF_IMPLICIT_BRIDGING_ENABLED
 
+CF_ASSUME_NONNULL_BEGIN
+
 typedef CF_ENUM(int32_t, CGImageSourceStatus) {
     kCGImageStatusUnexpectedEOF = -5,
     kCGImageStatusInvalidData = -4,
@@ -24,8 +26,6 @@ typedef CF_ENUM(int32_t, CGImageSourceStatus) {
     kCGImageStatusIncomplete = -1,
     kCGImageStatusComplete = 0
 };
-
-CF_ASSUME_NONNULL_BEGIN
 
 /** Keys for the options dictionary when creating a CGImageSourceRef. **/
 
@@ -108,8 +108,6 @@ IMAGEIO_EXTERN const CFStringRef kCGImageSourceCreateThumbnailWithTransform  IMA
  */
 
 IMAGEIO_EXTERN const CFStringRef kCGImageSourceSubsampleFactor  IMAGEIO_AVAILABLE_STARTING(10.11, 9.0);
-
-CF_ASSUME_NONNULL_END
 
 
 /* Return the CFTypeID for CGImageSources. */
@@ -235,6 +233,23 @@ IMAGEIO_EXTERN size_t CGImageSourceGetPrimaryImageIndex(CGImageSourceRef _iio_No
  * CGImageSourceCopyAuxiliaryDataInfoAtIndex returns nil if the image did not contain ‘auxiliaryImageDataType’ data.
  */
 IMAGEIO_EXTERN CFDictionaryRef _iio_Nullable CGImageSourceCopyAuxiliaryDataInfoAtIndex(CGImageSourceRef _iio_Nonnull isrc, size_t index, CFStringRef _iio_Nonnull auxiliaryImageDataType ) IMAGEIO_AVAILABLE_STARTING(10.13, 11.0);
+
+
+/* HDR-related */
+
+/* kCGImageSourceDecodeRequest - value is one of the predefined keys (kCGImageSourceDecodeToHDR, kCGImageSourceDecodeToSDR, ...)
+ */
+IMAGEIO_EXTERN const CFStringRef kCGImageSourceDecodeRequest    IMAGEIO_AVAILABLE_STARTING(14.0, 17.0, 17.0, 10.0);
+
+IMAGEIO_EXTERN const CFStringRef kCGImageSourceDecodeToHDR      IMAGEIO_AVAILABLE_STARTING(14.0, 17.0, 17.0, 10.0);
+IMAGEIO_EXTERN const CFStringRef kCGImageSourceDecodeToSDR      IMAGEIO_AVAILABLE_STARTING(14.0, 17.0, 17.0, 10.0);
+
+/* kCGImageSourceDecodeRequestOptions - CFDictionaryRef to specify additional options
+ */
+IMAGEIO_EXTERN const CFStringRef kCGImageSourceDecodeRequestOptions     IMAGEIO_AVAILABLE_STARTING(14.0, 17.0, 17.0, 10.0);
+
+
+CF_ASSUME_NONNULL_END
 
 CF_IMPLICIT_BRIDGING_DISABLED
 

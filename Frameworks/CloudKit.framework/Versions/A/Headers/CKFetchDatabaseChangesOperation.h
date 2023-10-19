@@ -27,8 +27,8 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithPreviousServerChangeToken:(nullable CKServerChangeToken *)previousServerChangeToken;
 
-@property (nonatomic, copy, nullable) CKServerChangeToken *previousServerChangeToken;
-@property (nonatomic, assign) NSUInteger resultsLimit;
+@property (nullable, copy, nonatomic) CKServerChangeToken *previousServerChangeToken;
+@property (assign, nonatomic) NSUInteger resultsLimit;
 
 /*! @discussion When set to YES, this operation will send repeated requests to the server until all record zone changes have been fetched.
  *
@@ -39,19 +39,19 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  Blocks assigned to this operation may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, assign) BOOL fetchAllChanges;
+@property (assign, nonatomic) BOOL fetchAllChanges;
 
 /*! @discussion Each @c CKOperation instance has a private serial queue. This queue is used for all callback block invocations.
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordZoneWithIDChangedBlock)(CKRecordZoneID *zoneID);
+@property (nullable, copy, nonatomic) void (^recordZoneWithIDChangedBlock)(CKRecordZoneID *zoneID);
 
 /*! @discussion Each @c CKOperation instance has a private serial queue. This queue is used for all callback block invocations.
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordZoneWithIDWasDeletedBlock)(CKRecordZoneID *zoneID);
+@property (nullable, copy, nonatomic) void (^recordZoneWithIDWasDeletedBlock)(CKRecordZoneID *zoneID);
 
 /*! @abstract If this block is set it will be called instead of @c recordZoneWithIDWasDeletedBlock if the user deleted this zone via the iCloud storage UI.
  *
@@ -60,7 +60,7 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordZoneWithIDWasPurgedBlock)(CKRecordZoneID *zoneID) API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0));
+@property (nullable, copy, nonatomic) void (^recordZoneWithIDWasPurgedBlock)(CKRecordZoneID *zoneID) API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0));
 
 /*! @abstract If this block is set it will be called instead of @c recordZoneWithIDWasDeletedBlock if the user chose to reset all encrypted data for their account.
  *
@@ -69,13 +69,13 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock)(CKRecordZoneID *zoneID) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0));
+@property (nullable, copy, nonatomic) void (^recordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock)(CKRecordZoneID *zoneID) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0));
 
 /*! @discussion Each @c CKOperation instance has a private serial queue. This queue is used for all callback block invocations.
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^changeTokenUpdatedBlock)(CKServerChangeToken * serverChangeToken);
+@property (nullable, copy, nonatomic) void (^changeTokenUpdatedBlock)(CKServerChangeToken * serverChangeToken);
 
 /*! @abstract This block is called when the operation completes.
  *
@@ -86,7 +86,7 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchDatabaseChangesCompletionBlock)(CKServerChangeToken * _Nullable serverChangeToken, BOOL moreComing, NSError * _Nullable operationError)
+@property (nullable, copy, nonatomic) void (^fetchDatabaseChangesCompletionBlock)(CKServerChangeToken * _Nullable serverChangeToken, BOOL moreComing, NSError * _Nullable operationError)
 CK_SWIFT_DEPRECATED("Use fetchDatabaseChangesResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
 
 @end

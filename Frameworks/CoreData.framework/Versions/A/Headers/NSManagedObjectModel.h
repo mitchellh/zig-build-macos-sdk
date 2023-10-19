@@ -87,6 +87,19 @@ API_AVAILABLE(macosx(10.4),ios(3.0))
 */
 @property (readonly, copy) NSDictionary<NSString *, NSData *> *entityVersionHashesByName API_AVAILABLE(macosx(10.5),ios(3.0));
 
+/*
+ * Returns a Base-64 encoded string representation of the entity version hashes.
+ */
+@property (readonly, copy) NSString *versionChecksum API_AVAILABLE(macosx(14.0),ios(17.0),tvos(17.0),watchos(10.0));
+
+/*
+ * This method will retrieve the version checksums for all the models in a versioned model bundle. This method will return nil
+ * if there is an error loading the bundle at the specified URL. Potential errors that might be returned include failures due to a lack of
+ * permissions from sandboxing or data protection, a missing file or general read errors.
+ */
++ (nullable NSDictionary<NSString *, NSString *> *)checksumsForVersionedModelAtURL:(NSURL *)modelURL
+                                                                             error:(NSError **)error NS_REFINED_FOR_SWIFT API_AVAILABLE(macosx(14.0),ios(17.0),tvos(17.0),watchos(10.0));
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -76,7 +76,7 @@ extern "C" {
 }
 #endif
 
-#if !defined(CS_LINUX) && !defined(__swift__)
+#if !defined(CS_LINUX) && !defined(__swift__) && !defined(BUILD_FOR_LAR)
 
 #define GET_CS_AVAIL_MACRO(_1,_2,NAME,...) NAME
 #define CS_AVAILABLE_STARTING(...) GET_CS_AVAIL_MACRO(__VA_ARGS__, CS_AVAILABLE_STARTING2, CS_AVAILABLE_STARTING1)(__VA_ARGS__)

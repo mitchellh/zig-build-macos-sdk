@@ -1,7 +1,7 @@
 /*
 	NSUserInterfaceValidation.h
 	Application Kit
-	Copyright (c) 1999-2021, Apple Inc.
+	Copyright (c) 1999-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -65,7 +65,7 @@ You can extend this functionality by introducing a new set of protocols that are
 */
 
 /* Protocol implemented by validated objects */
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @protocol NSValidatedUserInterfaceItem
@@ -79,4 +79,4 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

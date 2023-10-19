@@ -24,6 +24,10 @@
 #endif
 #endif // TARGET_OS_OSX || TARGET_OS_MACCATALYST
 
+#ifndef __LSCONSTANTS__
+#include <LaunchServices/LSConstants.h>
+#endif
+
 #ifndef __LSINFO__
 #include <LaunchServices/LSInfo.h>
 #endif

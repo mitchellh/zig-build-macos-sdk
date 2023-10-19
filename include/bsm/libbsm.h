@@ -87,14 +87,6 @@
 #define	POLICY_CONTROL_ENTRY		"policy"
 #define	AUDIT_HOST_CONTROL_ENTRY	"host"
 #define	EXPIRE_AFTER_CONTROL_ENTRY	"expire-after"
-#define MEMBER_SET_SFLAGS_MASK_CONTROL_ENTRY \
-    "member-set-sflags-mask"
-#define MEMBER_CLEAR_SFLAGS_MASK_CONTROL_ENTRY \
-    "member-clear-sflags-mask"
-#define SUPERUSER_SET_SFLAGS_MASK_CONTROL_ENTRY \
-    "superuser-set-sflags-mask"
-#define SUPERUSER_CLEAR_SFLAGS_MASK_CONTROL_ENTRY \
-    "superuser-clear-sflags-mask"
 
 #define	AU_CLASS_NAME_MAX	8
 #define	AU_CLASS_DESC_MAX	72
@@ -870,7 +862,7 @@ int getacpol(char *auditstr, size_t len)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int getacsflagsmask(const char *which, char *auditstr, size_t len)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_DEPRECATED("no longer implemented", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int getachost(char *auditstr, size_t len)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
@@ -893,11 +885,14 @@ ssize_t au_poltostr(int policy, size_t maxsize, char *buf)
 int au_strtopol(const char *polstr, int *policy)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
+/*
+ * Functions relating to audit session flags.
+ */
 ssize_t au_sflagstostr(uint64_t flags, size_t maxsize, char *buf)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_AVAILABLE(macos(10.8)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int au_strtosflags(const char *sflagsstr, uint64_t *flags)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_AVAILABLE(macos(10.8)) API_UNAVAILABLE(ios, watchos, tvos);
 
 /*
  * Functions relating to querying audit event information.
@@ -987,34 +982,6 @@ void au_print_xml_header(FILE *outfp)
 void au_print_xml_footer(FILE *outfp)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
-/*
- * BSM library routines for converting between local and BSM constant spaces.
- * (Note: some of these are replicated in audit_record.h for the benefit of
- * the FreeBSD and Mac OS X kernels)
- */
-int au_bsm_to_domain(u_short bsm_domain, int *local_domainp)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
-
-int au_bsm_to_errno(u_char bsm_error, int *errorp)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
-
-int au_bsm_to_fcntl_cmd(u_short bsm_fcntl_cmd, int *local_fcntl_cmdp)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
-
-int au_bsm_to_socket_type(u_short bsm_socket_type, int *local_socket_typep)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
-
-u_short au_domain_to_bsm(int local_domain)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
-
-u_char au_errno_to_bsm(int local_errno)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
-
-u_short au_fcntl_cmd_to_bsm(int local_fcntl_command)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
-
-u_short au_socket_type_to_bsm(int local_socket_type)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 const char *au_strerror(u_char bsm_error)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
@@ -1654,10 +1621,10 @@ int audit_set_pmask(auditpinfo_t *api, size_t sz)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_get_pinfo(auditpinfo_t *api, size_t sz)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_DEPRECATED("use audit_get_pinfo_addr", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_get_pinfo_addr(auditpinfo_addr_t *apia, size_t sz)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_AVAILABLE(macos(10.8)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_get_policy(int *policy)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
@@ -1672,19 +1639,19 @@ int audit_set_qctrl(au_qctrl_t *qctrl, size_t sz)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_get_sflags(uint64_t *flags)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_AVAILABLE(macos(10.8)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_set_sflags(uint64_t flags)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_AVAILABLE(macos(10.8)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_get_sflags_mask(const char *which, uint64_t *mask)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_DEPRECATED("no longer implemented", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_set_sflags_mask(const char *which, uint64_t mask)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_DEPRECATED("no longer implemented", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_get_sinfo_addr(auditinfo_addr_t *aia, size_t sz)
-	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);
+	API_AVAILABLE(macos(10.8)) API_UNAVAILABLE(ios, watchos, tvos);
 
 int audit_get_stat(au_stat_t *stats, size_t sz)
 	API_DEPRECATED("audit is deprecated", macos(10.8, 11.0)) API_UNAVAILABLE(ios, watchos, tvos);

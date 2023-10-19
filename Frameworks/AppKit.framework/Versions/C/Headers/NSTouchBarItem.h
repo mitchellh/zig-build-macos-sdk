@@ -1,7 +1,7 @@
 /*
  NSTouchBarItem.h
  Application Kit
- Copyright (c) 2015-2021, Apple Inc.
+ Copyright (c) 2015-2023, Apple Inc.
  All rights reserved.
 */
 
@@ -13,7 +13,7 @@ typedef NSString * NSTouchBarItemIdentifier NS_TYPED_EXTENSIBLE_ENUM API_AVAILAB
 @class NSTouchBar, NSViewController, NSView, NSImage, NSGestureRecognizer;
 @class NSString;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 typedef float NSTouchBarItemPriority NS_TYPED_EXTENSIBLE_ENUM API_AVAILABLE(macos(10.12.2), ios(13.0));
@@ -94,4 +94,4 @@ APPKIT_EXTERN NSTouchBarItemIdentifier const NSTouchBarItemIdentifierFlexibleSpa
 APPKIT_EXTERN NSTouchBarItemIdentifier const NSTouchBarItemIdentifierOtherItemsProxy API_AVAILABLE(macos(10.12.2), ios(13.0));
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

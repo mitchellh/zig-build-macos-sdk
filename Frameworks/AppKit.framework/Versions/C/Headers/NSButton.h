@@ -1,7 +1,7 @@
 /*
 	NSButton.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -11,7 +11,7 @@
 #import <AppKit/NSUserInterfaceCompression.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSSound, NSImageSymbolConfiguration;
@@ -101,8 +101,6 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 /*! Gets the initial delay and repeat interval, in seconds, for repeated action messages sent when `continuous` is YES. Both parameters to this method must not be NULL. */
 - (void)getPeriodicDelay:(float *)delay interval:(float *)interval;
 
-#pragma mark Configuring Button Images
-
 /*! The bezel style of the button, which provides a set of bezel artwork, layout metrics, and content styling from a set of system-provided styles. See the NSBezelStyle enumeration for a list of available styles. The bezel style is not used if the `bordered` property is set to `NO`. */
 @property NSBezelStyle bezelStyle;
 
@@ -114,6 +112,15 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 /* A Boolean value that determines whether the button displays its border only when the pointer is over it. */
 @property BOOL showsBorderOnlyWhileMouseInside;
+
+/*! Applies a custom color to the button's bezel, in appearances that support it. A nil value indicates an unmodified button appearance. The default value is nil. */
+@property (nullable, copy) NSColor *bezelColor API_AVAILABLE(macos(10.12.2));
+
+/*! Applies a tint color to template image and text content, in combination with other theme-appropriate effects. Only applicable to borderless buttons. A nil value indicates the standard set of effects without color modification. The default value is nil. Non-template images and attributed string values are not affected by the contentTintColor. */
+@property (nullable, copy) NSColor *contentTintColor API_AVAILABLE(macos(10.14));
+
+
+#pragma mark Configuring Button Images
 
 /*! The image that appears on the button when it’s in an off state, or nil if there is no such image. */
 @property (nullable, strong) NSImage *image;
@@ -134,12 +141,6 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
  Specifies a combination of point size, weight, and scale to use when sizing and displaying symbol images. If a symbol configuration isn't provided, the symbol is matched to the button's `font` property. The default value is nil.
  */
 @property (nullable, copy) NSImageSymbolConfiguration *symbolConfiguration API_AVAILABLE(macos(11));
-
-/*! Applies a custom color to the button's bezel, in appearances that support it. A nil value indicates an unmodified button appearance. The default value is nil. */
-@property (nullable, copy) NSColor *bezelColor API_AVAILABLE(macos(10.12.2));
-
-/*! Applies a tint color to template image and text content, in combination with other theme-appropriate effects. Only applicable to borderless buttons. A nil value indicates the standard set of effects without color modification. The default value is nil. Non-template images and attributed string values are not affected by the contentTintColor. */
-@property (nullable, copy) NSColor *contentTintColor API_AVAILABLE(macos(10.14));
 
 #pragma mark Managing Button State
 
@@ -182,5 +183,5 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

@@ -7,6 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <CloudKit/CKDefines.h>
+
 @class CKRecord, CKRecordID, CKAsset;
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
@@ -22,6 +24,7 @@ typedef NS_ENUM(NSUInteger, CKReferenceAction) {
 
 
 API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
+CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer apply
 NS_SWIFT_SENDABLE
 @interface CKReference : NSObject <NSSecureCoding, NSCopying>
 
@@ -35,9 +38,9 @@ NS_SWIFT_SENDABLE
 - (instancetype)initWithRecordID:(CKRecordID *)recordID action:(CKReferenceAction)action NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithRecord:(CKRecord *)record action:(CKReferenceAction)action;
 
-@property (nonatomic, readonly, assign) CKReferenceAction referenceAction;
+@property (readonly, assign, nonatomic) CKReferenceAction referenceAction;
 
-@property (nonatomic, readonly, copy) CKRecordID *recordID;
+@property (readonly, copy, nonatomic) CKRecordID *recordID;
 
 @end
 

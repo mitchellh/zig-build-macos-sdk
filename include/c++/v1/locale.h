@@ -43,6 +43,12 @@ Functions:
 #  pragma GCC system_header
 #endif
 
-#include_next <locale.h>
+#if __has_include_next(<locale.h>)
+#  include_next <locale.h>
+#endif
+
+#if defined(_LIBCPP_ON_SEP)
+#  include <__support/sepos/locale_shims.h>
+#endif
 
 #endif // _LIBCPP_LOCALE_H

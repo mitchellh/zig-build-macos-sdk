@@ -5,7 +5,9 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
 #import <stdarg.h>
+#if !0
 #import <setjmp.h>
+#endif
 
 @class NSString, NSDictionary, NSArray<ObjectType>, NSNumber;
 

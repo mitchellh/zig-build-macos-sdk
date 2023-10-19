@@ -32,7 +32,7 @@ typedef NS_OPTIONS (NSUInteger, NSPersonNameComponentsFormatterOptions) {
     NSPersonNameComponentsFormatterPhonetic = (1UL << 1)
 } API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0));
 
-
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
 @interface NSPersonNameComponentsFormatter : NSFormatter {
 @private

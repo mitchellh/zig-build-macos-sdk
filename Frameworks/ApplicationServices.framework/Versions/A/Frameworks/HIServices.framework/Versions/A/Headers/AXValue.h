@@ -10,14 +10,13 @@
 #define __AXVALUE__
 
 #include <AvailabilityMacros.h>
+#include <CoreServices/CoreServices.h>
+#include <CoreFoundation/CoreFoundation.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <CoreServices/CoreServices.h>
-#include <CoreFoundation/CoreFoundation.h>
-    
 CF_ASSUME_NONNULL_BEGIN
 CF_IMPLICIT_BRIDGING_ENABLED
     

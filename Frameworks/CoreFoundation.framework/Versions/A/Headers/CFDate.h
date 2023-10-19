@@ -60,6 +60,8 @@ typedef const struct CF_BRIDGED_TYPE(NSTimeZone) __CFTimeZone * CFTimeZoneRef;
 #endif
 #endif
 
+#if !0
+
 typedef struct {
     SInt32 year;
     SInt8 month;
@@ -111,6 +113,8 @@ SInt32 CFAbsoluteTimeGetDayOfYear(CFAbsoluteTime at, CFTimeZoneRef tz) API_DEPRE
 
 CF_EXPORT
 SInt32 CFAbsoluteTimeGetWeekOfYear(CFAbsoluteTime at, CFTimeZoneRef tz) API_DEPRECATED("Use CFCalendar or NSCalendar API instead", macos(10.4, 10.10), ios(2.0, 8.0), watchos(2.0, 2.0), tvos(9.0, 9.0));
+
+#endif 
 
 CF_EXTERN_C_END
 

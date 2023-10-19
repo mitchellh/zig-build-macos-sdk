@@ -32,7 +32,8 @@
 # endif
 
 # if SIMD_COMPILER_HAS_REQUIRED_FEATURES
-#  if __has_include(<Availability.h>)
+#  if __has_include(<TargetConditionals.h>) && __has_include(<Availability.h>)
+#   include <TargetConditionals.h>
 #   include <Availability.h>
 /*  A number of new features are added in newer releases; most of these are
  *  inline in the header, which makes them available even when targeting older
@@ -41,7 +42,9 @@
  *  way in which simd functions are overloaded, the usual weak-linking tricks
  *  do not work; these functions are simply unavailable when targeting older
  *  versions of the library.                                                  */
-#   if   __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_13_0   || \
+#   if TARGET_OS_RTKIT
+#    define SIMD_LIBRARY_VERSION 5
+#   elif __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_13_0   || \
         __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_16_0 || \
         __WATCH_OS_VERSION_MIN_REQUIRED  >= __WATCHOS_9_0 || \
         __TV_OS_VERSION_MIN_REQUIRED     >= __TVOS_16_0   || \
@@ -72,8 +75,8 @@
 #   else
 #    define SIMD_LIBRARY_VERSION 0
 #   endif
-#  else /* !__has_include(<Availability.h>) */
-#   define SIMD_LIBRARY_VERSION 3
+#  else /* !__has_include(<TargetContidionals.h>) && __has_include(<Availability.h>) */
+#   define SIMD_LIBRARY_VERSION 5
 #   define __API_AVAILABLE(...) /* Nothing */
 #  endif
 
@@ -119,6 +122,18 @@
 #define __SIMD_INLINE__     SIMD_CPPFUNC
 #define __SIMD_ATTRIBUTES__ SIMD_CFUNC
 #define __SIMD_OVERLOAD__   SIMD_OVERLOAD
+
+#  if __has_feature(cxx_constexpr)
+#   define SIMD_CONSTEXPR constexpr
+#  else
+#   define SIMD_CONSTEXPR /* nothing */
+#  endif
+
+#  if __has_feature(cxx_noexcept)
+#   define SIMD_NOEXCEPT noexcept
+#  else
+#   define SIMD_NOEXCEPT /* nothing */
+#  endif
 
 #if defined __cplusplus
 /*! @abstract A boolean scalar.                                               */

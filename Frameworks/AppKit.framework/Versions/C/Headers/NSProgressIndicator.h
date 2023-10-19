@@ -1,7 +1,7 @@
 /*
         NSProgressIndicator.h
         Application Kit
-        Copyright (c) 1997-2021, Apple Inc.
+        Copyright (c) 1997-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -11,7 +11,7 @@
 #import <Foundation/Foundation.h>
 #import <Availability.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 typedef NS_ENUM(NSUInteger, NSProgressIndicatorStyle) {
@@ -24,10 +24,6 @@ typedef NS_ENUM(NSUInteger, NSProgressIndicatorStyle) {
 #pragma mark Options
 
 @property (getter=isIndeterminate) BOOL indeterminate;
-
-@property (getter=isBezeled) BOOL bezeled;
-
-@property NSControlTint controlTint;
 
 @property NSControlSize controlSize;
 
@@ -42,9 +38,13 @@ typedef NS_ENUM(NSUInteger, NSProgressIndicatorStyle) {
 @property double minValue;
 @property double maxValue;
 
+/* When set NSProgressIndicator will update doubleValue, minValue, maxValue, and indeterminate automatically.
+ */
+@property (nullable, strong) NSProgress *observedProgress API_AVAILABLE(macos(14.0));
+
 #pragma mark Indeterminate progress indicator
 
-/* YES if the NSProgressIndicator uses a thread instead of a timer (defaults to NO).
+/* YES if the NSProgressIndicator uses a thread instead of a timer (defaults to YES).
  */
 @property BOOL usesThreadedAnimation;
 
@@ -81,7 +81,10 @@ static const NSProgressIndicatorStyle NSProgressIndicatorSpinningStyle API_DEPRE
 - (NSTimeInterval)animationDelay API_DEPRECATED("The animationDelay property does nothing.", macos(10.0,10.6));
 - (void)setAnimationDelay:(NSTimeInterval)delay API_DEPRECATED("The animationDelay property does nothing.", macos(10.0,10.6));
 - (void)animate:(nullable id)sender API_DEPRECATED("Use -startAnimation and -stopAnimation instead.", macos(10.0,10.6));
+
+@property (getter=isBezeled) BOOL bezeled API_DEPRECATED("The bezeled property is not respected on 10.15 and later", macos(10.0, 14.0));
+@property NSControlTint controlTint API_DEPRECATED("The controlTint property is not respected on 10.15 and later", macos(10.0, 14.0));
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

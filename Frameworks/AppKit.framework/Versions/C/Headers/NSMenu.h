@@ -1,7 +1,7 @@
 /*
  NSMenu.h
  Application Kit
- Copyright (c) 1996-2021, Apple Inc.
+ Copyright (c) 1996-2023, Apple Inc.
  All rights reserved.
 */
 
@@ -11,8 +11,43 @@
 #import <AppKit/AppKitDefines.h>
 #import <AppKit/NSMenuItem.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
+
+/// When set as a value on `NSMenu.presentationStyle`, determines how
+/// the given menu is presented.
+typedef NS_ENUM(NSInteger, NSMenuPresentationStyle) {
+    /// The default presentation style. Typically means the menu will
+    /// be presented as either a popup or pulldown menu, based on the
+    /// context.
+    NSMenuPresentationStyleRegular = 0,
+    
+    /// The menu marked as palette is to be displayed in place of the
+    /// menu item presenting it, with its items aligned horizontally.
+    NSMenuPresentationStylePalette = 1
+} API_AVAILABLE(macos(14.0)) NS_SWIFT_NAME(NSMenu.PresentationStyle);
+
+/// When set as a value on `NSMenu.selectionMode`, determines how the
+/// menu manages selection states of the menu items that belong to
+/// the same selection group.
+///
+/// This does not apply to menu items that have distinct
+/// target/action values.
+typedef NS_ENUM(NSInteger, NSMenuSelectionMode) {
+    /// The menu will determine the appropriate selection mode based
+    /// on the context and its contents.
+    NSMenuSelectionModeAutomatic = 0,
+    
+    /// The user will be allowed to select at most one menu item in
+    /// the same selection group at a time. A change in selection
+    /// will deselect any previously selected item.
+    NSMenuSelectionModeSelectOne = 1,
+    
+    /// The user can select multiple items in the menu. A change in
+    /// selection will not automatically deselect any previously
+    /// selected item in the same selection group.
+    NSMenuSelectionModeSelectAny = 2,
+} API_AVAILABLE(macos(14.0)) NS_SWIFT_NAME(NSMenu.SelectionMode);
 
 @class NSEvent, NSView, NSFont;
 @class NSMenu;
@@ -157,6 +192,56 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @end
 
+@interface NSMenu (NSPaletteMenus)
+
+/// Creates a palette menu displaying user-selectable color
+/// tags using the provided array of colors and optional titles.
+/// @return An autoconfigured palette menu.
++ (instancetype)paletteMenuWithColors:(NSArray<NSColor *> *)colors
+                               titles:(NSArray<NSString *> *)itemTitles
+                     selectionHandler:(nullable void (^)(NSMenu *))onSelectionChange
+API_AVAILABLE(macos(14.0)) NS_REFINED_FOR_SWIFT;
+
+/// Creates an palette menu displaying user-selectable color tags
+/// using the provided template image, tinted using the specified
+/// array of colors.
+///
+/// Optionally allows observing changes to the selection state in
+/// the compact menu. The block is invoked after the selection
+/// has been updated. Currently selected items can be retrieved
+/// from the `selectedItems` property.
+///
+/// @return An autoconfigured palette menu.
++ (instancetype)paletteMenuWithColors:(NSArray<NSColor *> *)colors
+                               titles:(NSArray<NSString *> *)itemTitles
+                        templateImage:(NSImage *)image
+                     selectionHandler:(nullable void (^)(NSMenu *))onSelectionChange
+API_AVAILABLE(macos(14.0)) NS_REFINED_FOR_SWIFT;
+
+/// The presentation style of the menu.
+///
+/// @note This property is not respected if the menu is the main
+/// menu of the app.
+@property NSMenuPresentationStyle presentationStyle API_AVAILABLE(macos(14.0));
+
+/// The selection mode of the menu.
+///
+/// Note the selection mode only has effect on menu items that
+/// belong to the same selection group. A selection group consists
+/// of the items with the same target/action.
+@property NSMenuSelectionMode selectionMode API_AVAILABLE(macos(14.0));
+
+/// The menu items that are selected.
+///
+/// An item is selected when its state is `NSControl.StateValue.on`.
+///
+/// @note This property is settable. Setting `selectedItems` will
+/// select any items that are contained in the provided array, and
+/// deselect any previously selected items that are not in the array.
+@property (copy) NSArray<NSMenuItem *> *selectedItems API_AVAILABLE(macos(14.0));
+
+@end
+
 @interface NSMenu (NSSubmenuAction)
 - (void)submenuAction:(nullable id)sender;
 @end
@@ -254,4 +339,4 @@ APPKIT_EXTERN NSNotificationName NSMenuDidEndTrackingNotification;
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

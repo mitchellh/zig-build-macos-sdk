@@ -16,6 +16,7 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 /* Because NSBundle caches allocated instances, subclasses should be prepared
    to receive an already initialized object back from [super initWithPath:] */
+NS_SWIFT_SENDABLE
 @interface NSBundle : NSObject
 
 /* Methods for creating or retrieving bundle instances. */
@@ -88,7 +89,9 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 /* Methods for retrieving localized strings. */
 - (NSString *)localizedStringForKey:(NSString *)key value:(nullable NSString *)value table:(nullable NSString *)tableName NS_FORMAT_ARGUMENT(1);
+#if !0
 - (NSAttributedString *)localizedAttributedStringForKey:(NSString *)key value:(nullable NSString *)value table:(nullable NSString *)tableName NS_FORMAT_ARGUMENT(1) NS_REFINED_FOR_SWIFT API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0));
+#endif 
 
 /* Methods for obtaining various information about a bundle. */
 @property (nullable, readonly, copy) NSString *bundleIdentifier;
@@ -149,6 +152,8 @@ enum {
 FOUNDATION_EXPORT NSNotificationName const NSBundleDidLoadNotification;
 FOUNDATION_EXPORT NSString * const NSLoadedClasses;	// notification key
 
+
+#if !0
 
 /*
  The NSBundleResourceRequest class is used to interact with the on demand resource loading system.
@@ -249,5 +254,7 @@ FOUNDATION_EXPORT NSNotificationName const NSBundleResourceRequestLowDiskSpaceNo
 /* Use this value for the loadingPriority property if the user is doing nothing but waiting on the result of this request. The system will dedicate the maximum amount of resources available to finishing this request as soon as possible.
  */
 FOUNDATION_EXPORT double const NSBundleResourceRequestLoadingPriorityUrgent API_AVAILABLE(ios(9.0), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos);
+
+#endif 
 
 NS_HEADER_AUDIT_END(nullability, sendability)

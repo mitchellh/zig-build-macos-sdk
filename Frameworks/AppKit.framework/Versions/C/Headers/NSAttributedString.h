@@ -1,7 +1,7 @@
 #if !__has_include(<UIFoundation/NSAttributedString.h>)
 /*
         NSAttributedString.h
-        Copyright (c) 1994-2021, Apple Inc.
+        Copyright (c) 1994-2023, Apple Inc.
         All rights reserved.
  
         This file defines Application Kit extensions to NSAttributedString and NSMutableAttributedString.
@@ -17,7 +17,7 @@
 @class NSFileWrapper;
 @class NSURL;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #if !TARGET_OS_IPHONE
 
 /************************ Attributes ************************/
@@ -42,12 +42,8 @@ APPKIT_EXTERN NSAttributedStringKey  NSLinkAttributeName API_AVAILABLE(macos(10.
 APPKIT_EXTERN NSAttributedStringKey  NSBaselineOffsetAttributeName API_AVAILABLE(macos(10.0), ios(7.0), watchos(2.0), tvos(9.0));      // NSNumber containing floating point value, in points; offset from baseline, default 0
 APPKIT_EXTERN NSAttributedStringKey  NSUnderlineColorAttributeName API_AVAILABLE(macos(10.0), ios(7.0), watchos(2.0), tvos(9.0));      // NSColor, default nil: same as foreground color
 APPKIT_EXTERN NSAttributedStringKey  NSStrikethroughColorAttributeName API_AVAILABLE(macos(10.0), ios(7.0), watchos(2.0), tvos(9.0));  // NSColor, default nil: same as foreground color
-APPKIT_EXTERN NSAttributedStringKey  NSObliquenessAttributeName API_AVAILABLE(macos(10.0), ios(7.0), watchos(2.0), tvos(9.0));         // NSNumber containing floating point value; skew to be applied to glyphs, default 0: no skew
-APPKIT_EXTERN NSAttributedStringKey  NSExpansionAttributeName API_AVAILABLE(macos(10.0), ios(7.0), watchos(2.0), tvos(9.0));           // NSNumber containing floating point value; log of expansion factor to be applied to glyphs, default 0: no expansion
 
 APPKIT_EXTERN NSAttributedStringKey  NSWritingDirectionAttributeName API_AVAILABLE(macos(10.6), ios(7.0), watchos(2.0), tvos(9.0));    // NSArray of NSNumbers representing the nested levels of writing direction overrides as defined by Unicode LRE, RLE, LRO, and RLO characters.  The control characters can be obtained by masking NSWritingDirection and NSWritingDirectionFormatType values.  LRE: NSWritingDirectionLeftToRight|NSWritingDirectionEmbedding, RLE: NSWritingDirectionRightToLeft|NSWritingDirectionEmbedding, LRO: NSWritingDirectionLeftToRight|NSWritingDirectionOverride, RLO: NSWritingDirectionRightToLeft|NSWritingDirectionOverride,
-
-APPKIT_EXTERN NSAttributedStringKey  NSVerticalGlyphFormAttributeName API_AVAILABLE(macos(10.7), ios(6.0), watchos(2.0), tvos(9.0));   // An NSNumber containing an integer value.  0 means horizontal text.  1 indicates vertical text.  If not specified, it could follow higher-level vertical orientation settings.  Currently on iOS, it's always horizontal.  The behavior for any other value is undefined.
 
 APPKIT_EXTERN NSAttributedStringKey NSCursorAttributeName; // NSCursor, default IBeamCursor
 APPKIT_EXTERN NSAttributedStringKey NSToolTipAttributeName; // NSString, default nil: no tooltip
@@ -192,6 +188,7 @@ APPKIT_EXTERN NSAttributedStringDocumentAttributeKey  NSTextLayoutSectionsAttrib
 APPKIT_EXTERN NSAttributedStringDocumentAttributeKey NSExcludedElementsDocumentAttribute;  // for HTML writing only; NSArray containing NSStrings, representing HTML elements not to be used in generated HTML
 APPKIT_EXTERN NSAttributedStringDocumentAttributeKey NSTextEncodingNameDocumentAttribute;  // for HTML writing only; NSString containing the name, IANA or otherwise, of a text encoding to be used; mutually exclusive with NSCharacterEncodingDocumentAttribute
 APPKIT_EXTERN NSAttributedStringDocumentAttributeKey NSPrefixSpacesDocumentAttribute;  // for HTML writing only; NSNumber containing integer, default 0, representing the number of spaces per level by which to indent certain nested HTML elements
+APPKIT_EXTERN NSAttributedStringDocumentAttributeKey const NSDefaultFontExcludedDocumentAttribute API_AVAILABLE(macos(14), ios(17), watchos(10), tvos(17)); // for HTML writing only; NSNumber containing a BOOL, when true the HTML writer will not include font information unless specified.
 
 // Document text scaling
 // They are document attributes used by read/write methods.
@@ -306,6 +303,10 @@ static const NSUnderlineStyle NSUnderlineByWord = NSUnderlineStyleByWord;
 APPKIT_EXTERN NSAttributedStringKey NSCharacterShapeAttributeName API_DEPRECATED("This attribute is bound to a specific implementation of ATS feature and not generically supported by wide range of fonts. The majority of characters accessed through this API are now encoded in the Unicode standard. Use the CTFont feature API for fine control over character shape choices.", macos(10.0,10.11));
 APPKIT_EXTERN NSAttributedStringKey NSUsesScreenFontsDocumentAttribute API_DEPRECATED("", macos(10.8,10.11));
 
+APPKIT_EXTERN NSAttributedStringKey  NSObliquenessAttributeName API_DEPRECATED("This attribute is not supported with TextKit 2", macos(10.0, API_TO_BE_DEPRECATED), ios(7.0, API_TO_BE_DEPRECATED), watchos(2.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED));         // NSNumber containing floating point value; skew to be applied to glyphs, default 0: no skew
+APPKIT_EXTERN NSAttributedStringKey  NSExpansionAttributeName API_DEPRECATED("This attribute is not supported with TextKit 2", macos(10.0, API_TO_BE_DEPRECATED), ios(7.0, API_TO_BE_DEPRECATED), watchos(2.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED));           // NSNumber containing floating point value; log of expansion factor to be applied to glyphs, default 0: no expansion
+
+APPKIT_EXTERN NSAttributedStringKey  NSVerticalGlyphFormAttributeName API_DEPRECATED("This attribute is not supported with TextKit 2", macos(10.7, API_TO_BE_DEPRECATED), ios(6.0, API_TO_BE_DEPRECATED), watchos(2.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED));   // An NSNumber containing an integer value.  0 means horizontal text.  1 indicates vertical text.  If not specified, it could follow higher-level vertical orientation settings.  Currently on iOS, it's always horizontal.  The behavior for any other value is undefined.
 
 enum {
     NSNoUnderlineStyle API_DEPRECATED("Use NSUnderlineStyleNone instead", macos(10.0,10.9)) = 0,
@@ -335,7 +336,7 @@ APPKIT_EXTERN NSUInteger NSUnderlineByWordMask API_DEPRECATED("Use NSUnderlineBy
 - (BOOL)readFromData:(NSData *)data options:(NSDictionary *)options documentAttributes:(NSDictionary* _Nullable * _Nullable)dict API_DEPRECATED("Use -readFromData:options:documentAttributes:error: instead", macos(10.0,10.11));
 @end
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSAttributedString.h>
 #endif

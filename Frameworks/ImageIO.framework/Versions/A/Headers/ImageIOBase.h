@@ -93,11 +93,7 @@
 #endif
 
 #if !defined(IIO_HAS_IOSURFACE)
-#   if (!IMAGEIO_bridgeOS) 
-#       define IIO_HAS_IOSURFACE 1
-#   else
-#       define IIO_HAS_IOSURFACE 0
-#   endif
+#   define IIO_HAS_IOSURFACE 1
 #endif
 
 #if defined(__has_feature) && __has_feature(objc_bridge_id)

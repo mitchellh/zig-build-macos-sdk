@@ -1,16 +1,20 @@
 --- !tapi-tbd
 tbd-version:     4
-targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
+targets:         [ x86_64-macos, x86_64-maccatalyst, arm64-macos, arm64-maccatalyst, 
+                   arm64e-macos, arm64e-maccatalyst ]
 install-name:    '/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/CarbonCore'
 current-version: 1333
 parent-umbrella:
-  - targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
+  - targets:         [ x86_64-macos, x86_64-maccatalyst, arm64-macos, arm64-maccatalyst, 
+                       arm64e-macos, arm64e-maccatalyst ]
     umbrella:        CoreServices
 allowable-clients:
-  - targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
+  - targets:         [ x86_64-macos, x86_64-maccatalyst, arm64-macos, arm64-maccatalyst, 
+                       arm64e-macos, arm64e-maccatalyst ]
     clients:         [ AudioToolbox, Foundation, Metadata ]
 exports:
-  - targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
+  - targets:         [ x86_64-macos, x86_64-maccatalyst, arm64-macos, arm64-maccatalyst, 
+                       arm64e-macos, arm64e-maccatalyst ]
     symbols:         [ _AbsoluteDeltaToDuration, _AbsoluteDeltaToNanoseconds, _AbsoluteToDuration, 
                        _AbsoluteToNanoseconds, _AddAbsoluteToAbsolute, _AddAtomic, 
                        _AddAtomic16, _AddAtomic8, _AddCollectionItem, _AddCollectionItemHdl, 

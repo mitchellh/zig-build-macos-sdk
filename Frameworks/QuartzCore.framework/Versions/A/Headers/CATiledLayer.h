@@ -22,6 +22,8 @@
  * an CATiledLayer object - doing so will effectively turn it into a
  * regular CALayer. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -61,3 +63,5 @@ API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

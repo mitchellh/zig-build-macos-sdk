@@ -47,7 +47,7 @@ CV_EXPORT const CFStringRef CV_NONNULL kCVMetalTextureCacheMaximumTextureAgeKey 
     @abstract   CoreVideo Metal Texture Cache
 
 */
-typedef struct CV_BRIDGED_TYPE(id) __CVMetalTextureCache *CVMetalTextureCacheRef;
+typedef struct CV_BRIDGED_TYPE(id) __CVMetalTextureCache *CVMetalTextureCacheRef CV_SWIFT_NONSENDABLE;
 	
 CV_EXPORT CFTypeID CVMetalTextureCacheGetTypeID(void) API_AVAILABLE(macosx(10.11), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 

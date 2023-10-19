@@ -527,11 +527,8 @@ SPATIAL_REFINED_FOR_SWIFT
 SPATIAL_OVERLOADABLE
 SPVector3D SPVector3DApplyPose(SPVector3D vector,
                                SPPose3D pose) {
-  
-    simd_double3 transformed = simd_act(simd_normalize(pose.rotation.quaternion),
-                                        vector.vector);
     
-    return (SPVector3D){ .vector = transformed };
+    return SPVector3DRotate(vector, pose.rotation);
 }
 
 /*!

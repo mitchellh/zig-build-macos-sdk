@@ -10,6 +10,8 @@
 #if !defined(__COREFOUNDATION_CFBASE__)
 #define __COREFOUNDATION_CFBASE__ 1
 
+#include <stddef.h>
+
 #if __has_include(<CoreFoundation/TargetConditionals.h>)
 #include <CoreFoundation/TargetConditionals.h>
 #else
@@ -152,8 +154,6 @@
 #else
 #define CF_EXPORT extern
 #endif
-
-CF_EXTERN_C_BEGIN
 
 #if !defined(NULL)
 #if defined(__GNUG__)
@@ -351,6 +351,8 @@ CF_EXTERN_C_BEGIN
 #endif
 #endif
 
+
+CF_EXTERN_C_BEGIN
 
 CF_EXPORT double kCFCoreFoundationVersionNumber;
 
@@ -707,6 +709,8 @@ CF_IMPLICIT_BRIDGING_DISABLED
 CF_EXPORT
 CFTypeRef CFMakeCollectable(CFTypeRef cf) CF_AUTOMATED_REFCOUNT_UNAVAILABLE;
 
+CF_EXTERN_C_END
+
 #if DEPLOYMENT_RUNTIME_SWIFT
 
 #define _CF_SWIFT_RC_PINNED_FLAG (0x1)
@@ -729,8 +733,6 @@ CFTypeRef CFMakeCollectable(CFTypeRef cf) CF_AUTOMATED_REFCOUNT_UNAVAILABLE;
 #else
 #define __ptrauth_cf_objc_isa_pointer
 #endif
-
-CF_EXTERN_C_END
 
 #endif /* ! __COREFOUNDATION_CFBASE__ */
 

@@ -70,6 +70,7 @@ typedef NS_OPTIONS(NSUInteger, NSFileCoordinatorWritingOptions) {
 
 };
 
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface NSFileAccessIntent : NSObject {
 @private

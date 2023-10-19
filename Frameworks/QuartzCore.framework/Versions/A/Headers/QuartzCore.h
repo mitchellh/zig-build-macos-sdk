@@ -12,6 +12,7 @@
 #if !__has_feature(modules)
 #include <QuartzCore/CoreVideo.h>
 #endif
+
 #include <QuartzCore/CoreAnimation.h>
 
 #endif /* QUARTZCORE_H */

@@ -77,14 +77,6 @@
 # endif
 #endif
 
-#ifndef CA_HIDDEN
-# if CA_GNUC (4,0)
-#  define CA_HIDDEN __attribute__ ((visibility ("hidden")))
-# else
-#  define CA_HIDDEN /* no hidden */
-# endif
-#endif
-
 #ifndef CA_PURE
 # if CA_GNUC (3, 0)
 #  define CA_PURE __attribute__ ((pure))

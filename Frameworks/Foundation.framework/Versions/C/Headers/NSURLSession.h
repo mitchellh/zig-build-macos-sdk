@@ -191,6 +191,16 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
 /* Creates an upload task with the given request.  The body of the request is provided from the bodyData. */
 - (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request fromData:(NSData *)bodyData;
 
+/// Creates an upload task from a resume data blob. Requires the server to support the latest resumable uploads
+/// Internet-Draft from the HTTP Working Group, found at
+/// https://datatracker.ietf.org/doc/draft-ietf-httpbis-resumable-upload/
+/// If resuming from an upload file, the file must still exist and be unmodified. If the upload cannot be successfully
+/// resumed, URLSession:task:didCompleteWithError: will be called.
+///
+/// - Parameter resumeData: Resume data blob from an incomplete upload, such as data returned by the cancelByProducingResumeData: method.
+/// - Returns: A new session upload task, or nil if the resumeData is invalid.
+- (NSURLSessionUploadTask *)uploadTaskWithResumeData:(NSData *)resumeData API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
 /* Creates an upload task with the given request.  The previously set body stream of the request (if any) is ignored and the URLSession:task:needNewBodyStream: delegate will be called when the body payload is required. */
 - (NSURLSessionUploadTask *)uploadTaskWithStreamedRequest:(NSURLRequest *)request;
 
@@ -260,6 +270,14 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
  */
 - (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (NS_SWIFT_SENDABLE ^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 - (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request fromData:(nullable NSData *)bodyData completionHandler:(void (NS_SWIFT_SENDABLE ^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/// Creates a URLSessionUploadTask from a resume data blob. If resuming from an upload
+/// file, the file must still exist and be unmodified.
+///
+/// - Parameter resumeData: Resume data blob from an incomplete upload, such as data returned by the cancelByProducingResumeData: method.
+/// - Parameter completionHandler: The completion handler to call when the load request is complete.
+/// - Returns: A new session upload task, or nil if the resumeData is invalid.
+- (NSURLSessionUploadTask *)uploadTaskWithResumeData:(NSData *)resumeData completionHandler:(void (NS_SWIFT_SENDABLE ^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
 /*
  * download task convenience methods.  When a download successfully
@@ -445,6 +463,14 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
 
 - (instancetype)init API_DEPRECATED("Please use -[NSURLSession uploadTaskWithStreamedRequest:] or other NSURLSession methods to create instances", macos(10.9,10.15), ios(7.0,13.0), watchos(2.0,6.0), tvos(9.0,13.0));
 + (instancetype)new API_DEPRECATED("Please use -[NSURLSession uploadTaskWithStreamedRequest:] or other NSURLSession methods to create instances", macos(10.9,10.15), ios(7.0,13.0), watchos(2.0,6.0), tvos(9.0,13.0));
+
+/// Cancels an upload and calls the completion handler with resume data for later use.
+/// resumeData will be nil if the server does not support the latest resumable uploads
+/// Internet-Draft from the HTTP Working Group, found at
+/// https://datatracker.ietf.org/doc/draft-ietf-httpbis-resumable-upload/
+///
+/// - Parameter completionHandler: The completion handler to call when the upload has been successfully canceled.
+- (void)cancelByProducingResumeData:(void (NS_SWIFT_SENDABLE ^)(NSData * _Nullable resumeData))completionHandler API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
 @end
 
@@ -989,6 +1015,17 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
                               needNewBodyStream:(void (NS_SWIFT_SENDABLE ^)(NSInputStream * _Nullable bodyStream))completionHandler NS_SWIFT_ASYNC_NAME(urlSession(_:needNewBodyStreamForTask:));
 
+/// Tells the delegate if a task requires a new body stream starting from the given offset. This may be
+/// necessary when resuming a failed upload task.
+///
+/// - Parameter session: The session containing the task that needs a new body stream from the given offset.
+/// - Parameter task: The task that needs a new body stream.
+/// - Parameter offset: The starting offset required for the body stream.
+/// - Parameter completionHandler: A completion handler that your delegate method should call with the new body stream.
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
+                    needNewBodyStreamFromOffset:(int64_t)offset
+                              completionHandler:(void (NS_SWIFT_SENDABLE ^)(NSInputStream * _Nullable bodyStream))completionHandler NS_SWIFT_NAME(urlSession(_:task:needNewBodyStreamFrom:completionHandler:)) NS_SWIFT_ASYNC_NAME(urlSession(_:needNewBodyStreamForTask:from:)) API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
 /* Sent periodically to notify the delegate of upload progress.  This
  * information is also available as properties of the task.
  */
@@ -996,6 +1033,10 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
                                 didSendBodyData:(int64_t)bytesSent
                                  totalBytesSent:(int64_t)totalBytesSent
                        totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend;
+
+/* Sent for each informational response received except 101 switching protocols.
+ */
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didReceiveInformationalResponse:(NSHTTPURLResponse *)response API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
 /*
  * Sent when complete statistics information has been collected for the task.
@@ -1055,9 +1096,8 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
                                 didBecomeStreamTask:(NSURLSessionStreamTask *)streamTask
     API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0));
 
-/* Sent when data is available for the delegate to consume.  It is
- * assumed that the delegate will retain and not copy the data.  As
- * the data may be discontiguous, you should use 
+/* Sent when data is available for the delegate to consume.  As the
+ * data may be discontiguous, you should use
  * [NSData enumerateByteRangesUsingBlock:] to access it.
  */
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
@@ -1166,6 +1206,9 @@ API_AVAILABLE(macos(10.15), ios(13.0), watchos(6.0), tvos(13.0))
 
 /* Key in the userInfo dictionary of an NSError received during a failed download. */
 FOUNDATION_EXPORT NSString * const NSURLSessionDownloadTaskResumeData API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
+
+/// Key in the userInfo dictionary of an NSError received during a failed upload.
+FOUNDATION_EXPORT NSString * const NSURLSessionUploadTaskResumeData API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
 @interface NSURLSessionConfiguration (NSURLSessionDeprecated)
 + (NSURLSessionConfiguration *)backgroundSessionConfiguration:(NSString *)identifier API_DEPRECATED_WITH_REPLACEMENT("-backgroundSessionConfigurationWithIdentifier:", macos(10.9, 10.10), ios(7.0, 8.0), watchos(2.0, 2.0), tvos(9.0, 9.0));

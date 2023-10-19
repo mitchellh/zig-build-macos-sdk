@@ -26,6 +26,17 @@
 
 #include <Availability.h>
 
+
+
+// Swift availability macro
+#if __has_feature(attribute_availability_swift)
+#define CS_SWIFT_UNAVAILABLE(_msg) __attribute__((availability(swift, unavailable, message=_msg)))
+#else
+#define CS_SWIFT_UNAVAILABLE(_msg)
+#endif
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -745,7 +756,7 @@ GetIconRefFromIconFamilyPtr(
 extern OSStatus 
 GetIconRefFromComponent(
   Component   inComponent,
-  IconRef *   outIconRef)                                     API_DEPRECATED( "This function is no longer supported. Use NSWorkspace and NSImage to get icons.", macos( 10.5, 10.15 ) ) API_UNAVAILABLE( ios, tvos, watchos );
+  IconRef *   outIconRef)                                     API_DEPRECATED( "This function is no longer supported. Use NSWorkspace and NSImage to get icons.", macos( 10.5, 10.15 ) ) API_UNAVAILABLE( ios, tvos, watchos ) CS_SWIFT_UNAVAILABLE( "Unavailable in Swift." );
 
 
 /*

@@ -20,7 +20,7 @@ typedef enum {
 	/*! @const NE_SOCKET_ATTRIBUTION_USER The user chose */
 	NE_SOCKET_ATTRIBUTION_USER = 2,
 } ne_socket_attribution_t
-API_AVAILABLE(ios(15.0), macos(12.0), tvos(15.0), watchos(8.0));
+API_AVAILABLE(ios(15.0), macos(12.0), watchos(8.0), tvos(15.0));
 
 /*!
  @function ne_socket_set_domains
@@ -35,7 +35,7 @@ API_AVAILABLE(ios(15.0), macos(12.0), tvos(15.0), watchos(8.0));
  @return returns 0 upon success or non-zero integer error code defined in errno.h upon failure.
  */
 int ne_socket_set_domains(int socket, const char * const * const domain_names, int domain_count)
-API_AVAILABLE(ios(15.0), macos(12.0), tvos(15.0), watchos(8.0));
+API_AVAILABLE(ios(15.0), macos(12.0), watchos(8.0), tvos(15.0));
 
 /*!
  @function ne_socket_set_attribution
@@ -47,7 +47,7 @@ API_AVAILABLE(ios(15.0), macos(12.0), tvos(15.0), watchos(8.0));
  @return returns 0 upon success or non-zero integer error code defined in errno.h upon failure.
  */
 int ne_socket_set_attribution(int socket, ne_socket_attribution_t attribution)
-API_AVAILABLE(ios(15.0), macos(12.0), tvos(15.0), watchos(8.0));
+API_AVAILABLE(ios(15.0), macos(12.0), watchos(8.0), tvos(15.0));
 
 /*!
  @function ne_socket_set_website_attribution
@@ -59,7 +59,7 @@ API_AVAILABLE(ios(15.0), macos(12.0), tvos(15.0), watchos(8.0));
  @return returns 0 upon success or non-zero integer error code defined in errno.h upon failure.
  */
 int ne_socket_set_website_attribution(int socket, const char *hostname)
-API_AVAILABLE(ios(15.0), macos(12.0), tvos(15.0), watchos(8.0));
+API_AVAILABLE(ios(15.0), macos(12.0), watchos(8.0), tvos(15.0));
 
 /*!
  @function ne_socket_set_is_app_initiated
@@ -70,6 +70,6 @@ API_AVAILABLE(ios(15.0), macos(12.0), tvos(15.0), watchos(8.0));
  @return returns 0 upon success or non-zero integer error code defined in errno.h upon failure.
  */
 int ne_socket_set_is_app_initiated(int socket, bool is_app_initiated)
-API_UNAVAILABLE(ios, macos, tvos, watchos);
+API_UNAVAILABLE(ios, macos, watchos, tvos);
 
 #endif /* __NE_SOCKET_H__ */

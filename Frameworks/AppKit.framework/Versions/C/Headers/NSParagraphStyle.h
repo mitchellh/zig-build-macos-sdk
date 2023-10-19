@@ -1,7 +1,7 @@
 #if !__has_include(<UIFoundation/NSParagraphStyle.h>)
 /*
         NSParagraphStyle.h
-        Copyright (c) 1994-2021, Apple Inc.  All rights reserved.
+        Copyright (c) 1994-2023, Apple Inc.  All rights reserved.
  
 	NSParagraphStyle and NSMutableParagraphStyle hold paragraph style information
 	NSTextTab holds information about a single tab stop
@@ -13,7 +13,7 @@
 @class NSTextBlock;
 @class NSTextList;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 #if !TARGET_OS_IPHONE
 
@@ -162,7 +162,7 @@ typedef NS_ENUM(NSUInteger, NSTextTabType) {
 
 #endif // !TARGET_OS_IPHONE
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSParagraphStyle.h>
 #endif

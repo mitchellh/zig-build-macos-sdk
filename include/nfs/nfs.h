@@ -518,6 +518,8 @@ struct nfsclntstats {
 	uint64_t        lookupcache_misses;
 	uint64_t        direofcache_hits;
 	uint64_t        direofcache_misses;
+	uint64_t        accesscache_hits;
+	uint64_t        accesscache_misses;
 	uint64_t        biocache_reads;
 	uint64_t        read_bios;
 	uint64_t        read_physios;

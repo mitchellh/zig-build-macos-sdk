@@ -42,6 +42,7 @@ IMAGEIO_EXTERN const CFStringRef kCGImagePropertyOpenEXRDictionary  IMAGEIO_AVAI
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyMakerAppleDictionary  IMAGEIO_AVAILABLE_STARTING(10.10, 7.0);
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyFileContentsDictionary IMAGEIO_AVAILABLE_STARTING(10.13, 11.0);
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyWebPDictionary  IMAGEIO_AVAILABLE_STARTING(11.0, 14.0);
+IMAGEIO_EXTERN const CFStringRef kCGImagePropertyAVISDictionary  IMAGEIO_AVAILABLE_STARTING(13.0, 16.0);
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyTGADictionary  IMAGEIO_AVAILABLE_STARTING(11.0, 14.0);
 
 
@@ -289,7 +290,7 @@ IMAGEIO_EXTERN const CFStringRef kCGImagePropertyPNGTitle  IMAGEIO_AVAILABLE_STA
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyPNGWarning  IMAGEIO_AVAILABLE_STARTING(10.14, 12.0);
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyPNGXPixelsPerMeter  IMAGEIO_AVAILABLE_STARTING(10.4, 4.0);
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyPNGYPixelsPerMeter  IMAGEIO_AVAILABLE_STARTING(10.4, 4.0);
-IMAGEIO_EXTERN const CFStringRef kCGImagePropertyPNGPixelsAspectRatio  IMAGEIO_AVAILABLE_STARTING(12.0, 19.0);
+IMAGEIO_EXTERN const CFStringRef kCGImagePropertyPNGPixelsAspectRatio  IMAGEIO_AVAILABLE_STARTING(12.0, 15.0);
 
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyAPNGLoopCount  IMAGEIO_AVAILABLE_STARTING(10.10, 8.0);
 IMAGEIO_EXTERN const CFStringRef kCGImagePropertyAPNGDelayTime  IMAGEIO_AVAILABLE_STARTING(10.10, 8.0);
@@ -792,12 +793,6 @@ IMAGEIO_EXTERN const CFStringRef kCGImagePropertyPNGCompressionFilter IMAGEIO_AV
 #define IMAGEIO_PNG_FILTER_AVG     0x40
 #define IMAGEIO_PNG_FILTER_PAETH   0x80
 #define IMAGEIO_PNG_ALL_FILTERS (IMAGEIO_PNG_FILTER_NONE | IMAGEIO_PNG_FILTER_SUB | IMAGEIO_PNG_FILTER_UP | IMAGEIO_PNG_FILTER_AVG | IMAGEIO_PNG_FILTER_PAETH)
-
-/*  For EXR files:
- *  The value (CFNumberRef) specifies the EXR compression method. See AppleEXR.h for possible values.
- *  Default value if not specified is 'axr_compression_piz'
- */
-IMAGEIO_EXTERN const CFStringRef kCGImagePropertyOpenEXRCompression    IMAGEIO_AVAILABLE_STARTING(13.3, 16.3);
 
 /*
  * For PNG files:

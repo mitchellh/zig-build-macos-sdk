@@ -23,7 +23,7 @@ extern "C" {
 
 /* This document is influenced by Ice Floe #19: http://developer.apple.com/quicktime/icefloe/dispatch019.html */
 
-/* The canonical name for the format.  This should bethe same as the codec name you'd use in QT */
+/* The canonical name for the format.  This should be the same as the codec name you'd use in QT */
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelFormatName __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_4_0);
 
 /* QuickTime/QuickDraw Pixel Format Type constant (OSType) */
@@ -114,7 +114,7 @@ CV_EXPORT const CFStringRef CV_NONNULL kCVPixelFormatQDCompatibility API_AVAILAB
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelFormatCGBitmapContextCompatibility API_AVAILABLE(macosx(10.4), ios(4.0), tvos(9.0), watchos(4.0));
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelFormatCGImageCompatibility API_AVAILABLE(macosx(10.4), ios(4.0), tvos(9.0), watchos(4.0));
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelFormatOpenGLCompatibility API_AVAILABLE(macosx(10.4), ios(4.0), tvos(9.0), watchos(4.0));
-CV_EXPORT const CFStringRef CV_NONNULL kCVPixelFormatOpenGLESCompatibility API_AVAILABLE(ios(5.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) __WATCHOS_PROHIBITED;
+CV_EXPORT const CFStringRef CV_NONNULL kCVPixelFormatOpenGLESCompatibility API_AVAILABLE(ios(5.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) API_UNAVAILABLE(visionos) __WATCHOS_PROHIBITED;
     
 /* This callback routine implements code to handle the functionality of CVPixelBufferFillExtendedPixels.  
    For custom pixel formats where you will never need to use that call, this is not required. */
@@ -123,7 +123,7 @@ typedef struct {
     CFIndex version;
     CVFillExtendedPixelsCallBack CV_NULLABLE fillCallBack;
     void * CV_NULLABLE refCon;
-} CVFillExtendedPixelsCallBackData;
+} CVFillExtendedPixelsCallBackData CV_SWIFT_NONSENDABLE;
 
 /* The value for this key is a CFData containing a CVFillExtendedPixelsCallBackData struct */
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelFormatFillExtendedPixelsCallback __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_4_0);

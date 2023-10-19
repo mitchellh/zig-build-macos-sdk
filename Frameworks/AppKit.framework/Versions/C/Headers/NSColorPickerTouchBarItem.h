@@ -1,7 +1,7 @@
 /*
  NSColorPickerTouchBarItem.h
  Application Kit
- Copyright (c) 2016-2021, Apple Inc.
+ Copyright (c) 2016-2023, Apple Inc.
  All rights reserved.
 */
 
@@ -11,7 +11,7 @@
 @class UIImage, UIColor;
 #endif
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 @class NSViewController, NSColor, NSImage, NSString, NSColorList, NSColorSpace;
 
@@ -59,4 +59,4 @@ API_AVAILABLE(macos(10.12.2), ios(13.0))
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

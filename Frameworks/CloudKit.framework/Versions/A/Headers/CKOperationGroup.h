@@ -47,6 +47,7 @@ typedef NS_ENUM(NSInteger, CKOperationGroupTransferSize) {
  *  You associate @c CKOperationGroup s with@c  CKOperation s by setting the @c CKOperation.group property.  Create a new @c CKOperationGroup instance for each distinct user action.
  */
 API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
+CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer apply
 // NS_SWIFT_SENDABLE on macos(13.3), macCatalyst(16.4), ios(16.4), tvos(16.4), watchos(9.4)
 @interface CKOperationGroup : NSObject <NSSecureCoding>
 
@@ -57,13 +58,13 @@ API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
  *
  *  @discussion This value is chosen by the system, and will be unique to this instance of a @c CKOperationGroup.  This identifier will be sent to Apple's servers, and can be used to identify any server-side logging associated with this operation group.
  */
-@property (nonatomic, readonly, copy) NSString *operationGroupID;
+@property (readonly, copy, nonatomic) NSString *operationGroupID;
  
 /*! @abstract This is the default configuration applied to operations in this operation group.
  *
  *  @discussion If an operation associated with this operation group has its own configuration, then any explicitly-set properties in that operation's configuration will override these default configuration values.  See the example in CKOperation.h
  */
-@property (atomic, copy, null_resettable) CKOperationConfiguration *defaultConfiguration;
+@property (null_resettable, copy) CKOperationConfiguration *defaultConfiguration;
 
 /*! @abstract Describes the user action attributed to the operation group.
  *
@@ -73,13 +74,13 @@ API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
  *  "Saving User-Entered Record"
  *  This string will be sent to Apple servers to provide aggregate reporting for @c CKOperationGroup s and therefore must not include personally identifying data.
  */
-@property (atomic, copy, nullable) NSString *name;
+@property (nullable, copy) NSString *name;
 
 /*! @abstract Describes an application-specific "number of elements" associated with the operation group.
  *
  *  @discussion @c quantity is intended to show the app-specific count of items contained within the operation group.  It is your job to assign meaning to this value.  For example, if an app created an operation group to save 3 calendar events the user had created, the app might want to set this to "3".  This value is not shown to your users, it's meant to aid your development and debugging.  This value will be reported in the CloudKit Dashboard's log entries for all operations associated with this operation group.
  */
-@property (atomic, assign) NSUInteger quantity;
+@property (assign) NSUInteger quantity;
 
 /*! @abstract Estimated size of traffic being uploaded to the CloudKit Server
  *
@@ -89,7 +90,7 @@ API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
  *  You may update after the @c CKOperationGroup is created.  If it is increased, then subsequent @c CKOperation s associated with this operation group may be delayed until network conditions are good.
  *  Defaults to @c CKOperationGroupTransferSizeUnknown
  */
-@property (atomic, assign) CKOperationGroupTransferSize expectedSendSize;
+@property (assign) CKOperationGroupTransferSize expectedSendSize;
 
 /*! @abstract Estimated size of traffic being downloaded from the CloudKit Server
  *
@@ -99,7 +100,7 @@ API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0))
  *  You may update after the @c CKOperationGroup is created.  If it is increased, then subsequent @c CKOperation s associated with this operation group may be delayed until network conditions are good.
  *  Defaults to @c CKOperationGroupTransferSizeUnknown
  */
-@property (atomic, assign) CKOperationGroupTransferSize expectedReceiveSize;
+@property (assign) CKOperationGroupTransferSize expectedReceiveSize;
 
 @end
 

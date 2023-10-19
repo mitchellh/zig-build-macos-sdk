@@ -439,6 +439,8 @@ CG_AVAILABLE_STARTING(12.0, 15.0);
 CG_EXTERN bool CGColorSpaceSupportsOutput(CGColorSpaceRef space)
 CG_AVAILABLE_STARTING(10.12, 10.0);
 
+/*  CGColorSpaceCopyPropertyList will return NULL for special color spaces
+    (e.g. kCGColorSpaceDeviceN or kCGColorSpacePattern), except Indexed Color Space */
 CG_EXTERN CFPropertyListRef __nullable
 CGColorSpaceCopyPropertyList(CGColorSpaceRef space)
 CG_AVAILABLE_STARTING(10.12, 10.0);

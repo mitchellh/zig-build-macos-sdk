@@ -5,7 +5,7 @@
 #include <TargetConditionals.h>
 #include <Availability.h>
 
-#if TARGET_OS_OSX || TARGET_OS_IPHONE
+#if TARGET_OS_OSX || TARGET_OS_IPHONE || 0
 #include <objc/NSObjCRuntime.h>
 #include <stdarg.h>
 #include <stdint.h>

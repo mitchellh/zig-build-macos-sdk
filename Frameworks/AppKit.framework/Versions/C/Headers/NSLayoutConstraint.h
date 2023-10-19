@@ -1,7 +1,7 @@
 /*
 	NSLayoutConstraint.h
 	Application Kit
-	Copyright (c) 2009-2021, Apple Inc.
+	Copyright (c) 2009-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -16,7 +16,7 @@
 #import <Foundation/NSDictionary.h>
 #import <AppKit/NSLayoutAnchor.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 #if !TARGET_OS_IPHONE
@@ -410,4 +410,4 @@ APPKIT_EXTERN const CGFloat NSViewNoIntrinsicMetric API_AVAILABLE(macos(10.11));
 
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

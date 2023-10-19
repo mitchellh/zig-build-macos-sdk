@@ -1,14 +1,14 @@
 /*
 	NSGraphics.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
 #import <Foundation/NSGeometry.h> 
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSColor, NSView;
@@ -236,16 +236,6 @@ APPKIT_EXTERN void NSDisableScreenUpdates(void) API_DEPRECATED("As of 10.11 it i
 
 APPKIT_EXTERN void NSEnableScreenUpdates(void) API_DEPRECATED("As of 10.11 it is not generally necessary to take explicit action to achieve visual atomicity. +[NSAnimationContext runAnimationGroup:] and other similar methods can be used when a stronger than normal need for visual atomicity is required. The NSAnimationContext methods do not suffer from the same performance problems as NSEnableScreenUpdates.", macos(10.0,10.11));
 
-/* Runs one of the standard system animation effects (display and sound).
-** 'centerLocation' represents the center, in screen coordinates, to show the effect.
-** 'size' specifies how big the effect should be.  Use NSZeroSize to get the default size.
-** 'animationDelegate' is optionally, an object that wants to know when the effect has completed.
-** 'didEndSelector' will be invoked in the animationDelegate when the animation has completed.
-**  
-** The didEndSelector should have the following signature:
-** 	- (void)animationEffectDidEnd:(void *)contextInfo;
-*/
-
 typedef NS_ENUM(NSUInteger, NSAnimationEffect) {
 	// The default effect used to indicate removal of an item from a collection, 
 	// such as toolbar (indicates removal, without destroying the underlying data).
@@ -253,9 +243,9 @@ typedef NS_ENUM(NSUInteger, NSAnimationEffect) {
 
 	// An effect showing a puff of smoke.
 	NSAnimationEffectPoof = 10
-};
+} API_DEPRECATED("Use +[NSCursor disappearingItemCursor] instead", macos(10.3,14.0));
 
-APPKIT_EXTERN void NSShowAnimationEffect(NSAnimationEffect animationEffect, NSPoint centerLocation, NSSize size, _Nullable id animationDelegate, _Nullable SEL didEndSelector, void * _Nullable contextInfo);
+APPKIT_EXTERN void NSShowAnimationEffect(NSAnimationEffect animationEffect, NSPoint centerLocation, NSSize size, _Nullable id animationDelegate, _Nullable SEL didEndSelector, void * _Nullable contextInfo) API_DEPRECATED("Use +[NSCursor disappearingItemCursor] instead", macos(10.3,14.0));
 
 APPKIT_EXTERN void NSCountWindows(NSInteger *count) API_DEPRECATED("Use +[NSWindow windowNumbersWithOptions:] instead", macos(10.0,10.6));
 APPKIT_EXTERN void NSWindowList(NSInteger size, NSInteger list[_Nonnull]) API_DEPRECATED("Use +[NSWindow windowNumbersWithOptions:] instead", macos(10.0,10.6));
@@ -264,4 +254,4 @@ APPKIT_EXTERN void NSWindowListForContext(NSInteger context, NSInteger size, NSI
 APPKIT_EXTERN void NSCopyBits(NSInteger srcGState, NSRect srcRect, NSPoint destPoint) API_DEPRECATED("", macos(10.0,10.10));
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

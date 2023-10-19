@@ -19,7 +19,7 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithShareMetadatas:(NSArray<CKShareMetadata *> *)shareMetadatas;
 
-@property (nonatomic, copy, nullable) NSArray<CKShareMetadata *> *shareMetadatas;
+@property (nullable, copy, nonatomic) NSArray<CKShareMetadata *> *shareMetadatas;
 
 /*! @abstract Called once for each share metadata that the server processed
  *
@@ -28,7 +28,7 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^perShareCompletionBlock)(CKShareMetadata *shareMetadata, CKShare * _Nullable acceptedShare, NSError * _Nullable error)
+@property (nullable, copy, nonatomic) void (^perShareCompletionBlock)(CKShareMetadata *shareMetadata, CKShare * _Nullable acceptedShare, NSError * _Nullable error)
 CK_SWIFT_DEPRECATED("Use perShareResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
 
 /*! @abstract This block is called when the operation completes.
@@ -39,7 +39,7 @@ CK_SWIFT_DEPRECATED("Use perShareResultBlock instead", macos(10.12, 12.0), ios(1
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^acceptSharesCompletionBlock)(NSError * _Nullable operationError)
+@property (nullable, copy, nonatomic) void (^acceptSharesCompletionBlock)(NSError * _Nullable operationError)
 CK_SWIFT_DEPRECATED("Use acceptSharesResultBlock instead", macos(10.12, 12.0), ios(10.0, 15.0), tvos(10.0, 15.0), watchos(3.0, 8.0));
 
 @end

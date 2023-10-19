@@ -25,6 +25,7 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
     in the challenge.
 */
 
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 @protocol NSURLAuthenticationChallengeSender <NSObject>
 
@@ -64,6 +65,7 @@ API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
     provides all the information about the challenge, and has a method
     to indicate when it's done.
 */
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 @interface NSURLAuthenticationChallenge : NSObject <NSSecureCoding>
 {

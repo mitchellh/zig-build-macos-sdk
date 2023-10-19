@@ -192,7 +192,7 @@ API_AVAILABLE(macos(10.13), ios(10.0))
  @discussion The requested storage and CPU cache modes must match the storage and CPU cache modes of the heap, with the exception that the requested storage mode can be MTLStorageModeMemoryless. 
  @return The texture or nil if heap is full.
  */
-- (nullable id <MTLTexture>)newTextureWithDescriptor:(MTLTextureDescriptor *)desc;
+- (nullable id <MTLTexture>)newTextureWithDescriptor:(MTLTextureDescriptor *)descriptor;
 
 /*!
  @method setPurgeabilityState:

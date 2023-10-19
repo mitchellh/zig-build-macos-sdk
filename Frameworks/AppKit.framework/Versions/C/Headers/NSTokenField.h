@@ -1,7 +1,7 @@
 /*
 	NSTokenField.h
 	Application Kit
-	Copyright (c) 2004-2021, Apple Inc.
+	Copyright (c) 2004-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -11,7 +11,7 @@
 #import <AppKit/AppKitDefines.h>
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSTokenField;
@@ -21,10 +21,13 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @optional
 
-// Each element in the array should be an NSString or an array of NSStrings.
-// substring is the partial string that is being completed.  tokenIndex is the index of the token being completed.
-// selectedIndex allows you to return by reference an index specifying which of the completions should be selected initially.
-// The default behavior is not to have any completions.
+/// Allows the delegate to provide an array of appropriate completions for the contents of the receiver
+/// @param tokenField The token field where editing is occurring
+/// @param substring The partial string that is being completed
+/// @param tokenIndex The index of the token being completed
+/// @param selectedIndex Optionally, you can return by reference an index into the returned array that specifies which of the completions should be initially selected. If none are to be selected, return by reference `-1`.
+/// @return An array of strings (`NSString`) that are possible completions, or `nil` to provide no completions
+/// @discussion If the delegate does not implement this method, no completions are provided
 - (nullable NSArray *)tokenField:(NSTokenField *)tokenField completionsForSubstring:(NSString *)substring indexOfToken:(NSInteger)tokenIndex indexOfSelectedItem:(nullable NSInteger *)selectedIndex NS_SWIFT_UI_ACTOR;
 
 // return an array of represented objects you want to add.
@@ -74,4 +77,4 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

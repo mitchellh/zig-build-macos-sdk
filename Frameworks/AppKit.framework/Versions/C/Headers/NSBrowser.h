@@ -1,7 +1,7 @@
 /*
     NSBrowser.h
     Application Kit
-    Copyright (c) 1994-2021, Apple Inc.
+    Copyright (c) 1994-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -12,7 +12,7 @@
 #import <AppKit/NSApplication.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 static const NSAppKitVersion NSAppKitVersionNumberWithContinuousScrollingBrowser = 680.0;
@@ -252,7 +252,7 @@ typedef NS_ENUM(NSUInteger, NSBrowserDropOperation) {
  */
 @property (strong) NSColor *backgroundColor API_AVAILABLE(macos(10.5));
 
-/* Begins editing the item at the specified path. event may be nil if programatically editing. The cell's contents will be selected if select is YES. Overriding this method will not affect the editing behavior of the browser.
+/* Begins editing the item at the specified path. event may be nil if programmatically editing. The cell's contents will be selected if select is YES. Overriding this method will not affect the editing behavior of the browser.
  */
 - (void)editItemAtIndexPath:(NSIndexPath *)indexPath withEvent:(nullable NSEvent *)event select:(BOOL)select API_AVAILABLE(macos(10.6));
 
@@ -445,7 +445,7 @@ APPKIT_EXTERN NSNotificationName NSBrowserColumnConfigurationDidChangeNotificati
  */
 - (void)browser:(NSBrowser *)browser didChangeLastColumn:(NSInteger)oldLastColumn toColumn:(NSInteger)column NS_SWIFT_UI_ACTOR;
 
-/* Optional - Return a set of new indexes to select when the user changes the selection with the keyboard or mouse. This method may be called multiple times with one new index added to the existing selection to find out if a particular index can be selected when the user is extending the selection with the keyboard or mouse. Note that 'proposedSelectionIndexes' will contain the entire newly suggested selection, and you can return the exsiting selection to avoid changing the selection. This method only works for item-based NSBrowsers.
+/* Optional - Return a set of new indexes to select when the user changes the selection with the keyboard or mouse. This method may be called multiple times with one new index added to the existing selection to find out if a particular index can be selected when the user is extending the selection with the keyboard or mouse. Note that 'proposedSelectionIndexes' will contain the entire newly suggested selection, and you can return the existing selection to avoid changing the selection. This method only works for item-based NSBrowsers.
  */
 - (NSIndexSet *)browser:(NSBrowser *)browser selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes inColumn:(NSInteger)column NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.6));
 
@@ -487,4 +487,4 @@ APPKIT_EXTERN NSNotificationName NSBrowserColumnConfigurationDidChangeNotificati
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

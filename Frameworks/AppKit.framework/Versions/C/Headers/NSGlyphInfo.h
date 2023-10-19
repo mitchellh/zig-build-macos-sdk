@@ -1,14 +1,14 @@
 #if !__has_include(<UIFoundation/NSGlyphInfo.h>)
 /*
 	NSGlyphInfo.h
-	Copyright (c) 2002-2021, Apple Inc.
+	Copyright (c) 2002-2023, Apple Inc.
 	All rights reserved.
 */
 
 #import <Foundation/NSString.h>
 #import <AppKit/NSFont.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #if !TARGET_OS_IPHONE
 
 @interface NSGlyphInfo : NSObject <NSCopying, NSSecureCoding>
@@ -42,7 +42,7 @@ typedef NS_ENUM(NSUInteger, NSCharacterCollection) {
 
 
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSGlyphInfo.h>
 #endif

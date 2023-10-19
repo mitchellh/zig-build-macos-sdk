@@ -260,6 +260,36 @@ SPPose3D SPPose3DMakeLookAt(SPVector3D forward, SPVector3D up) {
     return SPPose3DMakeLookAt(position, target, up);
 }
 
+/*!
+ @abstract Returns a pose with with a position and rotation that are defined by a projective transform.
+ 
+ @param transform The source transform. The function only considers the transform's rotation and
+ translation components.
+ @returns A pose with a position and rotation that are defined by a projective transform.
+ @note
+ This function can't extract rotation from a non-scale-rotate-translate projective transform. In that case, the function
+ returns @p SPPose3DInvalid.
+ */
+SPATIAL_INLINE
+SPATIAL_OVERLOADABLE
+SPPose3D SPPose3DMakeWithProjectiveTransform(SPProjectiveTransform3D transform)
+__API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
+
+SPATIAL_REFINED_FOR_SWIFT
+SPATIAL_OVERLOADABLE
+SPPose3D SPPose3DMakeWithProjectiveTransform(SPProjectiveTransform3D transform) {
+    
+    SPRotation3D rotation = SPProjectiveTransform3DGetRotation(transform);
+    
+    if (!SPRotation3DIsValid(rotation)) {
+        return SPPose3DInvalid;
+    }
+    
+    SPPoint3D position = SPPoint3DMakeWithVector(SPProjectiveTransform3DGetTranslation(transform));
+    
+    return SPPose3DMake(position, rotation);
+}
+
 // MARK: - Creating a pose from a 4x4 matrix
 
 /*!
@@ -268,8 +298,8 @@ SPPose3D SPPose3DMakeLookAt(SPVector3D forward, SPVector3D up) {
  @param matrix The source matrix.
  @returns A new pose structure.
  @note
- If the upper-left 3 x 3 submatrix is not a rotation matrix (that is, orthogonal with a determinant of @p +1 ), the function returns @p SPPose3DInvalid .
- If the bottom row of the matrix is not @p [0,0,0,1] , the functions  returns @p SPPose3DInvalid .
+ This function can't extract rotation from a non-scale-rotate-translate matrix transform. In that case, the function
+ returns @p SPPose3DInvalid.
  */
 SPATIAL_INLINE
 SPATIAL_OVERLOADABLE
@@ -279,32 +309,10 @@ __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
 SPATIAL_REFINED_FOR_SWIFT
 SPATIAL_OVERLOADABLE
 SPPose3D SPPose3DMakeWith4x4Matrix(simd_double4x4 matrix) {
-
-    if (!_sp_almost_equal(0, matrix.columns[0].w) ||
-        !_sp_almost_equal(0, matrix.columns[1].w) ||
-        !_sp_almost_equal(0, matrix.columns[2].w) ||
-        !_sp_almost_equal(1, matrix.columns[3].w)) {
-        return  SPPose3DInvalid;
-    }
     
-    simd_double3x3 m3x3 = (simd_double3x3) {
-        matrix.columns[0].xyz,
-        matrix.columns[1].xyz,
-        matrix.columns[2].xyz,
-    };
+    SPProjectiveTransform3D transform = SPProjectiveTransform3DMakeWith4x4Matrix(matrix);
     
-    if (!_sp_almost_equal(1, simd_determinant(m3x3)) &&
-        !_sp_is_orthogonal(m3x3, matrix_identity_double3x3)) {
-        return SPPose3DInvalid;
-    }
-
-    SPPoint3D p = SPPoint3DMakeWithVector(matrix.columns[3].xyz);
-    SPRotation3D r = SPRotation3DMakeWithQuaternion(simd_quaternion(matrix));
-    
-    return (SPPose3D) {
-        .position = p,
-        .rotation = r
-    };
+    return SPPose3DMakeWithProjectiveTransform(transform);
 }
 
 // MARK: - Calculating the inverse of a pose
@@ -446,8 +454,10 @@ SPPose3D SPPose3DTranslate(SPPose3D pose, SPSize3D offset) {
  
  @param transform The source transform. The function only considers the transform's rotation and
  translation components.
- @returns A pose with a position and rotation that are defined by an affine transform. If the transform doesn't
- define a coherent rotation, the function returns @p SPPose3DInvalid.
+ @returns A pose with a position and rotation that are defined by an affine transform.
+ @note
+ This function can't extract rotation from a non-scale-rotate-translate affine transform. In that case, the function
+ returns @p SPPose3DInvalid.
  */
 SPATIAL_INLINE
 SPATIAL_OVERLOADABLE
@@ -469,33 +479,7 @@ SPPose3D SPPose3DMakeWithAffineTransform(SPAffineTransform3D transform) {
     return SPPose3DMake(position, rotation);
 }
 
-/*!
- @abstract Returns a pose with with a position and rotation that are defined by a projective transform.
- 
- @param transform The source transform. The function only considers the transform's rotation and
- translation components.
- @returns A pose with a position and rotation that are defined by a projective transform. If the transform doesn't
- define a coherent rotation, the function returns @p SPPose3DInvalid.
- */
-SPATIAL_INLINE
-SPATIAL_OVERLOADABLE
-SPPose3D SPPose3DMakeWithProjectiveTransform(SPProjectiveTransform3D transform)
-__API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
 
-SPATIAL_REFINED_FOR_SWIFT
-SPATIAL_OVERLOADABLE
-SPPose3D SPPose3DMakeWithProjectiveTransform(SPProjectiveTransform3D transform) {
-    
-    SPRotation3D rotation = SPProjectiveTransform3DGetRotation(transform);
-    
-    if (!SPRotation3DIsValid(rotation)) {
-        return SPPose3DInvalid;
-    }
-    
-    SPPoint3D position = SPPoint3DMakeWithVector(SPProjectiveTransform3DGetTranslation(transform));
-    
-    return SPPose3DMake(position, rotation);
-}
 
 // MARK: - Flipping a pose
 

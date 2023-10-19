@@ -1,7 +1,7 @@
 /*
     NSGestureRecognizer.h
     Application Kit
-    Copyright (c) 2013-2021, Apple Inc.
+    Copyright (c) 2013-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <AppKit/NSTouch.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @protocol NSGestureRecognizerDelegate;
@@ -161,4 +161,4 @@ API_AVAILABLE(macos(10.10)) NS_SWIFT_UI_ACTOR
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

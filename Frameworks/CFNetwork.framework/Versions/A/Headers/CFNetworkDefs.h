@@ -20,16 +20,7 @@
 #include <ConditionalMacros.h>
 #include <CoreFoundation/CoreFoundation.h>
 
-/* Standard incantation for exporting/importing DLL symbols */
-#if defined(__WIN32__)
-  #if defined(CFNETWORK_BUILDING_DLL)
-		#define CFN_EXPORT __declspec(dllexport) extern
- #else
-	  #define CFN_EXPORT __declspec(dllimport) extern
- #endif
-#else
-	#define CFN_EXPORT extern __attribute__((__visibility__("default")))
-#endif
+#define CFN_EXPORT extern __attribute__((__visibility__("default")))
 
 #endif //__CFNETWORK_DEFS_H_
 

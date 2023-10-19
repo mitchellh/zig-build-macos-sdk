@@ -118,6 +118,11 @@ typedef struct _MTLAxisAlignedBoundingBox {
           max(-INFINITY, -INFINITY, -INFINITY)
     {
     }
+    
+#ifdef __METAL_VERSION__
+    _MTLAxisAlignedBoundingBox() threadgroup = default;
+#endif
+    
 
     _MTLAxisAlignedBoundingBox(MTLPackedFloat3 p)
         : min(p),

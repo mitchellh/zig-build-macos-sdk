@@ -19,7 +19,7 @@ API_DEPRECATED("Instead of iterating notifications, consider using CKDatabaseSub
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithNotificationIDsToMarkRead:(NSArray<CKNotificationID *> *)notificationIDs;
 
-@property (nonatomic, copy, nullable) NSArray<CKNotificationID *> *notificationIDs;
+@property (nullable, copy, nonatomic) NSArray<CKNotificationID *> *notificationIDs;
 
 /*! @abstract This block is called when the operation completes.
  *
@@ -28,7 +28,7 @@ API_DEPRECATED("Instead of iterating notifications, consider using CKDatabaseSub
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^markNotificationsReadCompletionBlock)(NSArray<CKNotificationID *> * _Nullable notificationIDsMarkedRead, NSError * _Nullable operationError);
+@property (nullable, copy, nonatomic) void (^markNotificationsReadCompletionBlock)(NSArray<CKNotificationID *> * _Nullable notificationIDsMarkedRead, NSError * _Nullable operationError);
 
 @end
 

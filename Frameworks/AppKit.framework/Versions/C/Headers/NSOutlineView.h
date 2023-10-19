@@ -1,7 +1,7 @@
 /*
     NSOutlineView.h
     Application Kit
-    Copyright (c) 1997-2021, Apple Inc.
+    Copyright (c) 1997-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 #import <AppKit/AppKitDefines.h>
 #import <CoreFoundation/CFDictionary.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSButtonCell;
@@ -368,6 +368,16 @@ enum { NSOutlineViewDropOnItemIndex = -1 };
  */
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldShowOutlineCellForItem:(id)item NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.6));
 
+/* Optional - Column Visibility User Control. Return YES for any column whose visibility is meant to be user-controllable. Implementing this method enables outline view to provide a menu or equivalent UI that allows users to hide or show columns. Any column that is meant to be user-controllable in this way should have a non-empty `.title` property.
+ Note: setting the `.menu` property on outlineView's `.headerView` will take precedence over this built-in mechanism.
+ */
+- (BOOL)outlineView:(NSOutlineView *)outlineView userCanChangeVisibilityOfTableColumn:(NSTableColumn *)column NS_SWIFT_NAME(outlineView(_:userCanChangeVisibilityOf:)) API_AVAILABLE(macos(14.0));
+
+/* Optional - Column Visibility User Control. Called when the user alters the visibility of one or more columns via the `tableView:userCanChangeVisibilityOfTableColumn:` UI affordance.
+ */
+- (void)outlineView:(NSOutlineView *)outlineView userDidChangeVisibilityOfTableColumns:(NSArray <NSTableColumn *> *)columns NS_SWIFT_NAME(outlineView(_:userDidChangeVisibilityOf:)) API_AVAILABLE(macos(14.0));
+
+
 /* Notifications - see comments below for more information about the @"NSObject" parameter in the userInfo dictionary.
  */
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification NS_SWIFT_UI_ACTOR;
@@ -410,5 +420,5 @@ APPKIT_EXTERN NSNotificationName NSOutlineViewItemWillCollapseNotification;
 APPKIT_EXTERN NSNotificationName NSOutlineViewItemDidCollapseNotification;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

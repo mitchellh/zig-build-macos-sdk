@@ -29,7 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
  *
  */
 CL_EXTERN
-API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
+API_DEPRECATED_WITH_REPLACEMENT("Use CLBeaconIdentityCondition", macos(10.15, API_TO_BE_DEPRECATED), ios(7.0, API_TO_BE_DEPRECATED))
+API_UNAVAILABLE(watchos, tvos)
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+API_UNAVAILABLE(visionos)
+#endif
+
 @interface CLBeaconRegion : CLRegion
 
 /*
@@ -39,8 +44,13 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *    Initialize a beacon region with a UUID. Major and minor values will be wildcarded.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (instancetype)initWithUUID:(NSUUID *)uuid identifier:(NSString *)identifier API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+- (instancetype)initWithProximityUUID:(NSUUID *)proximityUUID identifier:(NSString *)identifier API_DEPRECATED_WITH_REPLACEMENT("-initWithUUID:identifier:", ios(7.0, 13.0), macos(10.15, 10.15)) API_UNAVAILABLE(visionos);
+#else
 - (instancetype)initWithUUID:(NSUUID *)uuid identifier:(NSString *)identifier API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
 - (instancetype)initWithProximityUUID:(NSUUID *)proximityUUID identifier:(NSString *)identifier API_DEPRECATED_WITH_REPLACEMENT("-initWithUUID:identifier:", ios(7.0, 13.0), macos(10.15, 10.15));
+#endif
 
 /*
  *  initWithUUID:major:identifier:
@@ -49,8 +59,13 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *    Initialize a beacon region with a UUID and major value. Minor value will be wildcarded.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (instancetype)initWithUUID:(NSUUID *)uuid major:(CLBeaconMajorValue)major identifier:(NSString *)identifier API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+- (instancetype)initWithProximityUUID:(NSUUID *)proximityUUID major:(CLBeaconMajorValue)major identifier:(NSString *)identifier API_DEPRECATED_WITH_REPLACEMENT("-initWithUUID:major:identifier:", ios(7.0, 13.0), macos(10.15, 10.15)) API_UNAVAILABLE(visionos);
+#else
 - (instancetype)initWithUUID:(NSUUID *)uuid major:(CLBeaconMajorValue)major identifier:(NSString *)identifier API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
 - (instancetype)initWithProximityUUID:(NSUUID *)proximityUUID major:(CLBeaconMajorValue)major identifier:(NSString *)identifier API_DEPRECATED_WITH_REPLACEMENT("-initWithUUID:major:identifier:", ios(7.0, 13.0), macos(10.15, 10.15));
+#endif
 
 /*
  *  initWithUUID:major:minor:identifier:
@@ -59,8 +74,13 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *    Initialize a beacon region identified by a UUID, major and minor values.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (instancetype)initWithUUID:(NSUUID *)uuid major:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor identifier:(NSString *)identifier API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+- (instancetype)initWithProximityUUID:(NSUUID *)proximityUUID major:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor identifier:(NSString *)identifier API_DEPRECATED_WITH_REPLACEMENT("-initWithUUID:major:identifier:", ios(7.0, 13.0), macos(10.15, 10.15)) API_UNAVAILABLE(visionos);
+#else
 - (instancetype)initWithUUID:(NSUUID *)uuid major:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor identifier:(NSString *)identifier API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
 - (instancetype)initWithProximityUUID:(NSUUID *)proximityUUID major:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor identifier:(NSString *)identifier API_DEPRECATED_WITH_REPLACEMENT("-initWithUUID:major:identifier:", ios(7.0, 13.0), macos(10.15, 10.15));
+#endif
 
 /*
  *  initWithBeaconIdentityConstraint:identifier:
@@ -70,7 +90,11 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *    constraint.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+- (instancetype)initWithBeaconIdentityConstraint:(CLBeaconIdentityConstraint *)beaconIdentityConstraint identifier:(NSString *)identifier API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 - (instancetype)initWithBeaconIdentityConstraint:(CLBeaconIdentityConstraint *)beaconIdentityConstraint identifier:(NSString *)identifier API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  peripheralDataWithMeasuredPower:
@@ -93,7 +117,11 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *  Discussion:
  *    Returns a CLBeaconIdentityConstraint describing the beacons this region monitors.
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (readonly, nonatomic, copy) CLBeaconIdentityConstraint *beaconIdentityConstraint API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 @property (readonly, nonatomic, copy) CLBeaconIdentityConstraint *beaconIdentityConstraint API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
+#endif
 
 /*
  *  UUID
@@ -102,8 +130,13 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *    UUID associated with the region.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (readonly, nonatomic, copy) NSUUID *UUID API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+@property (readonly, nonatomic, copy) NSUUID *proximityUUID API_DEPRECATED_WITH_REPLACEMENT("-UUID", ios(7.0, 13.0), macos(10.15, 10.15)) API_UNAVAILABLE(visionos);
+#else
 @property (readonly, nonatomic, copy) NSUUID *UUID API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
 @property (readonly, nonatomic, copy) NSUUID *proximityUUID API_DEPRECATED_WITH_REPLACEMENT("-UUID", ios(7.0, 13.0), macos(10.15, 10.15));
+#endif
 
 /*
  *  major
@@ -143,7 +176,11 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *    A single beacon within a CLBeaconRegion.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos)
+#else
 API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
+#endif
 @interface CLBeacon : NSObject <NSCopying, NSSecureCoding>
 {
 @package
@@ -157,8 +194,11 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *    The time when this beacon was observed.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (readonly, nonatomic, copy) NSDate *timestamp API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+#else
 @property (readonly, nonatomic, copy) NSDate *timestamp API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
-
+#endif
 /*
  *  UUID
  *
@@ -166,8 +206,13 @@ API_AVAILABLE(ios(7.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos)
  *    UUID associated with the beacon.
  *
  */
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+@property (readonly, nonatomic, copy) NSUUID *UUID API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos, visionos);
+@property (readonly, nonatomic, copy) NSUUID *proximityUUID API_DEPRECATED_WITH_REPLACEMENT("-UUID", ios(7.0, 13.0), macos(10.15, 10.15)) API_UNAVAILABLE(visionos);
+#else
 @property (readonly, nonatomic, copy) NSUUID *UUID API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(watchos, tvos);
 @property (readonly, nonatomic, copy) NSUUID *proximityUUID API_DEPRECATED_WITH_REPLACEMENT("-UUID", ios(7.0, 13.0), macos(10.15, 10.15));
+#endif
 
 /*
  *  major

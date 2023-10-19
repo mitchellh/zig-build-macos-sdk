@@ -3,6 +3,8 @@
    Copyright (c) 2006-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 
 /* The text layer provides simple text layout and rendering of plain
@@ -93,3 +95,5 @@ CA_EXTERN CATextLayerAlignmentMode const kCAAlignmentJustified
     API_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));
 
 NS_ASSUME_NONNULL_END
+
+#endif

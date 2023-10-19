@@ -1,7 +1,7 @@
 /*
     NSTouch.h
     Application Kit
-    Copyright (c) 2009-2021, Apple Inc.
+    Copyright (c) 2009-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -11,7 +11,7 @@
 #import <Foundation/NSDate.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSView;
@@ -41,7 +41,7 @@ NS_INLINE NSTouchTypeMask NSTouchTypeMaskFromType(NSTouchType type) { return (1 
 
 /* Unlike the iPhone, NSTouch objects do not persist for the life of the touch.
 */
-API_AVAILABLE(macos(10.6))
+API_AVAILABLE(macos(10.6)) NS_SWIFT_SENDABLE
 @interface NSTouch : NSObject <NSCopying>
 /* Properties of this touch */
 /* Use the identity property to track changes to a particular touch during the touch's life. While touch identities may be re-used, they are unique during the life of the touch, even when multiple devices are present. Note: identity objects implement the NSCopying protocol so that they may be used as keys in an NSDictionary. Use isEqual: to compare two touch identities.
@@ -70,5 +70,5 @@ API_AVAILABLE(macos(10.6))
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

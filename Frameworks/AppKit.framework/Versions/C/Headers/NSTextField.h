@@ -1,7 +1,7 @@
 /*
 	NSTextField.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -12,7 +12,7 @@
 #import <AppKit/NSTextContent.h>
 #import <AppKit/NSParagraphStyle.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @protocol NSTextFieldDelegate;
@@ -106,19 +106,30 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 @end
 
 @protocol NSTextFieldDelegate <NSControlTextEditingDelegate>
+
 @optional
+
+/// Provides a customized list of candidates to the text view’s `candidateListTouchBarItem`. Invoked from `-updateCandidates`. `NSTextView` uses the candidates returned from this method and suppress its built-in candidate generation. Returning `nil` from this delegate method allows `NSTextView` to query candidates from `NSSpellChecker`.
+/// - Returns: An array of objects that represent the elements of a selection.
 - (nullable NSArray *)textField:(NSTextField *)textField textView:(NSTextView *)textView candidatesForSelectedRange:(NSRange)selectedRange NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.12.2));
 
+/// Allows customizing the candidate list queried from `NSSpellChecker`.
+/// - Returns: An array of text objects to include in a text selection.
 - (NSArray<NSTextCheckingResult *> *)textField:(NSTextField *)textField textView:(NSTextView *)textView candidates:(NSArray<NSTextCheckingResult *> *)candidates forSelectedRange:(NSRange)selectedRange NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.12.2));
 
+/// Notifies the delegate that the user selected the candidate at index in `-[NSCandidateListTouchBarItem candidates]` for the text view’s `candidateListTouchBarItem`. Returns a Boolean value that indicates whether to select the text object at the index.
+/// - Parameters:
+///   - textField: The text field that sent the message.
+///   - textView: The text view that sent the message.
+///   - index: The index that represents the start of the candidate text to evaluate, or `NSNotFound` if no candidate is to be selected.
+/// - Returns: `YES` if the framework selects the text. `YES` allows `textView` to insert the candidate into the text storage if it’s `NSString`, `NSAttributedString`, or `NSTextCheckingResult`.
 - (BOOL)textField:(NSTextField *)textField textView:(NSTextView *)textView shouldSelectCandidateAtIndex:(NSUInteger)index NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.12.2));
+
 @end
 
 @interface NSTextField(NSDeprecated)
 
-/* This method is deprecated in 10.8 and higher. Use setTitle: instead.
- */
-- (void)setTitleWithMnemonic:(null_unspecified NSString *)stringWithAmpersand API_DEPRECATED("", macos(10.0,10.8));
+- (void)setTitleWithMnemonic:(null_unspecified NSString *)stringWithAmpersand API_DEPRECATED("Use `-setTitle:` instead", macos(10.0, 10.8));
 
 @end
 
@@ -126,6 +137,6 @@ APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 
 

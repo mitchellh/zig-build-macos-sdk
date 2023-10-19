@@ -19,9 +19,11 @@
 
 #ifdef __OBJC__
 
-#import <cups/ppd.h>
 #import <Foundation/Foundation.h>
 #import <PrintCore/PMDefinitions.h>
+#import <cups/ppd.h>
+
+API_UNAVAILABLE_BEGIN(ios)
 
 @class NSView;
 @protocol PDEPanel;
@@ -399,6 +401,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+API_UNAVAILABLE_END //ios
 
 #endif /* __OBJC__ */
 

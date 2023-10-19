@@ -86,6 +86,9 @@ typedef NS_ENUM(NSUInteger, MTLVertexFormat)
     MTLVertexFormatShortNormalized API_AVAILABLE(macos(10.13), ios(11.0)) = 52,
     
     MTLVertexFormatHalf API_AVAILABLE(macos(10.13), ios(11.0)) = 53,
+
+    MTLVertexFormatFloatRG11B10 API_AVAILABLE(macos(14.0), ios(17.0)) = 54,
+    MTLVertexFormatFloatRGB9E5 API_AVAILABLE(macos(14.0), ios(17.0)) = 55,
     
 } API_AVAILABLE(macos(10.11), ios(8.0));
 
@@ -97,6 +100,15 @@ typedef NS_ENUM(NSUInteger, MTLVertexStepFunction)
     MTLVertexStepFunctionPerPatch API_AVAILABLE(macos(10.12), ios(10.0)) = 3,
     MTLVertexStepFunctionPerPatchControlPoint API_AVAILABLE(macos(10.12), ios(10.0)) = 4,
 } API_AVAILABLE(macos(10.11), ios(8.0));
+
+/*!
+  @brief
+    when a MTLVertexBufferLayoutDescriptor has its stride set to this value,
+    the stride will be dynamic and must be set explicitly when binding a buffer
+    to a render command encoder.
+*/
+API_AVAILABLE(macos(14.0), ios(17.0))
+static const NSUInteger MTLBufferLayoutStrideDynamic = NSUIntegerMax;
 
 MTL_EXPORT API_AVAILABLE(macos(10.11), ios(8.0))
 @interface MTLVertexBufferLayoutDescriptor : NSObject <NSCopying>

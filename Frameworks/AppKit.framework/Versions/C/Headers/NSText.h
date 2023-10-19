@@ -2,7 +2,7 @@
 /*
 	NSText.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -13,7 +13,7 @@
 @class NSColor, NSFont, NSNotification;
 @protocol NSTextDelegate;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 #if !TARGET_OS_IPHONE
 
@@ -195,7 +195,7 @@ static const NSTextAlignment NSCenterTextAlignment API_DEPRECATED_WITH_REPLACEME
 static const NSTextAlignment NSJustifiedTextAlignment API_DEPRECATED_WITH_REPLACEMENT("NSTextAlignmentJustified", macos(10.0,10.12))  = NSTextAlignmentJustified;
 static const NSTextAlignment NSNaturalTextAlignment API_DEPRECATED_WITH_REPLACEMENT("NSTextAlignmentNatural", macos(10.0,10.12))  = NSTextAlignmentNatural;
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSText.h>
 #endif

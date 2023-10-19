@@ -1,7 +1,7 @@
 /*
 	NSWindowRestoration.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
  */
 
@@ -15,7 +15,7 @@
 /* NSWindowRestoration is the mechanism by which Cocoa apps can persist their user interface state, such as window frames, and integrate with the machinery of the rest of the system. */
 
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @protocol NSWindowRestoration <NSObject>
@@ -136,4 +136,4 @@ If your document has variable or optional windows, you may override this to crea
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

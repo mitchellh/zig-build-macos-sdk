@@ -2,7 +2,7 @@
  *  CTFontDescriptor.h
  *  CoreText
  *
- *  Copyright (c) 2006-2022 Apple Inc. All rights reserved.
+ *  Copyright (c) 2006-2023 Apple Inc. All rights reserved.
  *
  */
 
@@ -341,7 +341,7 @@ CTFontDescriptorRef CTFontDescriptorCreateCopyWithAttributes(
     CFDictionaryRef         attributes ) CT_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));
 
 /*!
-    @function   CTFontCreateCopyWithFamily
+    @function   CTFontDescriptorCreateCopyWithFamily
     @abstract   Returns a new font descriptor in the specified family based on the traits of the original descriptor.
 
     @param      original

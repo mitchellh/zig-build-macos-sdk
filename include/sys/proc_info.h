@@ -45,7 +45,6 @@
 #include <mach/machine.h>
 #include <uuid/uuid.h>
 
-
 __BEGIN_DECLS
 
 
@@ -825,9 +824,7 @@ struct channel_fdinfo {
 #define PROC_UDATA_INFO_GET             1
 #define PROC_UDATA_INFO_SET             2
 
-
-
-
 __END_DECLS
+
 
 #endif /*_SYS_PROC_INFO_H */

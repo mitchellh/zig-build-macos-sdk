@@ -31,7 +31,9 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 - (NSArray<NSString *> *)stringsByAppendingPaths:(NSArray<NSString *> *)paths;
 
+#if !0
 - (NSUInteger)completePathIntoString:(NSString * _Nullable * _Nullable)outputName caseSensitive:(BOOL)flag matchesIntoArray:(NSArray<NSString *> * _Nullable * _Nullable)outputArray filterTypes:(nullable NSArray<NSString *> *)filterTypes;
+#endif 
 
 @property (readonly) const char *fileSystemRepresentation NS_RETURNS_INNER_POINTER;
 - (BOOL)getFileSystemRepresentation:(char *)cname maxLength:(NSUInteger)max;
@@ -44,6 +46,7 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 @end
 
+#if !0
 FOUNDATION_EXPORT NSString *NSUserName(void);
 FOUNDATION_EXPORT NSString *NSFullUserName(void);
 
@@ -53,6 +56,7 @@ FOUNDATION_EXPORT NSString * _Nullable NSHomeDirectoryForUser(NSString * _Nullab
 FOUNDATION_EXPORT NSString *NSTemporaryDirectory(void);
 
 FOUNDATION_EXPORT NSString *NSOpenStepRootDirectory(void);
+#endif 
 
 typedef NS_ENUM(NSUInteger, NSSearchPathDirectory) {
     NSApplicationDirectory = 1,             // supported applications (Applications)
@@ -88,11 +92,13 @@ typedef NS_ENUM(NSUInteger, NSSearchPathDirectory) {
 typedef NS_OPTIONS(NSUInteger, NSSearchPathDomainMask) {
     NSUserDomainMask = 1,       // user's home directory --- place to install user's personal items (~)
     NSLocalDomainMask = 2,      // local to the current machine --- place to install items available to everyone on this machine (/Library)
-    NSNetworkDomainMask = 4,    // publically available location in the local area network --- place to install items available on the network (/Network)
+    NSNetworkDomainMask = 4,    // publicly available location in the local area network --- place to install items available on the network (/Network)
     NSSystemDomainMask = 8,     // provided by Apple, unmodifiable (/System)
     NSAllDomainsMask = 0x0ffff  // all domains: all of the above and future items
 };
 
+#if !0
 FOUNDATION_EXPORT NSArray<NSString *> *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, BOOL expandTilde);
+#endif 
 
 NS_HEADER_AUDIT_END(nullability, sendability)

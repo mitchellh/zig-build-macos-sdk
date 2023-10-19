@@ -3,6 +3,8 @@
    Copyright (c) 2013-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 #import <QuartzCore/CAEDRMetadata.h>
 #import <Metal/MTLPixelFormat.h>
@@ -148,3 +150,5 @@ API_AVAILABLE(macos(10.11), ios(16.0), macCatalyst(16.0)) API_UNAVAILABLE(tvos, 
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

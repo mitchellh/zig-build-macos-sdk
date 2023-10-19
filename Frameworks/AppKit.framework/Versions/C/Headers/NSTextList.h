@@ -6,7 +6,7 @@
 //  NSTextList.h
 //  Text Kit
 //
-//  Copyright (c) 2004-2021, Apple Inc. All rights reserved.
+//  Copyright (c) 2004-2023, Apple Inc. All rights reserved.
 
 #import <Foundation/NSObject.h>
 #import <AppKit/AppKitDefines.h>

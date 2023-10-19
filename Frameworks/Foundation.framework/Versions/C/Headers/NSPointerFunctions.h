@@ -36,7 +36,9 @@ typedef NS_OPTIONS(NSUInteger, NSPointerFunctionsOptions) {
     NSPointerFunctionsZeroingWeakMemory API_DEPRECATED("GC no longer supported", macos(10.5, 10.8)) API_UNAVAILABLE(ios, watchos, tvos) = (1UL << 0),  // deprecated; uses GC weak read and write barriers, and dangling pointer behavior otherwise
     NSPointerFunctionsOpaqueMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (2UL << 0),
     NSPointerFunctionsMallocMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (3UL << 0),       // free() will be called on removal, calloc on copyIn
+#if !0
     NSPointerFunctionsMachVirtualMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (4UL << 0),
+#endif
     NSPointerFunctionsWeakMemory API_AVAILABLE(macos(10.8), ios(6.0), watchos(2.0), tvos(9.0)) = (5UL << 0),         // uses weak read and write barriers appropriate for ARC
     
     // Personalities are mutually exclusive

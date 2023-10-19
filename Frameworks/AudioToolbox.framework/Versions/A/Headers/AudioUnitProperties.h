@@ -52,7 +52,10 @@
 #define AudioToolbox_AudioUnitProperties_h
 
 #include <AudioToolbox/AUComponent.h>
+
+#if !(0 && 0)
 #include <os/workgroup.h>
+#endif
 
 CF_ASSUME_NONNULL_BEGIN
 
@@ -812,14 +815,17 @@ CF_ENUM(AudioUnitScope) {
 						    with the audio data it is generating in the current call to the AudioUnitRender function
 
 						Host should setup in the following order:
-						- Set host desired MIDIProtocolID
+						- Set desired host MIDI protocol using kAudioUnitProperty_HostMIDIProtocol
 						- Set kAudioUnitProperty_MIDIOutputEventListCallback
 						- Initialize the Audio Unit
  
 						Notes:
-							- kAudioUnitProperty_HostMIDIProtocol can not be changed while the Audio Unit is initialized.
-							- The Audio Unit takes ownership of the provided block.
-
+						- kAudioUnitProperty_HostMIDIProtocol cannot be changed while the Audio Unit is initialized.
+						- The Audio Unit takes ownership of the provided block.
+						- kAudioUnitProperty_HostMIDIProtocol should be set before attempting to query
+						kAudioUnitProperty_AudioUnitMIDIProtocol or calling AudioUnitInitialize to allow Audio Units to
+						optionally match their input MIDI protocol to the desired host protocol and prevent protocol conversion.
+ 
 						There is no implied or expected association between the number (or position) of an audio unit's
 						audio or MIDI outputs.
  
@@ -849,8 +855,17 @@ CF_ENUM(AudioUnitScope) {
 						Hosts should set this property to the protocol that MIDI data is desired to be delivered in. The framework will
 						convert all MIDI data sent to the host to the protocol value set in this property, an audio unit can query
 						this property to detect the hosts MIDI protocol.
+ 
+						Host should setup in the following order:
+						- Set desired host MIDI protocol using kAudioUnitProperty_HostMIDIProtocol
+						- Set kAudioUnitProperty_MIDIOutputEventListCallback
+						- Initialize the Audio Unit
 
-						Note: This property should not be changed after the audio unit has been initialized.
+						Notes:
+						- kAudioUnitProperty_HostMIDIProtocol cannot be changed after the audio unit has been initialized.
+						- kAudioUnitProperty_HostMIDIProtocol should be set before attempting to query
+						kAudioUnitProperty_AudioUnitMIDIProtocol or calling AudioUnitInitialize to allow Audio Units to
+						optionally match their input MIDI protocol to the desired host protocol and prevent protocol conversion.
 
 	@constant        kAudioUnitProperty_MIDIOutputBufferSizeHint
 						Scope:                  Global
@@ -1266,7 +1281,7 @@ struct AUDependentParameter {
 };
 typedef struct AUDependentParameter AUDependentParameter;
 
-
+#if !(0 && 0)
 #if !TARGET_OS_IPHONE
 /*!
 	@struct			AudioUnitCocoaViewInfo
@@ -1292,6 +1307,7 @@ struct AUHostVersionIdentifier {
 };
 typedef struct AUHostVersionIdentifier AUHostVersionIdentifier;
 #endif //!TARGET_OS_IPHONE
+#endif 
 
 /*!
 	@struct			MIDIPacketList
@@ -1353,6 +1369,7 @@ typedef struct AudioUnitParameterHistoryInfo AudioUnitParameterHistoryInfo;
 	
 	See AURenderContextObserver.
 */
+#if !(0 && 0)
 struct AudioUnitRenderContext {
 	os_workgroup_t __nullable		workgroup;
 	uint32_t						reserved[6]; // must be zero
@@ -1385,7 +1402,7 @@ typedef struct AudioUnitRenderContext AudioUnitRenderContext
 */
 typedef void (^AURenderContextObserver)(const AudioUnitRenderContext *context)
 	__SWIFT_UNAVAILABLE_MSG("Swift is not supported for use with audio realtime threads");
-
+#endif 
 /*!
 	@struct         MIDIEventList
 	@abstract       Forward declaration of MIDIEventList found in <CoreMIDI/MIDIServices.h>
@@ -1830,6 +1847,17 @@ typedef void (^AudioUnitRemoteControlEventListener)(AudioUnitRemoteControlEvent 
  */
 
 #define kAudioUnitConfigurationInfo_MigrateFromPlugin	"MigrateFromPlugin"
+
+#if !TARGET_OS_IPHONE
+
+/*!
+ @define		kAudioUnitConfigurationInfo_AvailableArchitectures
+ @discussion	An array of NSStrings representing the plugin architectures available in the bundle. Only available on macOS.
+ */
+
+#define kAudioUnitConfigurationInfo_AvailableArchitectures	"AvailableArchitectures"
+
+#endif // !TARGET_OS_IPHONE
 
 #pragma mark -
 #pragma mark OS X Availability
@@ -2585,7 +2613,7 @@ typedef struct AudioOutputUnitStartAtTimeParams AudioOutputUnitStartAtTimeParams
 	@discussion			Scope: Global
 						Value Type: UInt32
 						Access: read/write
-							Bypass all processing done by the voice processing unit. When set to 0 
+							Bypass all processing for microphone uplink done by the voice processing unit. When set to 0
 							(default), the processing is activated otherwise it is disabled. Voice Isolation
                             and Wide Spectrum take priority over Bypass.
 
@@ -2593,15 +2621,15 @@ typedef struct AudioOutputUnitStartAtTimeParams AudioOutputUnitStartAtTimeParams
 	@discussion			Scope: Global
 						Value Type: UInt32
 						Access: read/write
-							Enable automatic gain control on the processed microphone/uplink 
+							Enable automatic gain control on the processed microphone uplink
                             signal. On by default.
  
 	 @constant		kAUVoiceIOProperty_MuteOutput
 	 @discussion		Scope: Global
 						Value Type: UInt32
 						Access: read/write
-							Mutes the output of the voice processing unit. 
-							0 (default) = muting off. 1 = mute output.  
+							Mutes the output of the processed microphone uplink
+							0 (default) = muting off. 1 = muting on.
 */
 CF_ENUM(AudioUnitPropertyID) {
 	kAUVoiceIOProperty_BypassVoiceProcessing		= 2100,
@@ -2636,7 +2664,53 @@ typedef void (^AUVoiceIOMutedSpeechActivityEventListener)(AUVoiceIOSpeechActivit
  */
 CF_ENUM(AudioUnitPropertyID) {
 	kAUVoiceIOProperty_MutedSpeechActivityEventListener = 2106
-} API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(macos, watchos, tvos, macCatalyst);
+} API_AVAILABLE(ios(15.0), macos(14.0), tvos(17.0)) API_UNAVAILABLE(watchos);
+
+
+/*!
+	@enum	AUVoiceIOOtherAudioDuckingLevel
+	@abstract Ducking level applied to other (i.e. non-voice) audio by AUVoiceIO.
+	@discussion
+			DuckingLevelDefault = Default ducking level to other audio for typical voice chat.
+			DuckingLevelMin = minimum ducking to other audio.
+			DuckingLevelMid = medium ducking to other audio.
+			DuckingLevelMax = maximum ducking to other audio.
+*/
+typedef CF_ENUM(UInt32, AUVoiceIOOtherAudioDuckingLevel) {
+	kAUVoiceIOOtherAudioDuckingLevelDefault = 0,
+	kAUVoiceIOOtherAudioDuckingLevelMin = 10,
+	kAUVoiceIOOtherAudioDuckingLevelMid = 20,
+	kAUVoiceIOOtherAudioDuckingLevelMax = 30
+};
+
+/*!
+	@struct          AUVoiceIOOtherAudioDuckingConfiguration
+	@abstract        The configuration of ducking other (i.e. non-voice) audio
+ 
+	@var             mEnableAdvancedDucking
+                         Enables advanced ducking which ducks other audio based on the presence of voice activity from local and/or remote chat participants.
+	@var             mDuckingLevel
+                         Ducking level of other audio
+*/
+struct AUVoiceIOOtherAudioDuckingConfiguration {
+	Boolean            mEnableAdvancedDucking;
+	AUVoiceIOOtherAudioDuckingLevel  mDuckingLevel;
+};
+typedef struct AUVoiceIOOtherAudioDuckingConfiguration AUVoiceIOOtherAudioDuckingConfiguration;
+
+/*!
+	@constant kAUVoiceIOProperty_OtherAudioDuckingConfiguration
+	@discussion	Scope: Global
+				Value Type: AUVoiceIOOtherAudioDuckingConfiguration
+				Access: read/write
+               
+				Configures the ducking of other (i.e. non-voice) audio, including advanced ducking enablement and ducking level.
+				In general, when other audio is played during voice chat, applying a higher level of ducking could increase the intelligibility of the voice chat.
+				If not set, the default ducking configuration is to disable advanced ducking, with a ducking level set to kAUVoiceIOOtherAudioDuckingLevelDefault.
+ */
+CF_ENUM(AudioUnitPropertyID) {
+	kAUVoiceIOProperty_OtherAudioDuckingConfiguration =  2108
+} API_AVAILABLE(ios(17.0), macos(14.0)) API_UNAVAILABLE(watchos, tvos);
 
 #pragma mark - AUVoiceProcessing unit deprecated properties
 
@@ -2893,13 +2967,31 @@ typedef struct AudioUnitMeterClipping AudioUnitMeterClipping;
                         apply a second rotation on top of head yaw, pitch, and roll parameters.
  
     @constant       kAudioUnitProperty_SpatialMixerPersonalizedHRTFMode
-                        Scope:          Global
+ 
+    @discussion         Scope:          Global
                         Value Type:     UInt32
                         Access:         Read / Write
-    @discussion     Sets personalized head-related transfer function (HRTF) mode for spatial audio rendering
-                    with kSpatializationAlgorithm_UseOutputType and kSpatialMixerOutputType_Headphones.
-                    This property becomes read-only if personalized HRTF is unavailable or unsupported.
-    @seealso        AUSpatialMixerPersonalizedHRTFMode
+ 
+                        Sets personalized head-related transfer function (HRTF) mode for spatial audio rendering
+                        with kSpatializationAlgorithm_UseOutputType and kSpatialMixerOutputType_Headphones.
+ 
+    @seealso            AUSpatialMixerPersonalizedHRTFMode
+ 
+    @constant       kAudioUnitProperty_SpatialMixerAnyInputIsUsingPersonalizedHRTF
+ 
+    @discussion         Scope:          Global
+                        Value Type:     UInt32
+                        Access:         Read
+ 
+                        Returns a Boolean value that indicates whether AUSpatialMixer is currently using personalized
+                        HRTF or not. The property should be queried after AU is initialized for a reliable outcome.
+                
+                        Personalization of spatial audio rendering is subject to various factors such as data availability or
+                        whether AUSpatialMixer is rendering for headphones with kSpatializationAlgorithm_UseOutputType.
+                        Hence, the value of kAudioUnitProperty_SpatialMixerPersonalizedHRTFMode alone does not
+                        guarantee that personalized HRTF is being used for spatial audio rendering.
+                
+    @seealso            kAudioUnitProperty_SpatialMixerPersonalizedHRTFMode
 
 */
 CF_ENUM(AudioUnitPropertyID) {
@@ -2913,7 +3005,8 @@ CF_ENUM(AudioUnitPropertyID) {
 	kAudioUnitProperty_SpatialMixerOutputType				= 3100,
 	kAudioUnitProperty_SpatialMixerPointSourceInHeadMode	= 3103,
     kAudioUnitProperty_SpatialMixerEnableHeadTracking API_AVAILABLE(macos(12.3)) API_UNAVAILABLE(ios, tvos) API_UNAVAILABLE(watchos) = 3111,
-    kAudioUnitProperty_SpatialMixerPersonalizedHRTFMode API_AVAILABLE(macos(13.0)) API_UNAVAILABLE(ios, tvos) API_UNAVAILABLE(watchos) = 3113
+    kAudioUnitProperty_SpatialMixerPersonalizedHRTFMode API_AVAILABLE(macos(13.0)) API_UNAVAILABLE(ios, tvos) API_UNAVAILABLE(watchos) = 3113,
+    kAudioUnitProperty_SpatialMixerAnyInputIsUsingPersonalizedHRTF API_AVAILABLE(macos(14.0)) API_UNAVAILABLE(ios, tvos) API_UNAVAILABLE(watchos) = 3116
 };
 
 /*!
@@ -3682,6 +3775,7 @@ CF_ENUM(AudioUnitPropertyID) {
 						For the preset instruments, the numeric ID of a particular preset within that bank to load.
  						Range is 0 to 127.
  */
+#if !(0 && 0)
 struct AUSamplerInstrumentData {
 	CFURLRef				fileURL;
 	UInt8					instrumentType;
@@ -3690,6 +3784,7 @@ struct AUSamplerInstrumentData {
 	UInt8					presetID;
 };
 typedef struct AUSamplerInstrumentData AUSamplerInstrumentData;
+#endif 
 
 /*
 	@enum			InstrumentTypes
@@ -4037,7 +4132,7 @@ enum {
 
 // Deprecated in favor of the newer AUSamplerInstrumentData
 // structure and its supporting property.
-
+#if !(0 && 0)
 typedef struct AUSamplerBankPresetData {
 	CFURLRef				bankURL;
 	UInt8					bankMSB;
@@ -4045,6 +4140,7 @@ typedef struct AUSamplerBankPresetData {
 	UInt8					presetID;
 	UInt8					reserved;
 } AUSamplerBankPresetData;
+#endif 
 
 CF_ENUM(AudioUnitPropertyID) {
 	kAUSamplerProperty_LoadPresetFromBank			= 4100,

@@ -30,36 +30,36 @@ API_DEPRECATED_WITH_REPLACEMENT("CKFetchRecordZoneChangesOperation", macos(10.10
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithRecordZoneID:(CKRecordZoneID *)recordZoneID previousServerChangeToken:(nullable CKServerChangeToken *)previousServerChangeToken;
 
-@property (nonatomic, copy, nullable) CKRecordZoneID *recordZoneID;
-@property (nonatomic, copy, nullable) CKServerChangeToken *previousServerChangeToken;
+@property (nullable, copy, nonatomic) CKRecordZoneID *recordZoneID;
+@property (nullable, copy, nonatomic) CKServerChangeToken *previousServerChangeToken;
 
-@property (nonatomic, assign) NSUInteger resultsLimit;
+@property (assign, nonatomic) NSUInteger resultsLimit;
 
 /*! @abstract Declares which user-defined keys should be fetched and added to the resulting CKRecords.
  *
  *  @discussion If nil, declares the entire record should be downloaded. If set to an empty array, declares that no user fields should be downloaded.
  *  Defaults to @c nil.
  */
-@property (nonatomic, copy, nullable) NSArray<CKRecordFieldKey> *desiredKeys;
+@property (nullable, copy, nonatomic) NSArray<CKRecordFieldKey> *desiredKeys;
 
 /*! @discussion Each @c CKOperation instance has a private serial queue. This queue is used for all callback block invocations.
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordChangedBlock)(CKRecord *record);
+@property (nullable, copy, nonatomic) void (^recordChangedBlock)(CKRecord *record);
 
 /*! @discussion Each @c CKOperation instance has a private serial queue. This queue is used for all callback block invocations.
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordWithIDWasDeletedBlock)(CKRecordID *recordID);
+@property (nullable, copy, nonatomic) void (^recordWithIDWasDeletedBlock)(CKRecordID *recordID);
 
 /*! @abstract If true, then the server wasn't able to return all the changes in this response.
  *
  *  @discussion Will be set before fetchRecordChangesCompletionBlock is called.
  *  Another CKFetchRecordChangesOperation operation should be run with the updated serverChangeToken token from this operation.
  */
-@property (nonatomic, readonly, assign) BOOL moreComing;
+@property (readonly, assign, nonatomic) BOOL moreComing;
 
 /*! @abstract This block is called when the operation completes.
  *
@@ -71,7 +71,7 @@ API_DEPRECATED_WITH_REPLACEMENT("CKFetchRecordZoneChangesOperation", macos(10.10
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^fetchRecordChangesCompletionBlock)(CKServerChangeToken * _Nullable serverChangeToken, NSData * _Nullable clientChangeTokenData, NSError * _Nullable operationError);
+@property (nullable, copy, nonatomic) void (^fetchRecordChangesCompletionBlock)(CKServerChangeToken * _Nullable serverChangeToken, NSData * _Nullable clientChangeTokenData, NSError * _Nullable operationError);
 
 @end
 

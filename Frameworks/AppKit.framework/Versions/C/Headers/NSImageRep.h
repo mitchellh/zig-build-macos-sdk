@@ -1,7 +1,7 @@
 /*
 	NSImageRep.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -17,7 +17,7 @@
 #import <AppKit/NSUserInterfaceLayout.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSPasteboard, NSGraphicsContext, NSURL;
@@ -67,8 +67,8 @@ typedef NS_ENUM(NSInteger, NSImageLayoutDirection) {
 + (void)registerImageRepClass:(Class)imageRepClass;
 + (void)unregisterImageRepClass:(Class)imageRepClass;
 @property (class, readonly, copy) NSArray<Class> *registeredImageRepClasses;
-+ (nullable Class)imageRepClassForFileType:(NSString *)type API_DEPRECATED("Use +imageRepClassForType: instead", macos(10.0,10.10));
-+ (nullable Class)imageRepClassForPasteboardType:(NSPasteboardType)type API_DEPRECATED("Use +imageRepClassForType: instead", macos(10.0,10.10));
++ (nullable Class)imageRepClassForFileType:(NSString *)type API_DEPRECATED("Use +imageRepClassForType: instead", macos(10.0, 10.10));
++ (nullable Class)imageRepClassForPasteboardType:(NSPasteboardType)type API_DEPRECATED("Use +imageRepClassForType: instead", macos(10.0, 10.10));
 + (nullable Class)imageRepClassForType:(NSString *)type API_AVAILABLE(macos(10.5));
 + (nullable Class)imageRepClassForData:(NSData *)data;
 	
@@ -78,13 +78,13 @@ typedef NS_ENUM(NSInteger, NSImageLayoutDirection) {
 
 /* Implemented by subclassers to indicate what data types they can deal with.
 */
-+ (NSArray<NSString *> *)imageUnfilteredFileTypes API_DEPRECATED("Use +imageUnfilteredTypes instead", macos(10.0,10.10));
-+ (NSArray<NSPasteboardType> *)imageUnfilteredPasteboardTypes API_DEPRECATED("Use +imageUnfilteredTypes instead", macos(10.0,10.10));
++ (NSArray<NSString *> *)imageUnfilteredFileTypes API_DEPRECATED("Use +imageUnfilteredTypes instead", macos(10.0, 10.10));
++ (NSArray<NSPasteboardType> *)imageUnfilteredPasteboardTypes API_DEPRECATED("Use +imageUnfilteredTypes instead", macos(10.0, 10.10));
 
 /* These expand the unfiltered lists returned by imageUnfilteredFileTypes and imageUnfilteredPasteboardTypes.
 */
-+ (NSArray<NSString *> *)imageFileTypes API_DEPRECATED("Use +imageTypes instead", macos(10.0,10.10));
-+ (NSArray<NSPasteboardType> *)imagePasteboardTypes API_DEPRECATED("Use +imageTypes instead", macos(10.0,10.10));
++ (NSArray<NSString *> *)imageFileTypes API_DEPRECATED("Use +imageTypes instead", macos(10.0, 10.10));
++ (NSArray<NSPasteboardType> *)imagePasteboardTypes API_DEPRECATED("Use +imageTypes instead", macos(10.0, 10.10));
 
 
 /* Implemented by subclassers to indicate what UTI-identified data types they can deal with.
@@ -128,5 +128,5 @@ typedef NS_ENUM(NSInteger, NSImageLayoutDirection) {
 APPKIT_EXTERN NSNotificationName NSImageRepRegistryDidChangeNotification;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

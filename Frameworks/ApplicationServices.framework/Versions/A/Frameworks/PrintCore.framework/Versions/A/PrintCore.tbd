@@ -2,7 +2,7 @@
 tbd-version:     4
 targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
 install-name:    '/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/PrintCore.framework/Versions/A/PrintCore'
-current-version: 572.1
+current-version: 582
 parent-umbrella:
   - targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
     umbrella:        ApplicationServices
@@ -48,10 +48,10 @@ exports:
                        _PMCopyPPDData, _PMCopyPageFormat, _PMCopyPrintSettings, _PMCopyUserDefaultPaperSize, 
                        _PMCreateCFArrayForPMObjects, _PMCreateGenericPrinter, _PMCreatePageFormat, 
                        _PMCreatePageFormatWithPMPaper, _PMCreatePaperInfoTicketFromPPDPaperName, 
-                       _PMCreatePrintSettings, _PMCreatePrinter, _PMCreateProxy, 
-                       _PMCreateSession, _PMFindProxy, _PMForceRelease, _PMGetAdjustedPageRect, 
-                       _PMGetAdjustedPaperRect, _PMGetCollate, _PMGetCopies, _PMGetDuplex, 
-                       _PMGetFirstPage, _PMGetLastPage, _PMGetOrientation, _PMGetPageFormatExtendedData, 
+                       _PMCreatePrintSettings, _PMCreatePrinter, _PMCreateSession, 
+                       _PMForceRelease, _PMGetAdjustedPageRect, _PMGetAdjustedPaperRect, 
+                       _PMGetCollate, _PMGetCopies, _PMGetDuplex, _PMGetFirstPage, 
+                       _PMGetLastPage, _PMGetOrientation, _PMGetPageFormatExtendedData, 
                        _PMGetPageFormatPaper, _PMGetPageRange, _PMGetPrinterModel, 
                        _PMGetReverseOrder, _PMGetScale, _PMGetUnadjustedPageRect, 
                        _PMGetUnadjustedPaperRect, _PMInlineWorkflowCopyItems, _PMLaunchProxy, 
@@ -138,16 +138,16 @@ exports:
                        _PMTicketSetCFString, _PMTicketSetCString, _PMTicketSetDouble, 
                        _PMTicketSetItem, _PMTicketSetPMRect, _PMTicketSetSInt32, 
                        _PMTicketSetTicket, _PMTicketSetUInt32, _PMTicketToLightXML, 
-                       _PMTicketToXML, _PMUpdateProxy, _PMWorkflowCopyItems, _PMWorkflowSubmitPDFWithOptions, 
+                       _PMTicketToXML, _PMWorkflowCopyItems, _PMWorkflowSubmitPDFWithOptions, 
                        _PMWorkflowSubmitPDFWithSettings, _PMXMLToTicket, __PMLog, 
-                       __PMLogPerf, __ZN12PMBaseObject14SetAppReadOnlyEh, __ZN12PMBaseObject15CopyObjectStateEPS_, 
-                       __ZN12PMBaseObject16CreateEmptyArrayEv, __ZN12PMBaseObject21SetUsingRemoteObjectsEh, 
-                       __ZN14OpaquePMPresetC1EPK14__CFDictionary, __ZN14OpaquePMPresetC2EPK14__CFDictionary, 
-                       __ZN15OpaquePMPrinter14GetPrinterNameEv, __ZN15OpaquePMPrinter14IsQueueStoppedEv, 
-                       __ZN15OpaquePMPrinter16IsGenericPrinterEv, __ZN15OpaquePMPrinter19GetPaperListForMenuEv, 
-                       __ZN15OpaquePMPrinter19SetPaperListForMenuEPK9__CFArray, __ZN15OpaquePMPrinter22IsPrinterDirectConnectEv, 
-                       __ZN18OpaquePMPageFormat21PJCValidPageFormatKeyEPS_, __ZN18PMTicketBaseObject12GetTicketRefEv, 
-                       __ZN18PMTicketBaseObject12SetTicketRefEP17OpaquePMTicketRef, 
+                       __PMLogLocalize, __PMLogPerf, __ZN12PMBaseObject14SetAppReadOnlyEh, 
+                       __ZN12PMBaseObject15CopyObjectStateEPS_, __ZN12PMBaseObject16CreateEmptyArrayEv, 
+                       __ZN12PMBaseObject21SetUsingRemoteObjectsEh, __ZN14OpaquePMPresetC1EPK14__CFDictionary, 
+                       __ZN14OpaquePMPresetC2EPK14__CFDictionary, __ZN15OpaquePMPrinter14GetPrinterNameEv, 
+                       __ZN15OpaquePMPrinter14IsQueueStoppedEv, __ZN15OpaquePMPrinter16IsGenericPrinterEv, 
+                       __ZN15OpaquePMPrinter19GetPaperListForMenuEv, __ZN15OpaquePMPrinter19SetPaperListForMenuEPK9__CFArray, 
+                       __ZN15OpaquePMPrinter22IsPrinterDirectConnectEv, __ZN18OpaquePMPageFormat21PJCValidPageFormatKeyEPS_, 
+                       __ZN18PMTicketBaseObject12GetTicketRefEv, __ZN18PMTicketBaseObject12SetTicketRefEP17OpaquePMTicketRef, 
                        __ZN18PMTicketBaseObject23ReleaseAndReplaceTicketEP17OpaquePMTicketRef, 
                        __ZN20OpaquePMPrintSession10ClearErrorEv, __ZN20OpaquePMPrintSession10SetPreviewEhj, 
                        __ZN20OpaquePMPrintSession12GetJobTicketEv, __ZN20OpaquePMPrintSession16GetXPCConnectionEv, 

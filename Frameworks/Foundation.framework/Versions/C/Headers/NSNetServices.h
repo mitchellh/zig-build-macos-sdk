@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, NSNetServicesError) {
  * NSBonjourServices and NSLocalNetworkUsageDescription are required in Info.plist
  */
     NSNetServicesMissingRequiredConfigurationError API_AVAILABLE(macos(11.0), ios(14.0), tvos(14.0)) API_UNAVAILABLE(watchos) = -72008L,
-};
+} API_AVAILABLE(macos(10.2), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 
 
 typedef NS_OPTIONS(NSUInteger, NSNetServiceOptions) {
@@ -78,7 +78,7 @@ typedef NS_OPTIONS(NSUInteger, NSNetServiceOptions) {
      * -netService:didAcceptConnectionWithInputStream:outputStream: delegate method.
      */
     NSNetServiceListenForConnections API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0)) = 1UL << 1
-};
+} API_AVAILABLE(macos(10.2), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 
 
 

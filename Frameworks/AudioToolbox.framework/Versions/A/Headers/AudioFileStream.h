@@ -153,7 +153,10 @@ CF_ENUM(OSStatus)
 	kAudioFileStreamError_DataUnavailable			= 'more',
 	kAudioFileStreamError_IllegalOperation			= 'nope',
 	kAudioFileStreamError_UnspecifiedError			= 'wht?',
-	kAudioFileStreamError_DiscontinuityCantRecover	= 'dsc!'
+	kAudioFileStreamError_DiscontinuityCantRecover	= 'dsc!',
+
+	// not an actual error, used by metrics logging only
+	kAudioFileStreamError_OpenUsingHint				= 'hnt?'
 };
 
 //=============================================================================

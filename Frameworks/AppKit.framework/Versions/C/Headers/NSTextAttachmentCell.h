@@ -1,6 +1,6 @@
 /*
         NSTextAttachmentCell.h
-        Copyright (c) 2021-2021, Apple Inc.
+        Copyright (c) 2021-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -10,7 +10,7 @@
 @class NSLayoutManager;
 @class NSTextContainer;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 #if !TARGET_OS_IPHONE
@@ -40,4 +40,4 @@ API_UNAVAILABLE(macCatalyst)
 #endif // !TARGET_OS_IPHONE
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

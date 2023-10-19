@@ -157,6 +157,10 @@ CF_ENUM(OSStatus) {
         kAudioFileInvalidPacketDependencyError			= 'dep?',		// 0x6465703F, 1684369471
         kAudioFileInvalidFileError						= 'dta?',		// 0x6474613F, 1685348671
 		kAudioFileOperationNotSupportedError			= 0x6F703F3F, 	// 'op??', integer used because of trigraph
+
+		// not an actual error, used by metrics logging only
+		kAudioFileOpenUsingHintError					= 'hnt?',		// 0x686E743F, 1752069183
+
 		// general file error codes
 		kAudioFileNotOpenError							= -38,
 		kAudioFileEndOfFileError						= -39,
@@ -952,6 +956,21 @@ AudioFileGetUserDataSize (	AudioFileID			inAudioFile,
 							UInt32				*outUserDataSize)			API_AVAILABLE(macos(10.4), ios(2.0), watchos(2.0), tvos(9.0));
 
 /*!
+	@function	AudioFileGetUserDataSize64
+	@abstract   Get the 64-bit size of user data in a file
+	@param      inAudioFile			an AudioFileID.
+	@param      inUserDataID		the four char code of the chunk.
+	@param      inIndex				an index specifying which chunk if there are more than one.
+	@param      outUserDataSize		on output, if successful, the size of the user data chunk.
+	@result							returns noErr if successful.
+*/
+extern OSStatus
+AudioFileGetUserDataSize64 (	AudioFileID			inAudioFile,
+								UInt32				inUserDataID,
+								UInt32				inIndex,
+								UInt64				*outUserDataSize)		API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+/*!
     @function	AudioFileGetUserData
     @abstract   Get the data of a chunk in a file.
     @param      inAudioFile			an AudioFileID.
@@ -967,6 +986,25 @@ AudioFileGetUserData (	AudioFileID			inAudioFile,
 						UInt32				inIndex, 
 						UInt32				*ioUserDataSize, 
 						void				*outUserData)					API_AVAILABLE(macos(10.4), ios(2.0), watchos(2.0), tvos(9.0));
+
+/*!
+    @function	AudioFileGetUserDataAtOffset
+    @abstract   Get a part of the data of a chunk in a file.
+    @param      inAudioFile			an AudioFileID.
+    @param      inUserDataID		the four char code of the chunk.
+    @param      inIndex				an index specifying which chunk if there are more than one.
+    @param      inOffset			offset from the first byte of the chunk to the first byte to get.
+    @param      ioUserDataSize		the size of the buffer on input, size of bytes copied to buffer on output
+    @param      outUserData			a pointer to a buffer in which to copy the chunk data.
+    @result							returns noErr if successful.
+*/
+extern OSStatus
+AudioFileGetUserDataAtOffset (	AudioFileID			inAudioFile,
+								UInt32				inUserDataID,
+								UInt32				inIndex,
+								SInt64				inOffset,
+								UInt32				*ioUserDataSize,
+								void				*outUserData)			API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
 /*!
     @function	AudioFileSetUserData

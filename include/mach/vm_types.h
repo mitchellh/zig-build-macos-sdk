@@ -38,6 +38,8 @@
 #include <stdint.h>
 #include <sys/cdefs.h>
 
+__BEGIN_DECLS
+
 typedef vm_offset_t             pointer_t __kernel_ptr_semantics;
 typedef vm_offset_t             vm_address_t __kernel_ptr_semantics;
 
@@ -70,13 +72,16 @@ typedef uint32_t ppnum_t __kernel_ptr_semantics; /* Physical page number */
 #define PPNUM_MAX UINT32_MAX
 
 
-
 typedef mach_port_t             vm_map_t, vm_map_read_t, vm_map_inspect_t;
+typedef mach_port_t             upl_t;
+typedef mach_port_t             vm_named_entry_t;
 
 
 #define VM_MAP_NULL             ((vm_map_t) 0)
 #define VM_MAP_INSPECT_NULL     ((vm_map_inspect_t) 0)
 #define VM_MAP_READ_NULL        ((vm_map_read_t) 0)
+#define UPL_NULL                ((upl_t) 0)
+#define VM_NAMED_ENTRY_NULL     ((vm_named_entry_t) 0)
 
 /*
  * Evolving definitions, likely to change.
@@ -86,7 +91,7 @@ typedef uint64_t                vm_object_offset_t;
 typedef uint64_t                vm_object_size_t;
 
 /*!
- * @typedef
+ * @typedef mach_vm_range_t
  *
  * @brief
  * Pair of a min/max address used to denote a memory region.
@@ -99,14 +104,78 @@ typedef struct mach_vm_range {
 	mach_vm_offset_t        max_address;
 } *mach_vm_range_t;
 
+/*!
+ * @enum mach_vm_range_flavor_t
+ *
+ * @brief
+ * A flavor for the mach_vm_range_create() call.
+ *
+ * @const MACH_VM_RANGE_FLAVOR_V1
+ * The recipe is an array of @c mach_vm_range_recipe_v1_t.
+ */
+__enum_decl(mach_vm_range_flavor_t, uint32_t, {
+	MACH_VM_RANGE_FLAVOR_INVALID,
+	MACH_VM_RANGE_FLAVOR_V1,
+});
 
 
+/*!
+ * @enum mach_vm_range_flags_t
+ *
+ * @brief
+ * Flags used to alter the behavior of a Mach VM Range.
+ */
+__options_decl(mach_vm_range_flags_t, uint64_t, {
+	MACH_VM_RANGE_NONE      = 0x000000000000,
+});
 
-typedef mach_port_t             upl_t;
-typedef mach_port_t             vm_named_entry_t;
+
+/*!
+ * @enum mach_vm_range_tag_t
+ *
+ * @brief
+ * A tag to denote the semantics of a given Mach VM Range.
+ *
+ * @const MACH_VM_RANGE_DEFAULT
+ * The tag associated with the general VA space usable
+ * before the shared cache.
+ * Such a range can't be made by userspace.
+ *
+ * @const MACH_VM_RANGE_DATA
+ * The tag associated with the anonymous randomly slid
+ * range of data heap optionally made when a process is created.
+ * Such a range can't be made by userspace.
+ *
+ * @const MACH_VM_RANGE_FIXED
+ * The tag associated with ranges that are made available
+ * for @c VM_FLAGS_FIXED allocations, but that the VM will never
+ * autonomously serve from a @c VM_FLAGS_ANYWHERE kind of request.
+ * This really create a delegated piece of VA that can be carved out
+ * in the way userspace sees fit.
+ */
+__enum_decl(mach_vm_range_tag_t, uint16_t, {
+	MACH_VM_RANGE_DEFAULT,
+	MACH_VM_RANGE_DATA,
+	MACH_VM_RANGE_FIXED,
+});
+
+#pragma pack(1)
+
+typedef struct {
+	mach_vm_range_flags_t   flags: 48;
+	mach_vm_range_tag_t     range_tag  : 8;
+	uint8_t                 vm_tag : 8;
+	struct mach_vm_range    range;
+} mach_vm_range_recipe_v1_t;
+
+#pragma pack()
+
+#define MACH_VM_RANGE_FLAVOR_DEFAULT MACH_VM_RANGE_FLAVOR_V1
+typedef mach_vm_range_recipe_v1_t    mach_vm_range_recipe_t;
+
+typedef uint8_t                *mach_vm_range_recipes_raw_t;
 
 
-#define UPL_NULL                ((upl_t) 0)
-#define VM_NAMED_ENTRY_NULL     ((vm_named_entry_t) 0)
+__END_DECLS
 
 #endif  /* _MACH_VM_TYPES_H_ */

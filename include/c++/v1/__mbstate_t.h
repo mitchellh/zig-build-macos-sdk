@@ -34,7 +34,7 @@
 #elif defined(_LIBCPP_ON_RTKIT)
 #   include_next <wchar.h>
 #elif defined(_LIBCPP_ON_SEP)
-struct mbstate_t; // just forward declare it to satisfy <iosfwd>
+struct mbstate_t { };
 #else
 #   error "The library was configured without support for wide-characters, but we don't know how to get the definition of mbstate_t without <wchar.h> on your platform."
 #endif

@@ -1,7 +1,7 @@
 /*
         NSResponder.h
         Application Kit
-        Copyright (c) 1994-2021, Apple Inc.
+        Copyright (c) 1994-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -12,7 +12,7 @@
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSError, NSEvent, NSMenu, NSUndoManager, NSWindow;
@@ -23,7 +23,7 @@ NS_SWIFT_UI_ACTOR
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
 
-@property (nullable, assign) NSResponder *nextResponder;
+@property (nullable, unsafe_unretained) NSResponder *nextResponder;
 - (BOOL)tryToPerform:(SEL)action with:(nullable id)object;
 - (BOOL)performKeyEquivalent:(NSEvent *)event;
 - (nullable id)validRequestorForSendType:(nullable NSPasteboardType)sendType returnType:(nullable NSPasteboardType)returnType;
@@ -349,5 +349,5 @@ You can override this method to customize the presentation of errors by examinin
 
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

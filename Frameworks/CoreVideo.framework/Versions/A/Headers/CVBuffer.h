@@ -61,7 +61,7 @@ typedef CF_ENUM(uint32_t, CVAttachmentMode)
     @abstract   Base type for all CoreVideo buffers
 
 */
-typedef struct CV_BRIDGED_TYPE(id) __CVBuffer *CVBufferRef;
+typedef struct CV_BRIDGED_TYPE(id) __CVBuffer *CVBufferRef CV_SWIFT_NONSENDABLE;
 
 /*!
     @function   CVBufferRetain

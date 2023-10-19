@@ -1,7 +1,7 @@
 /*
 	NSScreen.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -14,10 +14,10 @@
 #import <AppKit/NSGraphics.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
-@class NSColorSpace;
+@class CADisplayLink, NSColorSpace;
 
 @interface NSScreen : NSObject
 
@@ -120,6 +120,13 @@ APPKIT_EXTERN NSNotificationName const NSScreenColorSpaceDidChangeNotification A
 
 @end
 
+API_AVAILABLE(macos(14.0))
+@interface NSScreen (NSDisplayLink)
+/*
+    Returns a new display link whose callback will be invoked in-sync with the display the screen is on. Note that views and windows can move between screens and you may want to get a display link directly from NSView or NSWindow which will track those changes automatically.
+*/
+- (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)selector NS_SWIFT_NAME(displayLink(target:selector:));
+@end
 
 @interface NSScreen (NSDeprecated)
 
@@ -131,4 +138,4 @@ APPKIT_EXTERN NSNotificationName const NSScreenColorSpaceDidChangeNotification A
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

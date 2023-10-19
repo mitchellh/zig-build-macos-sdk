@@ -1,7 +1,7 @@
 /*
 	NSWorkspace.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -13,7 +13,7 @@
 #import <AppKit/AppKitDefines.h>
 #import <mach/machine.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSColor, NSError, NSImage, NSView, NSNotificationCenter, NSURL, NSScreen, NSRunningApplication, NSWorkspaceOpenConfiguration, NSAppleEventDescriptor;
@@ -511,4 +511,4 @@ APPKIT_EXTERN NSString * NSFilesystemFileType API_DEPRECATED("", macos(10.0,10.6
 APPKIT_EXTERN NSString * NSShellCommandFileType API_DEPRECATED("", macos(10.0,10.6));
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

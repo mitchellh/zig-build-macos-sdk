@@ -5,7 +5,9 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSCharacterSet.h>
+#if !0
 #import <Foundation/NSItemProvider.h>
+#endif
 #if TARGET_OS_OSX || TARGET_OS_MACCATALYST
 #import <Foundation/NSURLHandle.h>
 #endif
@@ -63,6 +65,26 @@ NS_SWIFT_SENDABLE // Immutable with no mutable subclasses. Internal resource val
 - (nullable instancetype)initWithString:(NSString *)URLString relativeToURL:(nullable NSURL *)baseURL NS_DESIGNATED_INITIALIZER;
 + (nullable instancetype)URLWithString:(NSString *)URLString;
 + (nullable instancetype)URLWithString:(NSString *)URLString relativeToURL:(nullable NSURL *)baseURL;
+
+/// Initializes an `NSURL` with a URL string and the option to add (or skip) IDNA- and percent-encoding of invalid characters.
+/// If `encodingInvalidCharacters` is false, and the URL string is invalid according to RFC 3986, `nil` is returned.
+/// If `encodingInvalidCharacters` is true, `NSURL` will try to encode the string to create a valid URL.
+/// If the URL string is still invalid after encoding, `nil` is returned.
+///
+/// - Parameter URLString: The URL string.
+/// - Parameter encodingInvalidCharacters: True if `NSURL` should try to encode an invalid URL string, false otherwise.
+/// - Returns: An `NSURL` instance for a valid URL, or `nil` if the URL is invalid.
+- (nullable instancetype)initWithString:(NSString *)URLString encodingInvalidCharacters:(BOOL)encodingInvalidCharacters API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+/// Initializes and returns a newly created `NSURL` with a URL string and the option to add (or skip) IDNA- and percent-encoding of invalid characters.
+/// If `encodingInvalidCharacters` is false, and the URL string is invalid according to RFC 3986, `nil` is returned.
+/// If `encodingInvalidCharacters` is true, `NSURL` will try to encode the string to create a valid URL.
+/// If the URL string is still invalid after encoding, `nil` is returned.
+///
+/// - Parameter URLString: The URL string.
+/// - Parameter encodingInvalidCharacters: True if `NSURL` should try to encode an invalid URL string, false otherwise.
+/// - Returns: An `NSURL` instance for a valid URL, or `nil` if the URL is invalid.
++ (nullable instancetype)URLWithString:(NSString *)URLString encodingInvalidCharacters:(BOOL)encodingInvalidCharacters API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
 
 /* Initializes a newly created NSURL using the contents of the given data, relative to a base URL. If the data representation is not a legal URL string as ASCII bytes, the URL object may not behave as expected.
@@ -125,6 +147,7 @@ FOUNDATION_EXPORT NSString * const NSURLFileScheme;
 
 @property (nullable, readonly, copy) NSURL *standardizedURL;
 
+#if !0
 
 /* Returns whether the URL's resource exists and is reachable. This method synchronously checks if the resource's backing store is reachable. Checking reachability is appropriate when making decisions that do not require other immediate operations on the resource, e.g. periodic maintenance of UI state that depends on the existence of a specific document. When performing operations such as opening a file or copying resource properties, it is more efficient to simply try the operation and handle failures. If this method returns NO, the optional error is populated. This method is currently applicable only to URLs for file system resources. For other URL types, NO is returned. Symbol is present in iOS 4, but performs no operation.
  */
@@ -184,7 +207,7 @@ FOUNDATION_EXPORT NSURLResourceKey const NSURLKeysOfUnsetValuesKey API_AVAILABLE
 
 /* Sets a temporary resource value on the URL object. Temporary resource values are for client use. Temporary resource values exist only in memory and are never written to the resource's backing store. Once set, a temporary resource value can be copied from the URL object with -getResourceValue:forKey:error: or -resourceValuesForKeys:error:. To remove a temporary resource value from the URL object, use -removeCachedResourceValueForKey:. Care should be taken to ensure the key that identifies a temporary resource value is unique and does not conflict with system defined keys (using reverse domain name notation in your temporary resource value keys is recommended). This method is currently applicable only to URLs for file system resources.
  */
-- (void)setTemporaryResourceValue:(/*NS_SWIFT_SENDABLE */nullable id)value forKey:(NSURLResourceKey)key API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
+- (void)setTemporaryResourceValue:(nullable NS_SWIFT_SENDABLE id)value forKey:(NSURLResourceKey)key API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
 
 /*
  The File System Resource Keys
@@ -283,8 +306,13 @@ FOUNDATION_EXPORT NSURLFileProtectionType const NSURLFileProtectionNone API_AVAI
 FOUNDATION_EXPORT NSURLFileProtectionType const NSURLFileProtectionComplete API_AVAILABLE(macos(11.0), ios(9.0), watchos(2.0), tvos(9.0)); // The file is stored in an encrypted format on disk and cannot be read from or written to while the device is locked or booting. Transient data files with this protection type should be excluded from backups using NSURLIsExcludedFromBackupKey.
 FOUNDATION_EXPORT NSURLFileProtectionType const NSURLFileProtectionCompleteUnlessOpen API_AVAILABLE(macos(11.0), ios(9.0), watchos(2.0), tvos(9.0)); // The file is stored in an encrypted format on disk. Files can be created while the device is locked, but once closed, cannot be opened again until the device is unlocked. If the file is opened when unlocked, you may continue to access the file normally, even if the user locks the device. There is a small performance penalty when the file is created and opened, though not when being written to or read from. This can be mitigated by changing the file protection to NSURLFileProtectionComplete when the device is unlocked. Transient data files with this protection type should be excluded from backups using NSURLIsExcludedFromBackupKey.
 FOUNDATION_EXPORT NSURLFileProtectionType const NSURLFileProtectionCompleteUntilFirstUserAuthentication API_AVAILABLE(macos(11.0), ios(9.0), watchos(2.0), tvos(9.0)); // The file is stored in an encrypted format on disk and cannot be accessed until after the device has booted. After the user unlocks the device for the first time, your app can access the file and continue to access it even if the user subsequently locks the device.
+FOUNDATION_EXPORT NSURLFileProtectionType const NSURLFileProtectionCompleteWhenUserInactive API_AVAILABLE(ios(17.0), watchos(10.0), tvos(17.0)) API_UNAVAILABLE(macos); // The file is stored in an encrypted format on disk and cannot be accessed until after first unlock after the device has booted. After this first unlock, your app can access the file even while the device is locked until access expiry. Access is renewed once the user unlocks the device again.
 
-/* Volumes resource keys 
+/* Resource keys applicable only to directories
+ */
+FOUNDATION_EXPORT NSURLResourceKey const NSURLDirectoryEntryCountKey              API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0)); // Returns the count of file system objects contained in the directory. This is a count of objects actually stored in the file system, so excludes virtual items like "." and "..". The property is useful for quickly identifying an empty directory for backup and syncing. If the URL is not a directory or the file system cannot cheaply compute the value, `nil` is returned. (Read-only, value type NSNumber)
+
+/* Volumes resource keys
  
  As a convenience, volume resource values can be requested from any file system URL. The value returned will reflect the property value for the volume on which the resource is located.
  */
@@ -440,16 +468,19 @@ typedef NSUInteger NSURLBookmarkFileCreationOptions;
  */
 + (nullable instancetype)URLByResolvingAliasFileAtURL:(NSURL *)url options:(NSURLBookmarkResolutionOptions)options error:(NSError **)error API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0));
 
-/*  Given a NSURL created by resolving a bookmark data created with security scope, make the resource referenced by the url accessible to the process. When access to this resource is no longer needed the client must call stopAccessingSecurityScopedResource. Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource (Note: this is not reference counted).
+/*  Given a NSURL created by resolving a bookmark data created with security scope, make the resource referenced by the url accessible to the process. Each call to startAccessingSecurityScopedResource that returns YES must be balanced with a call to stopAccessingSecurityScopedResource when access to this resource is no longer needed by the client. Calls to start and stop accessing the resource are reference counted and may be nested, which allows the pair of calls to be logically scoped.
  */
 - (BOOL)startAccessingSecurityScopedResource API_AVAILABLE(macos(10.7), ios(8.0), watchos(2.0), tvos(9.0));
 
-/*  Revokes the access granted to the url by a prior successful call to startAccessingSecurityScopedResource.
+/*  Removes one "accessing" reference to the security scope. When all references are removed, it revokes the access granted to the url by the initial prior successful call to startAccessingSecurityScopedResource.
  */
 - (void)stopAccessingSecurityScopedResource API_AVAILABLE(macos(10.7), ios(8.0), watchos(2.0), tvos(9.0));
 
+#endif 
+
 @end
 
+#if !0
 
 @interface NSURL (NSPromisedItems)
 
@@ -469,6 +500,8 @@ typedef NSUInteger NSURLBookmarkFileCreationOptions;
 - (BOOL)checkPromisedItemIsReachableAndReturnError:(NSError **)error NS_SWIFT_NOTHROW API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0));
 
 @end
+
+#endif 
 
 
 @interface NSURL (NSItemProvider) <NSItemProviderReading, NSItemProviderWriting>
@@ -506,6 +539,26 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
 
 // Initializes and returns a newly created NSURLComponents with a URL string. If the URLString is malformed, nil is returned.
 + (nullable instancetype)componentsWithString:(NSString *)URLString;
+
+/// Initializes an `NSURLComponents` with a URL string and the option to add (or skip) IDNA- and percent-encoding of invalid characters.
+/// If `encodingInvalidCharacters` is false, and the URL string is invalid according to RFC 3986, `nil` is returned.
+/// If `encodingInvalidCharacters` is true, `NSURLComponents` will try to encode the string to create a valid URL.
+/// If the URL string is still invalid after encoding, `nil` is returned.
+///
+/// - Parameter URLString: The URL string.
+/// - Parameter encodingInvalidCharacters: True if `NSURLComponents` should try to encode an invalid URL string, false otherwise.
+/// - Returns: An `NSURLComponents` instance for a valid URL, or `nil` if the URL is invalid.
+- (nullable instancetype)initWithString:(NSString *)URLString encodingInvalidCharacters:(BOOL)encodingInvalidCharacters API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+/// Initializes and returns a newly created `NSURLComponents` with a URL string and the option to add (or skip) IDNA- and percent-encoding of invalid characters.
+/// If `encodingInvalidCharacters` is false, and the URL string is invalid according to RFC 3986, `nil` is returned.
+/// If `encodingInvalidCharacters` is true, `NSURLComponents` will try to encode the string to create a valid URL.
+/// If the URL string is still invalid after encoding, nil is returned.
+///
+/// - Parameter URLString: The URL string.
+/// - Parameter encodingInvalidCharacters: True if `NSURLComponents` should try to encode an invalid URL string, false otherwise.
+/// - Returns: An `NSURLComponents` instance for a valid URL, or `nil` if the URL is invalid.
++ (nullable instancetype)componentsWithString:(NSString *)URLString encodingInvalidCharacters:(BOOL)encodingInvalidCharacters API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
 // Returns a URL created from the NSURLComponents. If the NSURLComponents has an authority component (user, password, host or port) and a path component, then the path must either begin with "/" or be an empty string. If the NSURLComponents does not have an authority component (user, password, host or port) and has a path component, the path component must not start with "//". If those requirements are not met, nil is returned.
 @property (nullable, readonly, copy) NSURL *URL;
@@ -595,11 +648,13 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
 
 @interface NSString (NSURLUtilities)
 
+#if !0
 // Returns a new string made from the receiver by replacing all characters not in the allowedCharacters set with percent encoded characters. UTF-8 encoding is used to determine the correct percent encoded characters. Entire URL strings cannot be percent-encoded. This method is intended to percent-encode a URL component or subcomponent string, NOT the entire URL string. Any characters in allowedCharacters outside of the 7-bit ASCII range are ignored.
 - (nullable NSString *)stringByAddingPercentEncodingWithAllowedCharacters:(NSCharacterSet *)allowedCharacters API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
 
 // Returns a new string made from the receiver by replacing all percent encoded sequences with the matching UTF-8 characters.
 @property (nullable, readonly, copy) NSString *stringByRemovingPercentEncoding API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
+#endif 
 
 
 - (nullable NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)enc API_DEPRECATED("Use -stringByAddingPercentEncodingWithAllowedCharacters: instead, which always uses the recommended UTF-8 encoding, and which encodes for a specific URL component or subcomponent since each URL component or subcomponent has different rules for what characters are valid.", macos(10.0,10.11), ios(2.0,9.0), watchos(2.0,2.0), tvos(9.0,9.0));
@@ -625,13 +680,15 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
 
 /* The following methods work only on `file:` scheme URLs; for non-`file:` scheme URLs, these methods return the URL unchanged.
  */
+#if !0
 @property (nullable, readonly, copy) NSURL *URLByStandardizingPath API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
 @property (nullable, readonly, copy) NSURL *URLByResolvingSymlinksInPath API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
+#endif 
 
 @end
 
 
-#if (TARGET_OS_MAC || TARGET_OS_IPHONE)
+#if (TARGET_OS_MAC && !0) || TARGET_OS_IPHONE
 /* NSFileSecurity encapsulates a file system object's security information. NSFileSecurity and CFFileSecurity are toll-free bridged. Use the CFFileSecurity API for access to the low-level file security properties encapsulated by NSFileSecurity.
  */
 API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0))

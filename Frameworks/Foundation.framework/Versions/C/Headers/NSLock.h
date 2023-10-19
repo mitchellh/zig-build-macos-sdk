@@ -19,14 +19,17 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 NS_SWIFT_SENDABLE // Locks are inherently Sendable by definition
 @interface NSLock : NSObject <NSLocking>
 
+#if !0
 - (BOOL)tryLock NS_SWIFT_UNAVAILABLE_FROM_ASYNC("Use async-safe scoped locking instead");
 
 - (BOOL)lockBeforeDate:(NSDate *)limit NS_SWIFT_UNAVAILABLE_FROM_ASYNC("Use async-safe scoped locking instead");
+#endif 
 
 @property (nullable, copy) NSString *name API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
 
 @end
 
+#if !0
 NS_SWIFT_SENDABLE // Locks are inherently Sendable by definition
 @interface NSConditionLock : NSObject <NSLocking>
 
@@ -76,5 +79,6 @@ API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 @property (nullable, copy) NSString *name API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
 
 @end
+#endif 
 
 NS_HEADER_AUDIT_END(nullability, sendability)

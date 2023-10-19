@@ -183,8 +183,14 @@ namespace coreimage
 #if __CIKERNEL_METAL_VERSION__ >= 200
     namespace group
     {
+#if __CIKERNEL_METAL_VERSION__ >= 300
+        typedef struct Destination
+        {
+                Destination(float2 c_, uint2 gid_, float4 r_, float4x4 m_, texture2d<float, access::write> t_):c(c_), gid(gid_), r(r_), m(m_), t(t_) {}
+#else
         typedef struct
         {
+#endif //__CIKERNEL_METAL_VERSION__ >= 300
             // Returns the position, in working space coordinates, of the pixel currently being computed.
             // The destination space refers to the coordinate space of the image you are rendering.
             inline float2 coord() const { return c; }
@@ -201,8 +207,14 @@ namespace coreimage
             
         } __attribute__((packed)) destination;
         
+#if __CIKERNEL_METAL_VERSION__ >= 300
+        typedef struct Destination_h
+        {
+                Destination_h(float2 c_, uint2 gid_, float4 r_, float4x4 m_, texture2d<half, access::write> t_):c(c_), gid(gid_), r(r_), m(m_), t(t_) {}
+#else
         typedef struct
         {
+#endif //__CIKERNEL_METAL_VERSION__ >= 300
             // Returns the position, in working space coordinates, of the pixel currently being computed.
             // The destination space refers to the coordinate space of the image you are rendering.
             inline float2 coord() const { return c; }
@@ -227,14 +239,19 @@ namespace coreimage
     float4 unpremultiply(float4 s);
     
     float3 srgb_to_linear(float3 s);
+    float4 srgb_to_linear(float4 s);
+        
     float3 linear_to_srgb(float3 s);
-    
+    float4 linear_to_srgb(float4 s);
 #if __CIKERNEL_METAL_VERSION__ >= 200
     half4 premultiply(half4 s);
     half4 unpremultiply(half4 s);
 
     half3 srgb_to_linear(half3 s);
+    half4 srgb_to_linear(half4 s);
+        
     half3 linear_to_srgb(half3 s);
+    half4 linear_to_srgb(half4 s);
 #endif
     
     //MARK: - Relational Functions

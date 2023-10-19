@@ -3,6 +3,8 @@
    Copyright (c) 2006-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CABase.h>
 #import <Foundation/NSObject.h>
 
@@ -107,6 +109,12 @@ API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 + (nullable id)valueForKey:(NSString *)key;
 + (void)setValue:(nullable id)anObject forKey:(NSString *)key;
 
+/* Enables batching for the transaction. When this is enabled,
+ * all CAContexts for the current process will be batch commited together
+ * in a single transaction. */
+
++ (void)batch;
+
 @end
 
 /** Transaction property ids. **/
@@ -121,3 +129,5 @@ CA_EXTERN NSString * const kCATransactionCompletionBlock
     API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
 
 NS_ASSUME_NONNULL_END
+
+#endif

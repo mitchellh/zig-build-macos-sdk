@@ -696,7 +696,7 @@ API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
  
 		Host should setup in the following order:
 		 - Set hostMIDIProtocol
-		 - Set MIDIOutputEventBlock
+		 - Set MIDIOutputEventListBlock
 		 - Call allocateRenderResourcesAndReturnError
  
 		This is bridged to the v2 API property kAudioUnitProperty_MIDIOutputEventListCallback.
@@ -706,6 +706,9 @@ API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
 /*! @property	AudioUnitMIDIProtocol
 	@brief		The MIDI protocol used by the Audio Unit for receiving MIDIEventList data.
 	@discussion
+		Subclassers should override to return the desired protocol in which the Audio Unit wants
+		to receive input MIDI data, otherwise the Audio Unit will default to receiving legacy MIDI.
+		
 		All translatable messages will be converted (if necessary) to this protocol prior to delivery
 		to the Audio Unit.
  
@@ -720,7 +723,20 @@ API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
 		from the Audio Unit. This should be set prior to initialization, all translatable messages
 		will be converted  (if necessary) to this property's protocol prior to delivery to the host.
  
+		Host should setup in the following order:
+		- Set hostMIDIProtocol
+		- Set MIDIOutputEventListBlock
+		- Call allocateRenderResourcesAndReturnError
+
 		This is bridged to the v2 API property kAudioUnitProperty_HostMIDIProtocol.
+ 
+		Notes:
+		- If overriding this property, subclassers must call [super setHostMIDIProtocol:]
+		- hostMIDIProtocol should be set before attempting to query AudioUnitMIDIProtocol
+		or calling allocateRenderResourcesAndReturnError to allow Audio Units to
+		optionally match their input MIDI protocol to the desired host protocol and prevent
+		protocol conversion.
+
 */
 @property (NS_NONATOMIC_IOSONLY) MIDIProtocolID hostMIDIProtocol API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0)) API_UNAVAILABLE(watchos);
 

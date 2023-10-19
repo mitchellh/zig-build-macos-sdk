@@ -11,6 +11,8 @@
 
 CF_IMPLICIT_BRIDGING_ENABLED
 
+CF_ASSUME_NONNULL_BEGIN
+
 /*!
  * @header CGImageMetadata.h
  * @abstract Implements access to image metadata
@@ -94,9 +96,7 @@ IMAGEIO_EXTERN CFTypeID CGImageMetadataTagGetTypeID(void) IMAGEIO_AVAILABLE_STAR
 // Constants for use in a CGImageMetadataTag
 // ****************************************************************************
 
-CF_ASSUME_NONNULL_BEGIN
-
-// All metadata tags must contain a namespace. Clients may use one of the 
+// All metadata tags must contain a namespace. Clients may use one of the
 // public namespaces defined below or create their own namespace. If a caller
 // defines their own namespace, it should comply with the guidelines set forth
 // by Adobe in their XMP specification at:
@@ -135,8 +135,6 @@ IMAGEIO_EXTERN const CFStringRef  kCGImageMetadataPrefixPhotoshop IMAGEIO_AVAILA
 IMAGEIO_EXTERN const CFStringRef  kCGImageMetadataPrefixTIFF IMAGEIO_AVAILABLE_STARTING(10.8, 7.0);
 IMAGEIO_EXTERN const CFStringRef  kCGImageMetadataPrefixXMPBasic IMAGEIO_AVAILABLE_STARTING(10.8, 7.0);
 IMAGEIO_EXTERN const CFStringRef  kCGImageMetadataPrefixXMPRights IMAGEIO_AVAILABLE_STARTING(10.8, 7.0);
-
-CF_ASSUME_NONNULL_END
 
 // Metadata value type constants.
 /*!
@@ -628,6 +626,8 @@ typedef CF_ENUM(int32_t, CGImageMetadataErrors) {
     kCGImageMetadataErrorConflictingArguments = 3,
     kCGImageMetadataErrorPrefixConflict = 4,
 };
+
+CF_ASSUME_NONNULL_END
 
 CF_IMPLICIT_BRIDGING_DISABLED
 

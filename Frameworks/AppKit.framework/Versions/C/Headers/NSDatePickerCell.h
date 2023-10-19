@@ -1,7 +1,7 @@
 /*
 	NSDatePickerCell.h
 	Application Kit
-	Copyright (c) 2004-2021, Apple Inc.
+	Copyright (c) 2004-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -9,7 +9,7 @@
 #import <AppKit/NSActionCell.h>
 #import <AppKit/AppKitDefines.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 typedef NS_ENUM(NSUInteger, NSDatePickerStyle) {
@@ -112,5 +112,5 @@ static const NSDatePickerElementFlags NSYearMonthDayDatePickerElementFlag API_DE
 static const NSDatePickerElementFlags NSEraDatePickerElementFlag API_DEPRECATED_WITH_REPLACEMENT("NSDatePickerElementFlagEra", macos(10.0, 11.0)) = NSDatePickerElementFlagEra;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

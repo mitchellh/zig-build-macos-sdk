@@ -2,6 +2,9 @@
 #define __XPC_AVAILABILITY_H__
 
 #include <Availability.h>
+#include <sys/cdefs.h>
+
+__BEGIN_DECLS
 
 // Certain parts of the project use all the project's headers but have to build
 // against newer OSX SDKs than ebuild uses -- liblaunch_host being the example.
@@ -95,7 +98,9 @@ __attribute__((availability(macosx, introduced=10.14)))
 #endif // __AVAILABILITY_INTERNAL__MAC_10_6_DEP__MAC_10_13
 
 #if __has_include(<simulator_host.h>)
+__END_DECLS
 #include <simulator_host.h>
+__BEGIN_DECLS
 #else // __has_include(<simulator_host.h>)
 #ifndef IPHONE_SIMULATOR_HOST_MIN_VERSION_REQUIRED
 #define IPHONE_SIMULATOR_HOST_MIN_VERSION_REQUIRED 999999
@@ -130,5 +135,7 @@ __attribute__((availability(macosx, introduced=10.14)))
 #ifndef __API_AVAILABLE
 #define __API_AVAILABLE(...)
 #endif
+
+__END_DECLS
 
 #endif // __XPC_AVAILABILITY_H__

@@ -44,14 +44,15 @@ NS_SWIFT_SENDABLE // Immutable with no mutable subclasses
     unsigned int _reserved:1;
     unsigned int _hasExternalRefCount:1;
     unsigned int _refs:16;
+
     unsigned short _mantissa[0]; /* GCC */
+
 }
 
 - (instancetype)initWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)flag;
 - (instancetype)initWithDecimal:(NSDecimal)dcm NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithString:(nullable NSString *)numberValue;
 - (instancetype)initWithString:(nullable NSString *)numberValue locale:(nullable id)locale;
-
 - (NSString *)descriptionWithLocale:(nullable id)locale;
 
 @property (readonly) NSDecimal decimalValue;
@@ -92,7 +93,9 @@ NS_SWIFT_SENDABLE // Immutable with no mutable subclasses
 - (NSComparisonResult)compare:(NSNumber *)decimalNumber;
     // compare two NSDecimalNumbers
 
+
 @property (class, strong) id <NSDecimalNumberBehaviors> defaultBehavior;
+
     // One behavior per thread - The default behavior is
     //   rounding mode: NSRoundPlain
     //   scale: No defined scale (full precision)

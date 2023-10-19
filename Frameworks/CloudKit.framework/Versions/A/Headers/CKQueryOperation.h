@@ -16,6 +16,7 @@
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
+CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer apply
 // NS_SWIFT_SENDABLE on macos(13.3), macCatalyst(16.4), ios(16.4), tvos(16.4), watchos(9.4)
 @interface CKQueryCursor : NSObject <NSCopying, NSSecureCoding>
 - (instancetype)init NS_UNAVAILABLE;
@@ -35,15 +36,15 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
 - (instancetype)initWithQuery:(CKQuery *)query;
 - (instancetype)initWithCursor:(CKQueryCursor *)cursor;
 
-@property (nonatomic, copy, nullable) CKQuery *query;
-@property (nonatomic, copy, nullable) CKQueryCursor *cursor;
+@property (nullable, copy, nonatomic) CKQuery *query;
+@property (nullable, copy, nonatomic) CKQueryCursor *cursor;
 
 /*! @abstract Indicates which record zone to query.
  *
  *  @discussion For query operations constructed using a cursor, this property is ignored and instead will be evaluated in the record zone in which the cursor was originally created.
  *  Queries that do not specify a @c zoneID will perform a query across all zones in the database.
  */
-@property (nonatomic, copy, nullable) CKRecordZoneID *zoneID;
+@property (nullable, copy, nonatomic) CKRecordZoneID *zoneID;
 
 /*! @discussion Defaults to @c CKQueryOperationMaximumResults.
  *  Queries may return fewer than @c resultsLimit in some scenarios:
@@ -51,14 +52,14 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  - During the process of querying and fetching the results, some records were deleted, or became un-readable by the current user.
  *  When determining if there are more records to fetch, always check for the presence of a cursor in @c queryCompletionBlock.
  */
-@property (nonatomic, assign) NSUInteger resultsLimit;
+@property (assign, nonatomic) NSUInteger resultsLimit;
 
 /*! @abstract Declares which user-defined keys should be fetched and added to the resulting CKRecords.
  *
  *  @discussion If nil, declares the entire record should be downloaded. If set to an empty array, declares that no user fields should be downloaded.
  *  Defaults to @c nil.
  */
-@property (nonatomic, copy, nullable) NSArray<CKRecordFieldKey> *desiredKeys;
+@property (nullable, copy, nonatomic) NSArray<CKRecordFieldKey> *desiredKeys;
 
 /*! @abstract This block will be called once for every record that is returned as a result of the query.
  *
@@ -68,7 +69,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordFetchedBlock)(CKRecord *record) API_DEPRECATED("Use recordMatchedBlock instead, which surfaces per-record errors", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(3.0, 8.0));
+@property (nullable, copy, nonatomic) void (^recordFetchedBlock)(CKRecord *record) API_DEPRECATED("Use recordMatchedBlock instead, which surfaces per-record errors", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(3.0, 8.0));
 
 /*! @abstract This block will be called once for every record that is returned as a result of the query.
  *
@@ -77,7 +78,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^recordMatchedBlock)(CKRecordID *recordID, CKRecord * _Nullable record, NSError * _Nullable error) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) NS_REFINED_FOR_SWIFT;
+@property (nullable, copy, nonatomic) void (^recordMatchedBlock)(CKRecordID *recordID, CKRecord * _Nullable record, NSError * _Nullable error) API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0)) NS_REFINED_FOR_SWIFT;
 
 
 /*! @abstract This block is called when the operation completes.
@@ -88,7 +89,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
  *  This block may share mutable state with other blocks assigned to this operation, but any such mutable state
  *  should not be concurrently used outside of blocks assigned to this operation.
  */
-@property (nonatomic, copy, nullable) void (^queryCompletionBlock)(CKQueryCursor * _Nullable cursor, NSError * _Nullable operationError)
+@property (nullable, copy, nonatomic) void (^queryCompletionBlock)(CKQueryCursor * _Nullable cursor, NSError * _Nullable operationError)
 CK_SWIFT_DEPRECATED("Use queryResultBlock instead", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(3.0, 8.0));
 
 @end

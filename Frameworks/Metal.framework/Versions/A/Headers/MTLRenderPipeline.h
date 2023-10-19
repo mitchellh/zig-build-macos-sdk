@@ -677,6 +677,27 @@ MTL_EXPORT API_AVAILABLE(macos(13.0), ios(16.0))
 
 
 /*!
+ @property objectLinkedFunctions
+ @abstract The set of functions to be linked with the pipeline state and accessed from the object function.
+ @see MTLLinkedFunctions
+ */
+@property (null_resettable, copy, nonatomic) MTLLinkedFunctions *objectLinkedFunctions API_AVAILABLE(macos(14.0), ios(17.0));
+
+/*!
+ @property meshLinkedFunctions
+ @abstract The set of functions to be linked with the pipeline state and accessed from the mesh function.
+ @see MTLLinkedFunctions
+ */
+@property (null_resettable, copy, nonatomic) MTLLinkedFunctions *meshLinkedFunctions API_AVAILABLE(macos(14.0), ios(17.0));
+
+/*!
+ @property fragmentLinkedFunctions
+ @abstract The set of functions to be linked with the pipeline state and accessed from the fragment function.
+ @see MTLLinkedFunctions
+ */
+@property (null_resettable, copy, nonatomic) MTLLinkedFunctions *fragmentLinkedFunctions API_AVAILABLE(macos(14.0), ios(17.0));
+
+/*!
  @method reset
  @abstract Restore all mesh pipeline descriptor properties to their default values.
  */

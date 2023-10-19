@@ -3,6 +3,8 @@
    Copyright (c) 2006-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -58,3 +60,5 @@ CA_EXTERN CAScrollLayerScrollMode const kCAScrollBoth
     API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
 
 NS_ASSUME_NONNULL_END
+
+#endif

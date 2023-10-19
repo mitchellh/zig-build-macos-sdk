@@ -369,6 +369,22 @@ AudioFileComponentGetUserDataSize(
 								UInt32							*outUserDataSize)	API_AVAILABLE(macos(10.4)) API_UNAVAILABLE(ios, watchos, tvos);
 
 /*!
+	@function	AudioFileComponentGetUserDataSize64
+	@abstract   implements AudioFileGetUserDataSize64
+	@param inComponent				an AudioFileComponent
+	@param inUserDataID				the four char code of the chunk.
+	@param inIndex					an index specifying which chunk if there are more than one.
+	@param outUserDataSize			on output, if successful, the size of the user data chunk.
+	@result							returns noErr if successful.
+*/
+extern OSStatus
+AudioFileComponentGetUserDataSize64(
+								AudioFileComponent				inComponent,
+								UInt32							inUserDataID,
+								UInt32							inIndex,
+								UInt64							*outUserDataSize)	API_AVAILABLE(macos(14.0)) API_UNAVAILABLE(ios, watchos, tvos);
+
+/*!
     @function	AudioFileGetUserData
     @abstract   implements AudioFileGetUserData.
     @param		inComponent			an AudioFileComponent
@@ -385,6 +401,26 @@ AudioFileComponentGetUserData(
 								UInt32							inIndex,
 								UInt32							*ioUserDataSize,
 								void							*outUserData)	API_AVAILABLE(macos(10.4)) API_UNAVAILABLE(ios, watchos, tvos);
+
+/*!
+    @function	AudioFileComponentGetUserDataAtOffset
+    @abstract   implements AudioFileGetUserDataAtOffset.
+    @param      inComponent			an AudioFileComponent
+    @param      inUserDataID		the four char code of the chunk.
+    @param      inIndex				an index specifying which chunk if there are more than one.
+    @param      inOffset			offset from the first byte of the chunk to the first byte to get.
+    @param      ioUserDataSize		the size of the buffer on input, size of bytes copied to buffer on output
+    @param      outUserData			a pointer to a buffer in which to copy the chunk data.
+    @result							returns noErr if successful.
+*/
+extern OSStatus
+AudioFileComponentGetUserDataAtOffset(
+								AudioFileComponent				inComponent,
+								UInt32							inUserDataID,
+								UInt32							inIndex,
+								SInt64							inOffset,
+								UInt32							*ioUserDataSize,
+								void							*outUserData)			API_AVAILABLE(macos(14.0)) API_UNAVAILABLE(ios, watchos, tvos);
 
 /*!
     @function	AudioFileComponentSetUserData
@@ -626,6 +662,9 @@ enum
 	kAudioFileOpenURLSelect						= 0x001A,
 	kAudioFileFileDataIsThisFormatSelect		= 0x001B,
 	kAudioFileReadPacketDataSelect				= 0x001C,
+
+	kAudioFileGetUserDataSize64Select			= 0x001D,
+	kAudioFileGetUserDataAtOffsetSelect			= 0x001E,
 };
 
 
@@ -936,10 +975,24 @@ typedef	OSStatus	(*AudioFileComponentGetUserDataSizeProc)(
 								UInt32							inIndex,
 								UInt32							*outUserDataSize);
 
-typedef	OSStatus	(*AudioFileComponentGetUserDataProc)(	
+typedef	OSStatus	(*AudioFileComponentGetUserDataSize64Proc)(
 								void							*self,
 								UInt32							inUserDataID,
 								UInt32							inIndex,
+								UInt64							*outUserDataSize);
+
+typedef	OSStatus	(*AudioFileComponentGetUserDataProc)(
+								void							*self,
+								UInt32							inUserDataID,
+								UInt32							inIndex,
+								UInt32							*ioUserDataSize,
+								void							*outUserData);
+
+typedef	OSStatus	(*AudioFileComponentGetUserDataAtOffsetProc)(
+								void							*self,
+								UInt32							inUserDataID,
+								UInt32							inIndex,
+								SInt64							inOffset,
 								UInt32							*ioUserDataSize,
 								void							*outUserData);
 

@@ -2,7 +2,7 @@
 /*
         NSTextContainer.h
         Application Kit
-        Copyright (c) 1994-2021, Apple Inc.
+        Copyright (c) 1994-2023, Apple Inc.
         All rights reserved.
 */
 
@@ -13,7 +13,7 @@
 @class NSBezierPath;
 @class NSTextLayoutManager;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 #if !TARGET_OS_IPHONE
 
 API_AVAILABLE(macos(10.0), ios(7.0), tvos(9.0)) @interface NSTextContainer : NSObject <NSSecureCoding, NSTextLayoutOrientationProvider>
@@ -109,7 +109,7 @@ typedef NS_ENUM(NSUInteger, NSLineMovementDirection) {
 
 
 #endif // !TARGET_OS_IPHONE
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 #else
 #import <UIFoundation/NSTextContainer.h>
 #endif

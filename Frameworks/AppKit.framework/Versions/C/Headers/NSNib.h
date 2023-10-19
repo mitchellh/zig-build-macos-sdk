@@ -1,7 +1,7 @@
 /*
 	NSNib.h
 	Application Kit
-	Copyright (c) 2003-2021, Apple Inc.
+	Copyright (c) 2003-2023, Apple Inc.
 	All rights reserved.
 
 NSNib serves as a wrapper around a single InterfaceBuilder nib.  When an NSNib instance is created from a nib file, all of the data needed to instantiate the nib (the object graph as well as images and sounds that might be in the nib bundle) are read from the disk, however the nib is not instantiated until you call one of the instantiation methods.
@@ -16,7 +16,7 @@ As are all NSObjects, instantiated nib objects are allocated in a memory zone (N
 #import <AppKit/AppKitDefines.h>
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 typedef NSString * NSNibName NS_SWIFT_BRIDGED_TYPEDEF;
@@ -57,4 +57,4 @@ APPKIT_EXTERN NSString * NSNibOwner API_DEPRECATED("", macos(10.0,10.8));
 APPKIT_EXTERN NSString * NSNibTopLevelObjects API_DEPRECATED("", macos(10.0,10.8));
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

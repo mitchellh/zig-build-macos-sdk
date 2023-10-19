@@ -66,7 +66,9 @@
 
 CF_ASSUME_NONNULL_BEGIN
 
-#define AU_SUPPORT_INTERAPP_AUDIO 1
+
+  #define AU_SUPPORT_INTERAPP_AUDIO 1
+
 
 #define INTERAPP_AUDIO_DEPRECATED API_DEPRECATED("Inter-App Audio API is deprecated in favor of Audio Units", ios(7.0, 13.0), watchos(2.0, 6.0), tvos(9.0, 13.0), macCatalyst(14.0, 14.0))
 
@@ -789,35 +791,41 @@ typedef CF_OPTIONS(UInt32, AudioUnitRenderActionFlags)
  					invalid characters.
  	@constant		kAudioUnitErr_MissingKey
  					A required key is missing from a dictionary object.
+	@constant		kAudioUnitErr_ComponentManagerNotSupported
+					The operation can not be performed for a component instance instantiated using the
+					deprecated Component Manager. A host application should use the API functions
+					AudioComponentInstantiate or AudioComponentInstanceNew when rebuilding
+					against the macOS 11 or later SDK.
 */
 CF_ENUM(OSStatus) {
-	kAudioUnitErr_InvalidProperty			= -10879,
-	kAudioUnitErr_InvalidParameter			= -10878,
-	kAudioUnitErr_InvalidElement			= -10877,
-	kAudioUnitErr_NoConnection				= -10876,
-	kAudioUnitErr_FailedInitialization		= -10875,
-	kAudioUnitErr_TooManyFramesToProcess	= -10874,
-	kAudioUnitErr_InvalidFile				= -10871,
-	kAudioUnitErr_UnknownFileType			= -10870,
-	kAudioUnitErr_FileNotSpecified			= -10869,
-	kAudioUnitErr_FormatNotSupported		= -10868,
-	kAudioUnitErr_Uninitialized				= -10867,
-	kAudioUnitErr_InvalidScope				= -10866,
-	kAudioUnitErr_PropertyNotWritable		= -10865,
-	kAudioUnitErr_CannotDoInCurrentContext	= -10863,
-	kAudioUnitErr_InvalidPropertyValue		= -10851,
-	kAudioUnitErr_PropertyNotInUse			= -10850,
-	kAudioUnitErr_Initialized				= -10849,
-	kAudioUnitErr_InvalidOfflineRender		= -10848,
-	kAudioUnitErr_Unauthorized				= -10847,
-	kAudioUnitErr_MIDIOutputBufferFull		= -66753,
-	kAudioComponentErr_InstanceTimedOut		= -66754,
-	kAudioComponentErr_InstanceInvalidated	= -66749,
-	kAudioUnitErr_RenderTimeout				= -66745,
-	kAudioUnitErr_ExtensionNotFound			= -66744,
-	kAudioUnitErr_InvalidParameterValue		= -66743,
-	kAudioUnitErr_InvalidFilePath			= -66742,
-	kAudioUnitErr_MissingKey				= -66741
+	kAudioUnitErr_InvalidProperty					= -10879,
+	kAudioUnitErr_InvalidParameter					= -10878,
+	kAudioUnitErr_InvalidElement					= -10877,
+	kAudioUnitErr_NoConnection						= -10876,
+	kAudioUnitErr_FailedInitialization				= -10875,
+	kAudioUnitErr_TooManyFramesToProcess			= -10874,
+	kAudioUnitErr_InvalidFile						= -10871,
+	kAudioUnitErr_UnknownFileType					= -10870,
+	kAudioUnitErr_FileNotSpecified					= -10869,
+	kAudioUnitErr_FormatNotSupported				= -10868,
+	kAudioUnitErr_Uninitialized						= -10867,
+	kAudioUnitErr_InvalidScope						= -10866,
+	kAudioUnitErr_PropertyNotWritable				= -10865,
+	kAudioUnitErr_CannotDoInCurrentContext			= -10863,
+	kAudioUnitErr_InvalidPropertyValue				= -10851,
+	kAudioUnitErr_PropertyNotInUse					= -10850,
+	kAudioUnitErr_Initialized						= -10849,
+	kAudioUnitErr_InvalidOfflineRender				= -10848,
+	kAudioUnitErr_Unauthorized						= -10847,
+	kAudioUnitErr_MIDIOutputBufferFull				= -66753,
+	kAudioComponentErr_InstanceTimedOut				= -66754,
+	kAudioComponentErr_InstanceInvalidated			= -66749,
+	kAudioUnitErr_RenderTimeout						= -66745,
+	kAudioUnitErr_ExtensionNotFound					= -66744,
+	kAudioUnitErr_InvalidParameterValue				= -66743,
+	kAudioUnitErr_InvalidFilePath					= -66742,
+	kAudioUnitErr_MissingKey						= -66741,
+	kAudioUnitErr_ComponentManagerNotSupported		= -66740
 };
 
 
@@ -1654,7 +1662,7 @@ AudioComponentGetLastActiveTime(AudioComponent comp)
                                                 API_UNAVAILABLE(macos) INTERAPP_AUDIO_DEPRECATED;
 #endif // AU_SUPPORT_INTERAPP_AUDIO
 
-#if defined(__OBJC__)
+#if defined(__OBJC__) && !(0 && 0)
 #if TARGET_OS_IPHONE
 /*!
 	@function       AudioComponentCopyIcon
@@ -1697,7 +1705,7 @@ AudioComponentCopyIcon(AudioComponent comp) __attribute((ns_returns_retained))
 #endif
 #endif
 
-#if defined(__LP64__) || TARGET_OS_IPHONE
+#if (defined(__LP64__) || TARGET_OS_IPHONE) && !(0 && 0)
 /*!
 	@function		AudioUnitExtensionSetComponentList
 	@abstract		Allows the implementor of an audio unit extension to dynamically modify the

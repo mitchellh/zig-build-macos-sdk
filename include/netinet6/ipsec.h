@@ -128,7 +128,7 @@ struct ipsecstat {
 	/* security policy violation for outbound process */
 	u_quad_t out_nosa __attribute__ ((aligned(8)));     /* outbound SA is unavailable */
 	u_quad_t out_inval __attribute__ ((aligned(8)));    /* outbound process failed due to EINVAL */
-	u_quad_t out_nomem __attribute__ ((aligned(8)));     /* inbound processing failed due to ENOBUFS */
+	u_quad_t out_nomem __attribute__ ((aligned(8)));     /* outbound processing failed due to ENOBUFS */
 	u_quad_t out_noroute __attribute__ ((aligned(8)));  /* there is no route */
 	u_quad_t out_esphist[256] __attribute__ ((aligned(8)));
 	u_quad_t out_ahhist[256] __attribute__ ((aligned(8)));

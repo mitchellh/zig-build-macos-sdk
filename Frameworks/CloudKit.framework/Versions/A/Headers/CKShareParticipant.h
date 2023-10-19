@@ -48,24 +48,26 @@ typedef NS_ENUM(NSInteger, CKShareParticipantType) {
 } API_DEPRECATED_WITH_REPLACEMENT("CKShareParticipantRole", macos(10.12, 10.14), ios(10.0, 12.0), tvos(10.0, 12.0), watchos(3.0, 5.0));
 
 API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
+// This class should not be subclassed. If it is, Sendable may no longer apply.
+// NS_SWIFT_SENDABLE on macos(14.0), ios(17.0), tvos(17.0), watchos(10.0)
 @interface CKShareParticipant : NSObject <NSSecureCoding, NSCopying>
 
 /*! Use @c CKFetchShareParticipantsOperation to create a @c CKShareParticipant object */
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 
-@property (nonatomic, readonly, copy) CKUserIdentity *userIdentity;
+@property (readonly, copy) CKUserIdentity *userIdentity;
 
 /*! The default participant role is @c CKShareParticipantRolePrivateUser. */
-@property (nonatomic, assign) CKShareParticipantRole role API_AVAILABLE(macos(10.14), ios(12.0), tvos(12.0), watchos(5.0));
+@property (assign) CKShareParticipantRole role API_AVAILABLE(macos(10.14), ios(12.0), tvos(12.0), watchos(5.0));
 
 /*! The default participant type is @c CKShareParticipantTypePrivateUser. */
-@property (nonatomic, assign) CKShareParticipantType type API_DEPRECATED_WITH_REPLACEMENT("role", macos(10.12, 10.14), ios(10.0, 12.0), tvos(10.0, 12.0), watchos(3.0, 5.0));
+@property (assign) CKShareParticipantType type API_DEPRECATED_WITH_REPLACEMENT("role", macos(10.12, 10.14), ios(10.0, 12.0), tvos(10.0, 12.0), watchos(3.0, 5.0));
 
-@property (nonatomic, readonly, assign) CKShareParticipantAcceptanceStatus acceptanceStatus;
+@property (readonly, assign) CKShareParticipantAcceptanceStatus acceptanceStatus;
 
 /*! The default permission for a new participant is @c CKShareParticipantPermissionReadOnly. */
-@property (nonatomic, assign) CKShareParticipantPermission permission;
+@property (assign) CKShareParticipantPermission permission;
 
 @end
 

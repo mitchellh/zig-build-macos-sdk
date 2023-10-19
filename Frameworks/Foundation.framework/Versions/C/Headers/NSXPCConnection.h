@@ -200,6 +200,7 @@ API_AVAILABLE(macos(10.8), ios(6.0), watchos(2.0), tvos(9.0))
 // ----------------------------------
 
 // An instance of this class is a reference to an NSXPCListener that may be encoded and sent over a connection. The receiver may use the object to create a new connection to the listener that supplied the NSXPCListenerEndpoint object.
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.8), ios(6.0), watchos(2.0), tvos(9.0))
 @interface NSXPCListenerEndpoint : NSObject <NSSecureCoding>
 @end

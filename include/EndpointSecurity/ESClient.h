@@ -258,19 +258,19 @@ es_release_muted_processes(es_muted_processes_t * _Nonnull muted_processes);
  * For events with more than one target path (such as exchangedata) the behavior depends on the mute inversion state
  *   Under normal muting the event is suppressed only if ALL paths are muted
  *   When target path muting is inverted the event is selected if ANY target path is muted
- * For example a rename will be suppressed if and only if both the source path and desintiation path are muted.
+ * For example a rename will be suppressed if and only if both the source path and destination path are muted.
  * Supported events are listed below. For each event the target path is defined as:
  *
  * EXEC: The file being executed
  * OPEN: The file being opened
- * MMAP: The file being memeory mapped
+ * MMAP: The file being memory mapped
  * RENAME: Both the source and destination path.
  * SIGNAL: The path of the process being signalled
  * UNLINK: The file being unlinked
  * CLOSE: The file being closed
  * CREATE: The path to the file that will be created or replaced
  * GET_TASK: The path of the process for which the task port is being retrieved
- * LINK: Both the source and desintation path
+ * LINK: Both the source and destination path
  * SETATTRLIST: The file for which the attributes are being set
  * SETEXTATTR: The file for which the extended attributes are being set
  * SETFLAGS: The file for which flags are being set
@@ -290,13 +290,13 @@ es_release_muted_processes(es_muted_processes_t * _Nonnull muted_processes);
  * GETEXTATTR The file for which extended attributes are being retrieved
  * LISTEXTATTR The file for which extended attributes are being listed
  * READDIR The directory for whose contents will be read
- * DELETEEXTATTR The file for which extended attribtes will be deleted
+ * DELETEEXTATTR The file for which extended attribues will be deleted
  * DUP: The file being duplicated
  * UIPC_BIND: The path to the unix socket that will be created
  * UIPC_CONNECT: The file that the unix socket being connected is bound to
  * EXCHANGEDATA: The path of both file1 and file2
  * SETACL: The file for which ACLs are being set
- * PROC_CHECK: The path of the process against which access is beign checked
+ * PROC_CHECK: The path of the process against which access is being checked
  * SEARCHFS: The path of the volume which will be searched
  * PROC_SUSPEND_RESUME: The path of the process being suspended or resumed
  * GET_TASK_NAME: The path of the process for which the task name port will be retrieved
@@ -340,7 +340,7 @@ es_mute_path_events(es_client_t * _Nonnull client, const char * _Nonnull path, e
  * @deprecated Please use `es_mute_path` or `es_mute_path_events`
  *
  * @param client The client for which events will be suppressed
- * @param path_prefix The path against which supressed executables must prefix match
+ * @param path_prefix The path against which suppressed executables must prefix match
  * @return es_return_t indicating success or error
  */
 OS_EXPORT
@@ -355,7 +355,7 @@ es_mute_path_prefix(es_client_t * _Nonnull client, const char * _Nonnull path_pr
  * @deprecated Please use `es_mute_path` or `es_mute_path_events`
  *
  * @param client The client for which events will be suppressed
- * @param path_literal The path against which supressed executables must match exactly
+ * @param path_literal The path against which suppressed executables must match exactly
  * @return es_return_t indicating success or error
  *
  * @see es_mute_path
@@ -398,12 +398,12 @@ es_unmute_all_target_paths(es_client_t * _Nonnull client);
  *
  * @return es_return_t A value indicating whether or not the path was successfully unmuted.
  *
- * @note Muting and unuting operations logically work on a set of (path_type, path, es_event_type_t) tuples
+ * @note Muting and unmuting operations logically work on a set of (path_type, path, es_event_type_t) tuples
  * Subtracting an element from the set that is not present has no effect
  * For example if `(literal, /foo/bar/, *)` is muted
  * Then `(prefix, /foo, *)` is unmuted the mute set is still:
  * `(literal, /foo/bar, *)`.
- * Prefixes only apply to mute evalation not to modifications of the mute set.
+ * Prefixes only apply to mute evaluation not to modifications of the mute set.
  *
  * @see es_unmute_path_events
  */
@@ -640,7 +640,7 @@ es_new_client(es_client_t * _Nullable * _Nonnull client, es_handler_block_t _Non
  * Destroy an es_client_t, freeing resources and disconnecting from the ES subsystem
  * @param client The client to be destroyed
  * @return  ES_RETURN_SUCCESS indicates all resources were freed.
- *          ES_RETURN_ERROR indicates an error occured during shutdown and resources were leaked.
+ *          ES_RETURN_ERROR indicates an error occurred during shutdown and resources were leaked.
  * @note Must be called from the same thread that originally called `es_new_client`.
  */
 OS_EXPORT

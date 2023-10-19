@@ -205,6 +205,7 @@ typedef NS_ENUM(NSInteger, MTLGPUFamily)
     MTLGPUFamilyApple6  = 1006,
     MTLGPUFamilyApple7  = 1007,
     MTLGPUFamilyApple8  = 1008,
+    MTLGPUFamilyApple9  = 1009,
     
     MTLGPUFamilyMac1 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyMac2", macos(10.15, 13.0), ios(13.0, 16.0)) = 2001,
     MTLGPUFamilyMac2 = 2002,
@@ -390,7 +391,7 @@ MTL_EXPORT API_AVAILABLE(macos(10.13), ios(11.0))
  * @property access
  * @abstract Access flags for the argument
  */
-@property (nonatomic) MTLArgumentAccess access;
+@property (nonatomic) MTLBindingAccess access;
 
 /*!
  * @property textureType
@@ -408,6 +409,19 @@ MTL_EXPORT API_AVAILABLE(macos(10.13), ios(11.0))
 
 @end
 
+
+/*!
+ @class MTLArchitecture
+ @abstract Contains information about the device's architecture
+ */
+MTL_EXPORT API_AVAILABLE(macos(14.0), ios(17.0))
+@interface MTLArchitecture : NSObject <NSCopying>
+/*!
+ @property name
+ @abstract The device's architecture name.
+ */
+@property (readonly, nonnull) NSString *name;
+@end
 
 /*!
  @protocol MTLDevice
@@ -430,6 +444,11 @@ API_AVAILABLE(macos(10.11), ios(8.0))
 */
 @property (readonly) uint64_t registryID API_AVAILABLE(macos(10.13), ios(11.0)) ;
 
+/*!
+ @property architecture
+ @abstract Returns the device's architecture information.
+ */
+@property (nonnull, readonly) MTLArchitecture *architecture API_AVAILABLE(macos(14.0), ios(17.0));
 
 /*!
  @property maxThreadsPerThreadgroup
@@ -471,7 +490,7 @@ API_AVAILABLE(macos(10.11), ios(8.0))
  @discussion Performance may be improved by keeping the total size of all resources (texture and buffers)
  and heaps less than this threshold, beyond which the device is likely to be overcommitted and incur a
  performance penalty. */
-@property (readonly) uint64_t recommendedMaxWorkingSetSize API_AVAILABLE(macos(10.12), macCatalyst(13.0)) API_UNAVAILABLE(ios);
+@property (readonly) uint64_t recommendedMaxWorkingSetSize API_AVAILABLE(macos(10.12), macCatalyst(13.0), ios(16.0));
 
 /*!
  @property location
@@ -983,8 +1002,8 @@ API_DEPRECATED("Use -newLibraryWithURL:error: instead", macos(10.11, 13.0), ios(
  * of the handle fails the return value will be nil and the optional error if passed in will be non-nil
  * with details of the error.
  */
--(nullable id<MTLIOFileHandle>) newIOHandleWithURL:(NSURL *)url
-                                error:(NSError **)error API_AVAILABLE(macos(13.0), ios(16.0));
+-(nullable id<MTLIOFileHandle>)newIOHandleWithURL:(NSURL *)url
+                                            error:(NSError **)error API_DEPRECATED_WITH_REPLACEMENT("Use newIOFileHandleWithURL:error: instead", macos(13.0, 14.0), ios(16.0, 17.0));
 
 
 /*!
@@ -993,8 +1012,8 @@ API_DEPRECATED("Use -newLibraryWithURL:error: instead", macos(10.11, 13.0), ios(
  * of the queue fails the return value will be nil and the optional error if passed in will be non-nil
  * with details of the error.
  */
--(nullable id<MTLIOCommandQueue>) newIOCommandQueueWithDescriptor:(MTLIOCommandQueueDescriptor*)descriptor
-                                            error:(NSError **)error API_AVAILABLE(macos(13.0), ios(16.0));
+-(nullable id<MTLIOCommandQueue>)newIOCommandQueueWithDescriptor:(MTLIOCommandQueueDescriptor*)descriptor
+                                                           error:(NSError **)error API_AVAILABLE(macos(13.0), ios(16.0));
 
 
 /*!
@@ -1005,9 +1024,31 @@ API_DEPRECATED("Use -newLibraryWithURL:error: instead", macos(10.11, 13.0), ios(
  * of the handle fails the return value will be nil and the optional error if passed in will be non-nil
  * with details of the error.
  */
--(nullable id<MTLIOFileHandle>) newIOHandleWithURL:(NSURL *)url
-                    compressionMethod:(MTLIOCompressionMethod)compressionMethod
-                                error:(NSError **)error API_AVAILABLE(macos(13.0), ios(16.0));
+-(nullable id<MTLIOFileHandle>)newIOHandleWithURL:(NSURL *)url
+                                compressionMethod:(MTLIOCompressionMethod)compressionMethod
+                                            error:(NSError **)error API_DEPRECATED_WITH_REPLACEMENT("Use newIOFileHandleWithURL:compressionMethod:error: instead", macos(13.0, 14.0), ios(16.0, 17.0));
+
+/*!
+ * @method newIOFileHandleWithURL:error:
+ * @abstract Create and return a handle that points to a raw file on disk. This object can be used by
+ * MTLIOCommandBuffer load commands to source data for MTLResources. If the creation
+ * of the handle fails the return value will be nil and the optional error if passed in will be non-nil
+ * with details of the error.
+ */
+-(nullable id<MTLIOFileHandle>)newIOFileHandleWithURL:(NSURL *)url
+                                                error:(NSError **)error API_AVAILABLE(macos(14.0), ios(17.0));
+
+/*!
+ * @method newIOFileHandleWithURL:compressionMethod:error:
+ * @abstract Create and return a handle that points to a compressed file on disk (a file that was
+ * created with MTLIOCompressionContext). This object can be used by
+ * MTLIOCommandBuffer load commands to source data for MTLResources. If the creation
+ * of the handle fails the return value will be nil and the optional error if passed in will be non-nil
+ * with details of the error.
+ */
+-(nullable id<MTLIOFileHandle>)newIOFileHandleWithURL:(NSURL *)url
+                                    compressionMethod:(MTLIOCompressionMethod)compressionMethod
+                                                error:(NSError **)error API_AVAILABLE(macos(14.0), ios(17.0));
 
 
 
@@ -1220,7 +1261,6 @@ typedef uint64_t MTLTimestamp;
  @return BOOL value. If YES, the device supports the primitive motion blur api. If NO, the device does not.
  */
 @property (readonly) BOOL supportsPrimitiveMotionBlur API_AVAILABLE(macos(11.0), ios(14.0));
-
 
 /*!
  @property shouldMaximizeConcurrentCompilation

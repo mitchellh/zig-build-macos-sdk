@@ -1,7 +1,7 @@
 /*
     NSView.h
     Application Kit
-    Copyright (c) 1994-2021, Apple Inc.
+    Copyright (c) 1994-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -23,11 +23,10 @@
 
 @protocol NSDraggingSource;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
-@class NSBitmapImageRep, NSCursor, NSDraggingSession, NSGestureRecognizer, NSGraphicsContext, NSImage, NSScrollView, NSTextInputContext, NSWindow, NSAttributedString;
-@class CIFilter, CALayer, NSScreen, NSShadow, NSTrackingArea, NSLayoutGuide;
+@class CADisplayLink, CALayer, CIFilter, NSAttributedString, NSBitmapImageRep, NSCursor, NSDraggingSession, NSGestureRecognizer, NSGraphicsContext, NSImage, NSLayoutGuide, NSScreen, NSScrollView, NSShadow, NSTextInputContext, NSTrackingArea, NSWindow;
 
 // Bitset options for the autoresizingMask
 typedef NS_OPTIONS(NSUInteger, NSAutoresizingMaskOptions) {
@@ -83,8 +82,8 @@ typedef NSInteger NSToolTipTag;
 - (instancetype)initWithFrame:(NSRect)frameRect NS_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
 
-@property (nullable, readonly, assign) NSWindow *window;
-@property (nullable, readonly, assign) NSView *superview;
+@property (nullable, readonly, unsafe_unretained) NSWindow *window;
+@property (nullable, readonly, unsafe_unretained) NSView *superview;
 @property (copy) NSArray<__kindof NSView *> *subviews;
 - (BOOL)isDescendantOf:(NSView *)view;
 - (nullable NSView *)ancestorSharedWithView:(NSView *)view;
@@ -190,6 +189,10 @@ typedef NSInteger NSToolTipTag;
 - (BOOL)lockFocusIfCanDraw API_DEPRECATED("To draw, subclass NSView and implement -drawRect:; AppKit's automatic deferred display mechanism will call -drawRect: as necessary to display the view.", macos(10.0,10.14));
 - (BOOL)lockFocusIfCanDrawInContext:(NSGraphicsContext *)context API_DEPRECATED("Use -[NSView displayRectIgnoringOpacity:inContext:] to draw a view subtree into a graphics context.", macos(10.4,10.13));
 @property (class, readonly, nullable, strong) NSView *focusView;
+
+/// The portion of the view that isn’t clipped by its superviews.
+/// @discussion Visibility, as reflected by this property, doesn’t account for whether other view or window objects overlap the current view or whether the current view is installed in a window at all. This value of this property is `NSZeroRect` if the current view is effectively hidden.
+/// @discussion During a printing operation, the visible rectangle is further clipped to the page being imaged.
 @property (readonly) NSRect visibleRect;
 
 - (void)display;
@@ -275,6 +278,10 @@ typedef NSInteger NSToolTipTag;
 @property (copy) NSArray<__kindof CIFilter *> *contentFilters API_AVAILABLE(macos(10.5));
 
 @property (nullable, copy) NSShadow *shadow API_AVAILABLE(macos(10.5));
+
+/* Defaults to NO on macOS 14 and later. Defaults to YES on previous releases. Note some classes (like NSClipView) set their own default values differently than NSView itself.
+ */
+@property BOOL clipsToBounds API_AVAILABLE(macos(10.9));
 
 @property BOOL postsBoundsChangedNotifications;
 
@@ -568,6 +575,14 @@ APPKIT_EXTERN NSDefinitionPresentationType const NSDefinitionPresentationTypeDic
 - (void)removeTrackingRect:(NSTrackingRectTag)tag;
 @end
 
+API_AVAILABLE(macos(14.0))
+@interface NSView (NSDisplayLink)
+/*
+    Returns a new display link whose callback will be invoked in-sync with the display the view is on. If the view is hidden, or not on any display, the callback will not be invoked.
+*/
+- (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)selector NS_SWIFT_NAME(displayLink(target:selector:));
+@end
+
 @interface NSView(NSDeprecated)
 
 - (void)dragImage:(NSImage *)image at:(NSPoint)viewLocation offset:(NSSize)initialOffset event:(NSEvent *)event pasteboard:(NSPasteboard *)pboard source:(id)sourceObj slideBack:(BOOL)slideFlag API_DEPRECATED("Use -beginDraggingSessionWithItems:event:source: instead", macos(10.0,10.7));
@@ -622,5 +637,5 @@ APPKIT_EXTERN NSNotificationName NSViewDidUpdateTrackingAreasNotification API_AV
 
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

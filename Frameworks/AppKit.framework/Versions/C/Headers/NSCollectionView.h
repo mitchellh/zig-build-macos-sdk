@@ -1,7 +1,7 @@
 /*
     NSCollectionView.h
     Application Kit
-    Copyright (c) 2005-2021, Apple Inc.
+    Copyright (c) 2005-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -10,6 +10,9 @@
 #import <AppKit/NSDragging.h>
 #import <AppKit/AppKitDefines.h>
 #import <Foundation/NSArray.h>
+
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
+APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 typedef NS_ENUM(NSInteger, NSCollectionViewDropOperation) {
     NSCollectionViewDropOn = 0,
@@ -49,9 +52,6 @@ typedef NSString * NSCollectionViewSupplementaryElementKind NS_SWIFT_BRIDGED_TYP
 
 @class NSButton, NSCollectionView, NSCollectionViewLayout, NSCollectionViewLayoutAttributes, NSCollectionViewTransitionLayout, NSDraggingImageComponent, NSImageView, NSIndexSet, NSMutableIndexSet, NSNib, NSTextField;
 @protocol NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewPrefetching;
-
-NS_ASSUME_NONNULL_BEGIN
-APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 /* NSCollectionViewElement declares functionality shared by (1) NSCollectionViewItems and (2) "supplementary" or "decoration" views that can be added to an NSCollectionView.  Each such reusable entity has the ability to be reset to its initial state by being sent -prepareForReuse, the ability to take size, position, and other state from an NSCollectionViewLayoutAttributes instance, and the ability to respond to transitions from one layout to another.  Note that, since these methods are all optional and invoked only when found to be present, all existing NSView classes can be considered conforming, and are therefore eligible to be used a supplementary and decorative views.  NSView and NSCollectionViewElement both conform to NSUserInterfaceItemIdentification, which provides an "identifier" property that CollectionView uses to track an item or supplementary/decoration view's kind.
  */
@@ -622,7 +622,6 @@ Multi-image drag and drop: If draggingInfo.animatesToDestination is set to YES, 
 
 @end
 
-#if !TARGET_OS_IPHONE
 @interface NSIndexPath (NSCollectionViewAdditions)
 
 + (NSIndexPath *)indexPathForItem:(NSInteger)item inSection:(NSInteger)section API_AVAILABLE(macos(10.11));
@@ -631,7 +630,6 @@ Multi-image drag and drop: If draggingInfo.animatesToDestination is set to YES, 
 @property (readonly) NSInteger section API_AVAILABLE(macos(10.11));
 
 @end
-#endif // !TARGET_OS_IPHONE
 
 @interface NSSet (NSCollectionViewAdditions)
 
@@ -673,4 +671,4 @@ Multi-image drag and drop: If draggingInfo.animatesToDestination is set to YES, 
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

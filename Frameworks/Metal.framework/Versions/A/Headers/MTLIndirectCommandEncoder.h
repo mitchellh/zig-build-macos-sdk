@@ -22,6 +22,18 @@ API_AVAILABLE(macos(10.14), ios(12.0))
 - (void)setVertexBuffer:(id <MTLBuffer>)buffer offset:(NSUInteger)offset atIndex:(NSUInteger)index;
 - (void)setFragmentBuffer:(id <MTLBuffer>)buffer offset:(NSUInteger)offset atIndex:(NSUInteger)index;
 
+/*!
+  @brief
+    sets vertex buffer at specified index with provided offset and stride.
+    only call this when the buffer-index is part of the vertexDescriptor and
+    has set its stride to `MTLBufferLayoutStrideDynamic`
+*/
+- (void) setVertexBuffer:(nonnull id<MTLBuffer>)buffer
+                  offset:(NSUInteger)offset
+         attributeStride:(NSUInteger)stride
+                 atIndex:(NSUInteger)index
+API_AVAILABLE(macos(14.0), ios(17.0));
+
 
 - (void)        drawPatches:(NSUInteger)numberOfPatchControlPoints patchStart:(NSUInteger)patchStart patchCount:(NSUInteger)patchCount patchIndexBuffer:(nullable id <MTLBuffer>)patchIndexBuffer
      patchIndexBufferOffset:(NSUInteger)patchIndexBufferOffset instanceCount:(NSUInteger)instanceCount baseInstance:(NSUInteger)baseInstance
@@ -49,6 +61,18 @@ API_AVAILABLE(ios(13.0), macos(11.0))
 - (void)setComputePipelineState:(id <MTLComputePipelineState>)pipelineState API_AVAILABLE(ios(13.0), macos(11.0));
 
 - (void)setKernelBuffer:(id <MTLBuffer>)buffer offset:(NSUInteger)offset atIndex:(NSUInteger)index;
+
+/*!
+  @brief
+    sets kernel buffer at specified index with provided offset and stride.
+    only call this when the buffer-index is part of the stageInputDescriptor
+    and has set its stride to `MTLBufferLayoutStrideDynamic`
+*/
+- (void)setKernelBuffer:(nonnull id<MTLBuffer>)buffer
+                 offset:(NSUInteger)offset
+        attributeStride:(NSUInteger)stride
+                atIndex:(NSUInteger)index
+API_AVAILABLE(macos(14.0), ios(17.0));
 
 
 - (void)concurrentDispatchThreadgroups:(MTLSize)threadgroupsPerGrid

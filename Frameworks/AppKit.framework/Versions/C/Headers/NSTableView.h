@@ -1,7 +1,7 @@
 /*
     NSTableView.h
     Application Kit
-    Copyright (c) 1995-2021, Apple Inc.
+    Copyright (c) 1995-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -13,7 +13,7 @@
 #import <AppKit/NSUserInterfaceValidation.h>
 #import <AppKit/NSTextView.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSTableHeaderView, NSTableColumn, NSIndexSet, NSMutableIndexSet, NSTableRowView, NSNib, NSTableViewRowAction, NSSortDescriptor;
@@ -702,6 +702,15 @@ typedef NS_OPTIONS(NSUInteger, NSTableViewAnimationOptions) {
  */
 - (NSArray<NSTableViewRowAction *> *)tableView:(NSTableView *)tableView rowActionsForRow:(NSInteger)row edge:(NSTableRowActionEdge)edge NS_SWIFT_UI_ACTOR API_AVAILABLE(macos(10.11));
 
+/* Optional - Column Visibility User Control. Return YES for any column whose visibility is meant to be user-controllable. Implementing this method enables table view to provide a menu or equivalent UI that allows users to hide or show table columns. Any column that is meant to be user-controllable in this way should have a non-empty `.title` property.
+ Note: setting the `.menu` property on tableView's `.headerView` will take precedence over this built-in mechanism.
+ */
+- (BOOL)tableView:(NSTableView *)tableView userCanChangeVisibilityOfTableColumn:(NSTableColumn *)column NS_SWIFT_NAME(tableView(_:userCanChangeVisibilityOf:)) API_AVAILABLE(macos(14.0));
+
+/* Optional - Column Visibility User Control. Called when the user alters the visibility of one or more columns via the `tableView:userCanChangeVisibilityOfTableColumn:` UI affordance.
+ */
+- (void)tableView:(NSTableView *)tableView userDidChangeVisibilityOfTableColumns:(NSArray <NSTableColumn *> *)columns NS_SWIFT_NAME(tableView(_:userDidChangeVisibilityOf:)) API_AVAILABLE(macos(14.0));
+
 #pragma mark -
 #pragma mark ***** Notifications *****
 
@@ -854,4 +863,4 @@ APPKIT_EXTERN NSUserInterfaceItemIdentifier const NSTableViewRowViewKey API_AVAI
 
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

@@ -57,3 +57,10 @@
 #import <CloudKit/NSItemProvider+CKSharingSupport.h>
 #import <CloudKit/CKAllowedSharingOptions.h>
 #import <CloudKit/CKSystemSharingUIObserver.h>
+
+#pragma mark - Sync Engine
+#import <CloudKit/CKSyncEngine.h>
+#import <CloudKit/CKSyncEngineConfiguration.h>
+#import <CloudKit/CKSyncEngineEvent.h>
+#import <CloudKit/CKSyncEngineRecordZoneChangeBatch.h>
+#import <CloudKit/CKSyncEngineState.h>

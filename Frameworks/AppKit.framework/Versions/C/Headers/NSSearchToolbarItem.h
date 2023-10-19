@@ -1,7 +1,7 @@
 /*
 	NSSearchToolbarItem.h
 	Application Kit
-	Copyright (c) 2000-2021, Apple Inc.
+	Copyright (c) 2000-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -12,7 +12,7 @@
 @class NSSearchField;
 @class NSView;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
@@ -42,4 +42,4 @@ API_AVAILABLE(macos(11.0)) API_UNAVAILABLE(macCatalyst)
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

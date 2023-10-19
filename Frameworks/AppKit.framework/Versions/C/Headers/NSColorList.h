@@ -1,7 +1,7 @@
 /*
 	NSColorList.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -18,7 +18,7 @@ NSColorLists post "NSColorListDidChangeNotification" when changed.
 #import <AppKit/AppKitDefines.h>
 #import <CoreFoundation/CFDictionary.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 typedef NSString * NSColorListName NS_SWIFT_BRIDGED_TYPEDEF;
@@ -89,5 +89,5 @@ typedef NSString * NSColorName NS_SWIFT_BRIDGED_TYPEDEF;
 APPKIT_EXTERN NSNotificationName NSColorListDidChangeNotification;
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

@@ -20,7 +20,8 @@
 
 #if COREIMAGE_SUPPORTS_OPENGLES
  #import <OpenGLES/EAGL.h>
-#elif TARGET_OS_OSX
+#endif 
+#if TARGET_OS_OSX
  #import <OpenGL/CGLTypes.h>
 #endif 
 
@@ -201,6 +202,10 @@ NS_AVAILABLE(10_15,13_0);
 // The working pixel format of the CIContext used for intermediate buffers
 @property (nonatomic, readonly) CIFormat workingFormat NS_AVAILABLE(10_11,9_0);
 
+// A NSNumber that specifies the maximum memory footprint (in megabytes) that 
+// the CIContext allocates for render tasks.  Larger values could increase memory  
+// footprint while smaller values could reduce performance.
+CORE_IMAGE_EXPORT CIContextOption const kCIContextMemoryLimit NS_AVAILABLE(14_0, 17_0);
 
 #pragma mark - render methods
 
@@ -458,6 +463,12 @@ CORE_IMAGE_EXPORT CIImageRepresentationOption const kCIImageRepresentationSemant
                                    colorSpace:(CGColorSpaceRef)colorSpace
                                       options:(NSDictionary<CIImageRepresentationOption, id>*)options NS_AVAILABLE(10_13,11_0);
 
+/* Render a CIImage to OpenEXR data. Image must have a finite non-empty extent. */
+/* No options keys are supported at this time. */
+- (nullable NSData*) OpenEXRRepresentationOfImage:(CIImage*)image
+                                          options:(NSDictionary<CIImageRepresentationOption, id>*)options
+                                            error:(NSError **)errorPtr NS_AVAILABLE(14_0, 17_0);
+
 /* Render a CIImage to TIFF file. Image must have a finite non-empty extent. */
 /* The CGColorSpace must be kCGColorSpaceModelRGB or kCGColorSpaceModelMonochrome */
 /* and must match the specified CIFormat. */
@@ -512,6 +523,12 @@ CORE_IMAGE_EXPORT CIImageRepresentationOption const kCIImageRepresentationSemant
                                   options:(NSDictionary<CIImageRepresentationOption, id>*)options
                                     error:(NSError **)errorPtr NS_AVAILABLE(12_0,15_0);
 
+/* Render a CIImage to OpenEXR file. Image must have a finite non-empty extent. */
+/* No options keys are supported at this time. */
+- (BOOL) writeOpenEXRRepresentationOfImage:(CIImage*)image
+                                     toURL:(NSURL*)url
+                                   options:(NSDictionary<CIImageRepresentationOption, id>*)options
+                                     error:(NSError **)errorPtr NS_AVAILABLE(14_0, 17_0);
 
 @end
 

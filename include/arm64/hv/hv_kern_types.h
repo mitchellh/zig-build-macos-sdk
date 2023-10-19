@@ -28,6 +28,8 @@
 
 #pragma once
 
+#ifdef __arm64__
+
 #include <stdint.h>
 #include <mach/error.h>
 
@@ -67,3 +69,5 @@ enum {
 };
 
 typedef uint64_t hv_memory_flags_t;
+
+#endif

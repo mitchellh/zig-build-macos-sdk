@@ -68,6 +68,8 @@ FOUNDATION_EXPORT NSUInteger NSRoundDownToMultipleOfPageSize(NSUInteger bytes);
 FOUNDATION_EXPORT void *NSAllocateMemoryPages(NSUInteger bytes);
 FOUNDATION_EXPORT void NSDeallocateMemoryPages(void *ptr, NSUInteger bytes);
 FOUNDATION_EXPORT void NSCopyMemoryPages(const void *source, void *dest, NSUInteger bytes);
+#if !0
 FOUNDATION_EXPORT NSUInteger NSRealMemoryAvailable(void) API_DEPRECATED("Use NSProcessInfo instead", macos(10.0,10.8), ios(2.0,6.0), watchos(2.0,2.0), tvos(9.0,9.0)); // see NSProcessInfo.h instead
+#endif
 
 NS_HEADER_AUDIT_END(nullability, sendability)

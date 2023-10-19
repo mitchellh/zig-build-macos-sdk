@@ -3,6 +3,8 @@
    Copyright (c) 2008-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CALayer.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -59,3 +61,5 @@ API_AVAILABLE(macos(10.6), ios(3.0), watchos(2.0), tvos(9.0))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

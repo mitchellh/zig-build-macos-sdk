@@ -1,7 +1,7 @@
 /*
 	AppKit.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 
 	This file is included by all AppKit application source files for easy building.  Using this file is preferred over importing individual files because it will use a precompiled version.
@@ -46,6 +46,7 @@
 #import <AppKit/NSMatrix.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSMenuItem.h>
+#import <AppKit/NSMenuItemBadge.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSColorSpace.h>
 #import <AppKit/NSBitmapImageRep.h>
@@ -137,7 +138,7 @@
 #import <AppKit/NSTextCheckingController.h>
 #import <AppKit/NSTextField.h>
 #import <AppKit/NSTextFieldCell.h>
-#import <AppKit/NSText.h>
+#import <AppKit/NSTextInsertionIndicator.h>
 #import <AppKit/NSTokenField.h>
 #import <AppKit/NSTokenFieldCell.h>
 #import <AppKit/NSTouchBar.h>

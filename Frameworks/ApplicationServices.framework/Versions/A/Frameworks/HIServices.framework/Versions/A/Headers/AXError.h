@@ -8,11 +8,11 @@
 #ifndef __AXERROR__
 #define __AXERROR__
 
+#include <CoreFoundation/CoreFoundation.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <CoreFoundation/CoreFoundation.h>
 
 /*!
 	@header AXError.h

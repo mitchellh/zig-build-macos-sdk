@@ -1,7 +1,7 @@
 /*
 	NSDragging.h
 	Application Kit
-	Copyright (c) 1994-2021, Apple Inc.
+	Copyright (c) 1994-2023, Apple Inc.
 	All rights reserved.
 */
 
@@ -16,7 +16,7 @@
 
 @protocol NSPasteboardWriting;
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSDraggingItem, NSDraggingSession, NSImage, NSPasteboard, NSView, NSWindow;
@@ -210,4 +210,4 @@ typedef NS_OPTIONS(NSUInteger, NSSpringLoadingOptions) {
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

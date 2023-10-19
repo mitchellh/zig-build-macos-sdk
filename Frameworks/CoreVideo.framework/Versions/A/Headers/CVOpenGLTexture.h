@@ -35,7 +35,7 @@ extern "C" {
     @abstract   OpenGL texture based image buffer
 
 */
-typedef CVImageBufferRef CVOpenGLTextureRef;
+typedef CVImageBufferRef CVOpenGLTextureRef CV_SWIFT_NONSENDABLE;
 
 CV_EXPORT CFTypeID CVOpenGLTextureGetTypeID(void) COREVIDEO_GL_DEPRECATED(macosx, 10.4, 10.14) API_UNAVAILABLE(macCatalyst);
 

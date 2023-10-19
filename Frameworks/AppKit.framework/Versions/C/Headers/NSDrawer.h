@@ -1,7 +1,7 @@
 /*
     NSDrawer.h
     Application Kit
-    Copyright (c) 1999-2021, Apple Inc.
+    Copyright (c) 1999-2023, Apple Inc.
     All rights reserved.
 */
 
@@ -14,7 +14,7 @@
 #import <AppKit/NSResponder.h>
 #import <AppKit/NSWindow.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSLock;
@@ -85,5 +85,5 @@ APPKIT_EXTERN NSNotificationName NSDrawerWillCloseNotification API_DEPRECATED("D
 APPKIT_EXTERN NSNotificationName NSDrawerDidCloseNotification API_DEPRECATED("Drawers are deprecated; consider using NSSplitViewController", macos(10.0,10.13));
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

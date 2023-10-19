@@ -266,7 +266,7 @@ typedef CF_OPTIONS(uint32_t, CGWindowImageOption) {
 CG_EXTERN CGImageRef __nullable CGWindowListCreateImage(CGRect screenBounds,
     CGWindowListOption listOption, CGWindowID windowID,
     CGWindowImageOption imageOption)
-    CG_AVAILABLE_STARTING(10.5);
+    CG_AVAILABLE_BUT_DEPRECATED(10.5, 14.0, "This API is deprecated. Please use ScreenCaptureKit's captureScreenshot APIs instead.");
 
 /* Create an image containing a composite of the specified set of windows
    contained within a rectangular area à la `CGWindowListCreateImage'. The
@@ -275,7 +275,7 @@ CG_EXTERN CGImageRef __nullable CGWindowListCreateImage(CGRect screenBounds,
 CG_EXTERN CGImageRef __nullable CGWindowListCreateImageFromArray(
     CGRect screenBounds, CFArrayRef  windowArray,
     CGWindowImageOption imageOption)
-    CG_AVAILABLE_STARTING(10.5);
+    CG_AVAILABLE_BUT_DEPRECATED(10.5, 14.0, "This API is deprecated. Please use ScreenCaptureKit's captureScreenshot APIs instead.");
 
 /* A CFNumberRef encoding appropriate for use with a CGWindowID. */
 #define kCGWindowIDCFNumberType kCFNumberSInt32Type

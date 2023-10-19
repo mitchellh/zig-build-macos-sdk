@@ -38,7 +38,11 @@ CL_EXTERN const CLLocationDegrees kCLHeadingFilterNone;
  *    Represents a vector pointing to magnetic North constructed from axis component values x, y, and z. An accuracy of the heading calculation is also provided along with timestamp information.
  */
 CL_EXTERN
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+API_AVAILABLE(macos(10.7), ios(3.0), watchos(2.0)) API_UNAVAILABLE(tvos, visionos)
+#else
 API_AVAILABLE(macos(10.7), ios(3.0), watchos(2.0)) API_UNAVAILABLE(tvos)
+#endif
 @interface CLHeading : NSObject <NSCopying, NSSecureCoding>
 {
 @private

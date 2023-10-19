@@ -3,6 +3,8 @@
    Copyright (c) 2006-2022, Apple Inc.
    All rights reserved. */
 
+#ifdef __OBJC__
+
 #import <QuartzCore/CAMediaTiming.h>
 #import <QuartzCore/CATransform3D.h>
 #import <Foundation/NSObject.h>
@@ -376,6 +378,19 @@ API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0))
 
 @property(copy) CALayerContentsFormat contentsFormat
   API_AVAILABLE(macos(10.12), ios(10.0), watchos(3.0), tvos(10.0));
+
+/* If YES, contents of the layer can be displayed up to its NSScreen's
+ * maximumExtendedDynamicRangeColorComponentValue or UIScreen's
+ * currentEDRHeadroom. If NO, contents are clipped or tonemapped to 1.0 (SDR).
+ * `contents` with a CGColorSpaceRef conforming to ITU-R 2100
+ * (CGColorSpaceUsesITUR_2100TF) will be tonemapped. Setting this value to
+ * YES may have a significant impact on power consumption and therefore
+ * should only be set when displaying EDR contents. The default value is NO. */
+
+@property BOOL wantsExtendedDynamicRangeContent
+  API_AVAILABLE(macos(14.0), ios(17.0), macCatalyst(17.0)) API_UNAVAILABLE(tvos, watchos);
+
+
 
 /* The filter types to use when rendering the `contents' property of
  * the layer. The minification filter is used when to reduce the size
@@ -951,3 +966,5 @@ CA_EXTERN NSString * const kCATransition
     API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
 
 NS_ASSUME_NONNULL_END
+
+#endif

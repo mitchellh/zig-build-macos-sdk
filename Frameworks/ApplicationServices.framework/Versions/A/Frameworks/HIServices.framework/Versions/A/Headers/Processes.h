@@ -309,148 +309,70 @@ enum {
  *      +[NSWorkspace launchApplicationAtURL:options:configuration:error:]
  *    or other LaunchServices functions ( LSOpenCFURLRef(),
  *      LSOpenFromURLSpec() ) to launch applications.
- *
- *  Mac OS X threading:
- *    Thread safe since version 10.3
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  */
 extern OSErr 
 LaunchApplication(LaunchPBPtr LaunchParams)                   AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
 
 
-#if !__LP64__
-/*
- *  LaunchDeskAccessory()
- *  
- *  Availability:
- *    Mac OS X:         not available [32-bit only]
- *    CarbonLib:        not available
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
- */
-
-
-#endif  /* !__LP64__ */
-
-/*
- *  [Mac]GetCurrentProcess()
- *  
- *  DEPRECATED
- *    Use [ NSRunningApplication currentApplication]
+/*! @abstract Return the ProcessSerialNumber of the current application.
+ *  @discussion Use [ NSRunningApplication currentApplication]
  *
- *  Discussion:
  *    Return the canonical process serial number to the caller.
  *    
- *    All applications ( things which can appear in the Dock or which
- *    are not documents and are launched by the Finder or Dock ) on Mac
- *    OS 10 have a unique process serial number. This number is created
- *    when the application launches, and remains until the application
- *    quits. Other system services, like AppleEvents, use the
- *    ProcessSerialNumber to specify an application.
- *    
- *    During launch, every application 'checks in' with the Process
- *    Manager. Before this checkin, the application can not receive
- *    events or draw to the screen. Prior to Mac OS 10.2, this 'check
- *    in' happened before the applications's main() function was
- *    entered. In Mac OS 10.2 and later, this 'check in' does not
- *    happen until the first time the application calls a Process
- *    Manager function, or until it enters CFRunLoopRun() for the main
- *    runloop. This allows tools and other executables which do not
- *    need to receive events to link against more of the higher level
- *    toolbox frameworks, but may cause a problem if the application
- *    expects to be able to retrieve events or use CoreGraphics
- *    services before this checkin has occurred.
- *    
- *    An application can force the connection to the Process Manager to
- *    be set up by calling any Process Manager routine, but the
- *    recommended way to do this is to call GetCurrentProcess() to ask
- *    for the current application's PSN. This will initialize the
- *    connection to the Process Manager if it has not already been set
- *    up and 'check in' the application with the system.
- *    
- *    This function is named MacGetCurrentProcess() on non Macintosh
- *    platforms and GetCurrentProcess on the Macintosh. However, even
- *    Macintosh code can use the MacGetCurrentProcess() name since
- *    there is a macro which maps back to GetCurrentProcess().
- *    
- *    Lastly, it is usually not necessary to call GetCurrentProcess()
- *    to get the 'current' process psn merely to pass it to another
- *    Process Manager routine. Instead, just construct a
- *    ProcessSerialNumber with 0 in highLongOfPSN and kCurrentProcess
- *    in lowLongOfPSN and pass that. For example, to make the current
- *    process the frontmost process, use ( C code follows )
- *    
- *    ProcessSerialNumber psn = { 0, kCurrentProcess }; 
- *    
- *    OSErr err = SetFrontProcess( & psn );
- *    
- *    If you need to pass a ProcessSerialNumber to another application
- *    or use it in an AppleEvent, you do need to get the canonical PSN
- *    with this routine.
- *  
- *  Mac OS X threading:
- *    Thread safe since version 10.3
- *  
- *  Parameters:
- *    
- *    PSN:
- *      Pass in where the current application process serial number
- *      should be returned.
- *  
- *  Result:
- *    An operating system status code.
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ *    All applications ( things which can appear in the Dock or which are not documents and are launched by the Finder or Dock ) on Mac OS 10 have a unique process serial number.
+ *    This number is created when the application launches, and remains until the application quits. Other system services, like AppleEvents, use the ProcessSerialNumber to specify an
+ *    application.
+ *
+ *    During launch, every application 'checks in' with the Process Manager. Before this checkin, the application can not receive events or draw to the screen. Prior to Mac OS 10.2, this
+ *    'check in' happened before the applications's main() function was entered. In Mac OS 10.2 and later, this 'check in' does not happen until the first time the application calls a Process
+ *    Manager function, or until it enters CFRunLoopRun() for the main runloop. This allows tools and other executables which do not need to receive events to link against more of the higher
+ *    level toolbox frameworks, but may cause a problem if the application expects to be able to retrieve events or use CoreGraphics services before this checkin has occurred.-
+ *
+ *    An application can force the connection to the Process Manager to be set up by calling any Process Manager routine, but the recommended way to do this is to call
+ *    GetCurrentProcess() to ask for the current application's PSN. This will initialize the connection to the Process Manager if it has not already been set up and 'check in' the application
+ *    with the system.
+ *
+ *    This function is named MacGetCurrentProcess() on non Macintosh platforms and GetCurrentProcess on the Macintosh. However, even Macintosh code can use the
+ *    GetCurrentProcess() name since there is a macro which maps back to GetCurrentProcess().
+ *
+ *    Lastly, it is usually not necessary to call GetCurrentProcess() to get the 'current' process psn merely to pass it to another Process Manager routine. Instead, just construct a
+ *    ProcessSerialNumber with 0 in highLongOfPSN and kCurrentProcess in lowLongOfPSN and pass that. For example, to make the current process the frontmost process, use
+ *
+ *      ```
+ *      ProcessSerialNumber psn = { 0, kCurrentProcess };
+ *      OSErr err = SetFrontProcess( & psn );
+ *      ```
+ *    If you need to pass a ProcessSerialNumber to another application or use it in an AppleEvent, you do need to get the canonical PSN with this routine.
+ *
+ *  @param  pPSN    where the current processes process serial number is returned
+ *  @result An operating system status code.
  */
+extern OSErr
+GetCurrentProcess(ProcessSerialNumber * pPSN)               AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
 #if TARGET_OS_MAC
     #define MacGetCurrentProcess GetCurrentProcess
 #endif
-extern OSErr 
-MacGetCurrentProcess(ProcessSerialNumber * PSN)               AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
 
 
-/*
- *  GetFrontProcess()
- *  
- *  DEPRECATED
- *    Use +[NSWorkspace runningApplications] and look for the entry with
- *    isActive == YES.
- *
- *  Mac OS X threading:
- *    Thread safe since version 10.3
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+/*! @abstract  Return the ProcessSerialNumber of the front application
+ *  @discussion  DEPRECATED:   Use +[NSWorkspace runningApplications] and look for the entry withisActive == YES.
+ *  @param  pPSN    where the front application process serial number is returned
+ *  @result An operating system status code
  */
 extern OSErr 
-GetFrontProcess(ProcessSerialNumber * PSN)                    AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
+GetFrontProcess(ProcessSerialNumber * pPSN)                    AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
 
 
-/*
- *  GetNextProcess()
- *  
- *  DEPRECATED:
- *    Use +[NSWorkspace runningApplications:] which returns the full array of all running applications.
- *
- *  Mac OS X threading:
- *    Thread safe since version 10.3
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+/*! @abstract   Return the process serial number following the given process
+ *  @discussion  DEPRECATED:
+ *      Use +[NSWorkspace runningApplications:] which returns the full array of all running applications.
+ *      If this function is called with the process serial number where { .highLongOfPSN = 0, .lowLongOfPSN = 0 }, this return the process serial number of the first application.
+ *      If called with a valid process serial number, it returns the next higher application, or procNotFound when the last process serial number has been returned.
+ *  @param pPSN On input, a process serial number; on exit, the next process serial number or { 0, 0 }
+ *  @result An operating system status code.  procNotFound signal the previous item was the last application in the array of running applications.
  */
 extern OSErr 
-GetNextProcess(ProcessSerialNumber * PSN)                     AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
-
+GetNextProcess(ProcessSerialNumber * pPSN)                     AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
 
 /*
  *  GetProcessInformation()
@@ -503,11 +425,6 @@ GetNextProcess(ProcessSerialNumber * PSN)                     AVAILABLE_MAC_OS_X
  *    
  *    info:
  *      Pass in a structure where the information will be returned.
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  */
 extern OSErr 
 GetProcessInformation(
@@ -569,11 +486,6 @@ GetProcessInformation(
  *    kCFBundleExecutableKey *    CFString 
  *    kCFBundleNameKey *          CFString 
  *    kCFBundleIdentifierKey *    CFString
- *  
- *  Availability:
- *    Mac OS X:         in version 10.2 and later in ApplicationServices.framework
- *    CarbonLib:        not available in CarbonLib 1.x
- *    Non-Carbon CFM:   not available
  */
 extern CFDictionaryRef 
 ProcessInformationCopyDictionary(
@@ -581,26 +493,15 @@ ProcessInformationCopyDictionary(
   UInt32                       infoToReturn)                  AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
 
 
-/*
- *  SetFrontProcess()
- *  
- *  Deprecated:
- *    To make your own application frontmost, use 
- *      [[NSApplication sharedApplication] activateIgnoringOtherApps: YES].
+/*! Make the application with the given PSN into the front application, if possible.
+ *  @discussion:
+ *    To make your own application frontmost, use [[NSApplication activate].
  *    To make another application frontmost, use the activateWithOptions
- *      method of the appropriate NSRunningApplication object for that
- *      application.
- *
- *  Mac OS X threading:
- *    Thread safe since version 10.3
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ *    method of the appropriate NSRunningApplication object for that application.
+ *  @param  pPSN    the ProcessSerialNumber of the application to be made frontmost
  */
 extern OSErr 
-SetFrontProcess(const ProcessSerialNumber * PSN)              AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
+SetFrontProcess(const ProcessSerialNumber * pPSN)              AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
 
 
 
@@ -648,11 +549,6 @@ enum {
  *  
  *  Result:
  *    An operating system status code.
- *  
- *  Availability:
- *    Mac OS X:         in version 10.2 and later in ApplicationServices.framework
- *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.2 and later
- *    Non-Carbon CFM:   not available
  */
 extern OSStatus 
 SetFrontProcessWithOptions(
@@ -665,14 +561,6 @@ SetFrontProcessWithOptions(
  *  
  *  Deprecated:
  *    This is not needed on Mac OS X.
- *
- *  Mac OS X threading:
- *    Thread safe since version 10.3
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  */
 extern OSErr 
 WakeUpProcess(const ProcessSerialNumber * PSN)                AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
@@ -683,14 +571,6 @@ WakeUpProcess(const ProcessSerialNumber * PSN)                AVAILABLE_MAC_OS_X
  *  
  *  Deprecated:
  *    Since ProcessSerialNumber structures are no longer needed, this is no need for a replacement.
- *
- *  Mac OS X threading:
- *    Thread safe since version 10.3
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  */
 extern OSErr 
 SameProcess(
@@ -715,11 +595,6 @@ SameProcess(
  *    processes and performs any other necessary cleanup operations. If
  *    necessary, the Application Died Apple event is sent to the
  *    process that launched your application.
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.0 and later
- *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  */
 #if __GNUC__ > 2 || __GNUC__ == 2 && __GNUC_MINOR__ >= 5
 void ExitToShell( void ) __attribute__ (( __noreturn__ ))   AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
@@ -752,32 +627,9 @@ void ExitToShell( void )                                    AVAILABLE_MAC_OS_X_V
  *  
  *  Result:
  *    An operating system status code.
- *  
- *  Availability:
- *    Mac OS X:         in version 10.2 and later in ApplicationServices.framework
- *    CarbonLib:        not available in CarbonLib 1.x
- *    Non-Carbon CFM:   not available
  */
 extern OSErr 
 KillProcess(const ProcessSerialNumber * inProcess)            AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
-
-
-/*
-   LaunchControlPanel is similar to LaunchDeskAccessory, but for Control Panel files instead.
-   It launches a control panel in an application shell maintained by the Process Manager.
-*/
-#if !__LP64__
-/*
- *  LaunchControlPanel()
- *  
- *  Availability:
- *    Mac OS X:         not available [32-bit only]
- *    CarbonLib:        not available
- *    Non-Carbon CFM:   in InterfaceLib 9.0 and later
- */
-
-
-#endif  /* !__LP64__ */
 
 /*
  *  GetProcessBundleLocation()
@@ -805,11 +657,6 @@ KillProcess(const ProcessSerialNumber * inProcess)            AVAILABLE_MAC_OS_X
  *    
  *    location:
  *      Location of the bundle or executable, as an FSRef
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.5 and later
- *    Non-Carbon CFM:   not available
  */
 extern OSStatus 
 GetProcessBundleLocation(
@@ -846,11 +693,6 @@ GetProcessBundleLocation(
  *    name:
  *      CFString representing the name of the process (must be released
  *      by caller with CFRelease)
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.5 and later
- *    Non-Carbon CFM:   not available
  */
 extern OSStatus 
 CopyProcessName(
@@ -883,11 +725,6 @@ CopyProcessName(
  *    
  *    pid:
  *      UNIX process ID of the process
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
- *    Non-Carbon CFM:   not available
  */
 extern OSStatus 
 GetProcessPID(
@@ -920,11 +757,6 @@ GetProcessPID(
  *    
  *    pid:
  *      UNIX process ID of the target process
- *  
- *  Availability:
- *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
- *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
- *    Non-Carbon CFM:   not available
  */
 extern OSStatus 
 GetProcessForPID(
@@ -955,11 +787,6 @@ GetProcessForPID(
  *    
  *    psn:
  *      Serial number of the process
- *  
- *  Availability:
- *    Mac OS X:         in version 10.1 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.5 and later
- *    Non-Carbon CFM:   not available
  */
 extern Boolean 
 IsProcessVisible(const ProcessSerialNumber * psn)             AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_9;
@@ -990,11 +817,6 @@ IsProcessVisible(const ProcessSerialNumber * psn)             AVAILABLE_MAC_OS_X
  *    
  *    visible:
  *      true = show process; false = hide process
- *  
- *  Availability:
- *    Mac OS X:         in version 10.1 and later in ApplicationServices.framework
- *    CarbonLib:        in CarbonLib 1.5 and later
- *    Non-Carbon CFM:   not available
  */
 extern OSErr 
 ShowHideProcess(
@@ -1040,11 +862,6 @@ ShowHideProcess(
  *    
  *    transformState:
  *      state to tranform the application to.
- *  
- *  Availability:
- *    Mac OS X:         in version 10.3 and later in ApplicationServices.framework
- *    CarbonLib:        not available in CarbonLib 1.x
- *    Non-Carbon CFM:   not available
  */
 extern OSStatus 
 TransformProcessType(
@@ -1080,10 +897,6 @@ enum {
   cdevResErr                    = 1,    /*Couldn't get a needed resource; alert*/
   cdevUnset                     = 3     /* cdevValue is initialized to this*/
 };
-
-/* Control Panel Default Proc */
-
-
 
 #pragma pack(pop)
 

@@ -5,6 +5,7 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSError.h>
 
+
 /* NSError codes in NSCocoaErrorDomain. Note that other frameworks (such as AppKit and CoreData) also provide additional NSCocoaErrorDomain error codes.
 */
 NS_ERROR_ENUM(NSCocoaErrorDomain) {

@@ -14,9 +14,6 @@
 /* Define if compiling with the utilities/iquery module files.  */
 #define USING_UTILITIES_IQUERY_MODULE 1
  
-/* Define if compiling with the mibII/vacm_conf module files.  */
-#define USING_MIBII_VACM_CONF_MODULE 1
- 
 /* Define if compiling with the agentx/protocol module files.  */
 #define USING_AGENTX_PROTOCOL_MODULE 1
  

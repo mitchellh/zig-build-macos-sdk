@@ -1,7 +1,7 @@
 /*
 	NSKeyValueBinding.h
 	Application Kit
-	Copyright (c) 2002-2021, Apple Inc.
+	Copyright (c) 2002-2023, Apple Inc.
 	All rights reserved.
  */
 
@@ -11,7 +11,7 @@
 #import <Foundation/NSDictionary.h>
 #import <CoreData/NSManagedObjectContext.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 APPKIT_API_UNAVAILABLE_BEGIN_MACCATALYST
 
 @class NSString, NSError, NSAttributeDescription;
@@ -240,5 +240,5 @@ APPKIT_EXTERN NSBindingOption NSValueTransformerBindingOption;
 @end
 
 API_UNAVAILABLE_END
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
 

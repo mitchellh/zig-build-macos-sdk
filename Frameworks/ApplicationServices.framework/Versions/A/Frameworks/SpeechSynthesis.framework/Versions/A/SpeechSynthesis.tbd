@@ -67,7 +67,7 @@ exports:
                        _kSpeechPitchCoeffProperty, _kSpeechPitchModProperty, _kSpeechPreflightThenPause, 
                        _kSpeechPreloadVoiceMetadataProperty, _kSpeechRateProperty, 
                        _kSpeechRecentSyncProperty, _kSpeechRefConProperty, _kSpeechResetProperty, 
-                       _kSpeechSpeechDoneCallBack, _kSpeechStatusNumberOfCharactersLeft, 
+                       _kSpeechSourceProperty, _kSpeechSpeechDoneCallBack, _kSpeechStatusNumberOfCharactersLeft, 
                        _kSpeechStatusOutputBusy, _kSpeechStatusOutputPaused, _kSpeechStatusPhonemeCode, 
                        _kSpeechStatusProperty, _kSpeechSyncCallBack, _kSpeechSynthExtensionProperty, 
                        _kSpeechSynthesizerInfoIdentifier, _kSpeechSynthesizerInfoManufacturer, 

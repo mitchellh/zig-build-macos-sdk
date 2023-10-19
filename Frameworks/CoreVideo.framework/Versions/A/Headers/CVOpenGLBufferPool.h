@@ -24,7 +24,7 @@
 extern "C" {
 #endif
 
-typedef struct CV_BRIDGED_TYPE(id) __CVOpenGLBufferPool *CVOpenGLBufferPoolRef;
+typedef struct CV_BRIDGED_TYPE(id) __CVOpenGLBufferPool *CVOpenGLBufferPoolRef CV_SWIFT_NONSENDABLE;
 
 CV_EXPORT const CFStringRef CV_NONNULL kCVOpenGLBufferPoolMinimumBufferCountKey COREVIDEO_GL_DEPRECATED(macosx, 10.4, 10.14) API_UNAVAILABLE(macCatalyst);
 

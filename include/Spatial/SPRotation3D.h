@@ -76,19 +76,18 @@ SPRotation3D SPRotation3DMakeWithQuaternion(simd_quatd quaternion) {
 SPATIAL_REFINED_FOR_SWIFT
 SPATIAL_OVERLOADABLE
 SPRotation3D SPRotation3DMake(SPRotationAxis3D axis, SPAngle angle) {
-
-    simd_quatd q = simd_quaternion(angle.radians, axis.vector);
-    
-    return (SPRotation3D){
-        .quaternion = q
-    };
+    return SPRotation3DMake(angle, axis);
 }
 
 SPATIAL_SWIFT_NAME(Rotation3D.init(angle:axis:))
 SPATIAL_OVERLOADABLE
 SPRotation3D SPRotation3DMake(SPAngle angle, SPRotationAxis3D axis) {
-
-    simd_quatd q = simd_quaternion(angle.radians, axis.vector);
+    
+    if (SPRotationAxis3DIsZero(axis)) {
+        return (SPRotation3D){ .vector = {0, 0, 0, 1 }};
+    }
+    
+    simd_quatd q = simd_quaternion(angle.radians, simd_normalize(axis.vector));
     
     return (SPRotation3D){
         .quaternion = q
@@ -204,18 +203,62 @@ typedef enum: uint32_t {
      
      Roll (the @p z component) is the rotation about the node's z-axis.
      
-     Spatial applies these rotations in the reverse order of the components: first roll, then yaw, then pitch.
+     Spatial applies these rotations extrinsically in the specified order: rotation around the world space x-axis,
+     then rotation around the world space y-axis, then rotation around the world space z-axis.
      */
-    SPEulerPitchYawRoll SPATIAL_REFINED_FOR_SWIFT __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0)) = 0x0001,
+    SPEulerPitchYawRoll SPATIAL_REFINED_FOR_SWIFT __API_DEPRECATED("This constant is deprecated, use `SPEulerXYZ`.",
+                                                                   macos(13.0, 14.0),
+                                                                   ios(16.0, 17.0),
+                                                                   watchos(9.0, 10.0),
+                                                                   tvos(16.0, 17.0)) = 0x0001,
+    
+    /*!
+    @discussion
+    The order of components in the vector matches the axes of rotation:
+    
+    Pitch (the @p x component) is the rotation about the node's x-axis.
+    
+    Yaw (the @p y component) is the rotation about the node's y-axis.
+    
+    Roll (the @p z component) is the rotation about the node's z-axis.
+    
+    Spatial applies these rotations extrinsically in the specified order: rotation around the world space x-axis,
+    then rotation around the world space y-axis, then rotation around the world space z-axis.
+    */
+   SPEulerXYZ SPATIAL_REFINED_FOR_SWIFT __API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0)) = 0x0001,
+    
+    /*!
+     @abstract Roll-Pitch-Yaw
+     
+     @discussion
+     The order of components in the vector matches the axes of rotation:
+     
+     Roll (the @p z component) is the rotation about the node's z-axis.
+     
+     Pitch (the @p x component) is the rotation about the node's x-axis.
+     
+     Yaw (the @p y component) is the rotation about the node's y-axis.
+     
+     Spatial applies these rotations extrinsically in the specified order: rotation around the world space z-axis,
+     then rotation around the world space x-axis, then rotation around the world space y-axis.
+     */
+    SPEulerZXY SPATIAL_REFINED_FOR_SWIFT __API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0)) = 0x0002,
 } SPEulerAngleOrder
 SPATIAL_REFINED_FOR_SWIFT
 __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
 
 /*!
- @abstract A structure that represents Euler angles and ordering.
+ @abstract A structure that represents Euler angles, in radians, and ordering.
 */
 typedef struct {
+    /*!
+     A three-element vector that contains the angles, in radians.
+     */
     simd_double3 angles;
+    
+    /*!
+     A constant that specify the Euler angle order.
+     */
     SPEulerAngleOrder order;
 } SPEulerAngles
 SPATIAL_SWIFT_NAME(EulerAngles)
@@ -224,7 +267,7 @@ __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
 /*!
  @abstract Returns a rotation structure from the specified Euler angles.
  
- @param eulerAngles The source Euler angles.
+ @param eulerAngles The source Euler angles, in radians.
  @returns A rotation structure.
 */
 SPATIAL_INLINE
@@ -233,7 +276,7 @@ SPRotation3D SPRotation3DMakeWithEulerAngles(SPEulerAngles eulerAngles)
 __API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
 
 /*!
- @abstract Returns the Euler angles from the specified rotation structure.
+ @abstract Returns the Euler angles, in radians, from the specified rotation structure.
  
  @param rotation The source rotation structure.
  @param order The Euler angle ordering.
@@ -250,75 +293,122 @@ SPATIAL_OVERLOADABLE
 SPRotation3D SPRotation3DMakeWithEulerAngles(SPEulerAngles eulerAngles) {
     
     SPEulerAngleOrder order = eulerAngles.order;
-    
-    if (order != SPEulerPitchYawRoll) {
-        return SPRotation3DInvalid;
-    }
 
     simd_double3 halves = (simd_double3){0.5, 0.5, 0.5} * eulerAngles.angles;
     simd_double3 cosines = _sp_simd_cos(halves).xyz;
     simd_double3 sines = _sp_simd_sin(halves).xyz;
     
-    double cr = cosines.x;
-    double cp = cosines.y;
-    double cy = cosines.z;
+    double cr;
+    double cp;
+    double cy;
+    double sr;
+    double sp;
+    double sy;
+    double cpcy;
+    double spsy;
     
-    double sr = sines.x;
-    double sp = sines.y;
-    double sy = sines.z;
+    simd_double4 v;
     
-    double cpcy = cp * cy;
-    double spsy = sp * sy;
-    
-    simd_double4 v = (simd_double4){
-        sr * cpcy - cr * spsy,
-        cr * sp * cy + sr * cp * sy,
-        cr * cp * sy - sr * sp * cy,
-        cr * cpcy + sr * spsy
-    };
-    
+    switch(order) {
+        case 1:
+            // SPEulerPitchYawRoll, SPEulerXYZ
+            cr = cosines.x;
+            cp = cosines.y;
+            cy = cosines.z;
+            
+            sr = sines.x;
+            sp = sines.y;
+            sy = sines.z;
+            
+            cpcy = cp * cy;
+            spsy = sp * sy;
+            
+            v = (simd_double4){
+                sr * cpcy - cr * spsy,
+                cr * sp * cy + sr * cp * sy,
+                cr * cp * sy - sr * sp * cy,
+                cr * cpcy + sr * spsy
+            };
+            
+            break;
+        case SPEulerZXY:
+            cr = cosines.z;
+            cp = cosines.x;
+            cy = cosines.y;
+            
+            sr = sines.z;
+            sp = sines.x;
+            sy = sines.y;
+            
+            cpcy = cp * cy;
+            spsy = sp * sy;
+            
+            v = (simd_double4){
+                cr * sp * cy + sr * cp * sy,
+                cr * cp * sy - sr * sp * cy,
+                sr * cpcy - cr * spsy, 
+                cr * cpcy + sr * spsy
+            };
+            
+            break;
+        default:
+            return SPRotation3DInvalid;
+            break;
+    }
+ 
     return SPRotation3DMakeWithQuaternion(simd_quaternion(v));
 }
 
 SPATIAL_SWIFT_NAME(Rotation3D.eulerAngles(self:order:))
 SPATIAL_OVERLOADABLE
 SPEulerAngles SPRotation3DGetEulerAngles(SPRotation3D rotation, SPEulerAngleOrder order) {
-    
-    if (order != SPEulerPitchYawRoll) {
-        return (SPEulerAngles){ { NAN, NAN, NAN }, order};
-    }
-    
-    simd_double4 qv = SPRotation3DGetQuaternion(rotation).vector;
-    simd_double4 sqv = qv * qv;
-    
-    double unit = simd_reduce_add(sqv);
-    simd_double3 e = (simd_double3){ 0, 0, 0};
-    
-    if (fabs(unit) < SPDefaultTolerance) {
-        return (SPEulerAngles){ e, order };
-    }
-    
-    double test = (qv.x * qv.z - qv.y * qv.w) / unit;
-    double limit = 5 - SPDefaultTolerance;
 
-    if (test > limit) { // singularity at north pole
-        e.x = 2 * atan2(qv.x, qv.w);
-        e.y = M_PI * 0.5;
-        e.z = 0;
-        return  (SPEulerAngles){ e, order };
+    simd_double4 qv = rotation.quaternion.vector;
+    double ix;
+    double iy;
+    double iz;
+    
+    switch(order) {
+        case 1:
+            // SPEulerPitchYawRoll, SPEulerXYZ
+            ix = qv.x;
+            iy = qv.y;
+            iz = qv.z;
+            break;
+        case SPEulerZXY:
+            ix = qv.z;
+            iy = qv.x;
+            iz = qv.y;
+            break;
     }
-    if (test < -limit) { // singularity at south pole
-        e.x = -2 * atan2(qv.x, qv.w);
-        e.y = -M_PI * 0.5;
-        e.z = 0;
-        return (SPEulerAngles){ e, order };
+    double r  = qv.w;
+    double iy2 = iy * iy;
+
+    double t0 = 2. * (r * ix + iy * iz);
+    double t1 = 1. - 2. * (ix * ix + iy2);
+    double roll = _sp_simd_atan2(t0, t1);
+
+    double t2 = 2. * (r * iy - iz * ix);
+    t2 = t2 > 1. ? 1. : t2;
+    t2 = t2 < -1. ? -1. : t2;
+    double pitch = _sp_simd_asin(t2);
+
+    float t3 = 2. * (r * iz + ix * iy);
+    float t4 = 1. - 2. * (iy2 + iz * iz);
+    double yaw = _sp_simd_atan2(t3, t4);
+    
+    switch(order) {
+        case 1:
+            // SPEulerPitchYawRoll, SPEulerXYZ
+            return (SPEulerAngles){(simd_double3){ roll, pitch, yaw }, order };
+            break;
+        case SPEulerZXY:
+            return (SPEulerAngles){(simd_double3){ pitch, yaw, roll}, order };
+            break;
+        default:
+            return (SPEulerAngles){ { NAN, NAN, NAN }, order};
+            break;
     }
-
-    e.z = atan2(2 * (qv.x * qv.y + qv.z * qv.w), ( sqv.x - sqv.y - sqv.z + sqv.w));
-    e.x = atan2(2 * (qv.y * qv.z + qv.x * qv.w), (-sqv.x - sqv.y + sqv.z + sqv.w));
-    e.y = asin(-2 * test);
-    return (SPEulerAngles){ e, order };
-
 }
 
 // MARK: - Angle and axis components of the angle and axis form.
@@ -383,6 +473,10 @@ SPRotationAxis3D SPRotation3DGetAxis(SPRotation3D rotation) {
     
     simd_double3 axis = simd_axis(rotation.quaternion);
     
+    if(!simd_all(_sp_simd_isfinite(axis))) {
+        axis = simd_make_double3(0, 0, 0);
+    }
+    
     return SPRotationAxis3DMakeWithVector(axis);
 }
 
@@ -405,7 +499,7 @@ void SPRotation3DSetAxis(SPRotation3D *rotation, SPRotationAxis3D axis) {
     
     double angle = simd_angle(rotation->quaternion);
     
-    simd_quatd quaternion = simd_quaternion(angle, axis.vector);
+    simd_quatd quaternion = simd_quaternion(angle, simd_normalize(axis.vector));
     
     rotation->quaternion = quaternion;
 }
@@ -419,7 +513,11 @@ void SPRotation3DSetAxis(SPRotation3D *rotation, SPRotationAxis3D axis) {
 SPATIAL_INLINE
 SPATIAL_OVERLOADABLE
 bool SPRotation3DIsZero(SPRotation3D rotation)
-__API_AVAILABLE(macos(13.0), ios(16.0), watchos(9.0), tvos(16.0));
+__API_DEPRECATED("This function is deprecated.",
+                 macos(13.0, 14.0),
+                 ios(16.0, 17.0),
+                 watchos(9.0, 10.0),
+                 tvos(16.0, 17.0));
 
 SPATIAL_SWIFT_NAME(getter:Rotation3D.isZero(self:))
 SPATIAL_OVERLOADABLE
@@ -430,5 +528,135 @@ bool SPRotation3DIsZero(SPRotation3D rotation) {
     return angle.radians == 0;
 }
 
-#endif /* Spatial_SPRotation3D_h */
+/*!
+ @abstract Returns a Boolean value that indicates whether the rotation's angle is zero.
+ 
+ @param rotation The source rotation.
+ @returns A Boolean value that indicates whether the rotation is zero.
+*/
+SPATIAL_INLINE
+SPATIAL_OVERLOADABLE
+bool SPRotation3DIsIdentity(SPRotation3D rotation)
+__API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
 
+SPATIAL_SWIFT_NAME(getter:Rotation3D.isIdentity(self:))
+SPATIAL_OVERLOADABLE
+bool SPRotation3DIsIdentity(SPRotation3D rotation) {
+
+    return simd_equal(rotation.vector, SPRotation3DIdentity.vector);
+}
+
+/*!
+ @abstract Returns the spherical linear interpolation along the shortest arc between two rotations.
+ 
+ @param from The starting rotation.
+ @param to The ending rotation.
+ 
+ @returns A new rotation. When @p t=0, the result is the @p from rotation. When @p t=1.0, the result
+ is the @p to rotation. For any other value of @p t, the result is a spherical linear interpolation between the
+ two rotations.
+*/
+SPATIAL_INLINE
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DSlerp(SPRotation3D from, SPRotation3D to, double t)
+__API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+SPATIAL_REFINED_FOR_SWIFT
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DSlerp(SPRotation3D from, SPRotation3D to, double t) {
+
+    simd_quatd q = simd_slerp(from.quaternion, to.quaternion, t);
+    
+    return SPRotation3DMakeWithQuaternion(q);
+}
+
+/*!
+ @abstract Returns the spherical linear interpolation along the longest arc between two rotations.
+ 
+ @param from The starting rotation.
+ @param to The ending rotation.
+ 
+ @returns A new rotation. When @p t=0, the result is the @p from rotation. When @p t=1.0, the result
+ is the @p to rotation. For any other value of @p t, the result is a spherical linear interpolation between the
+ two rotations.
+*/
+SPATIAL_INLINE
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DSlerpLongest(SPRotation3D from, SPRotation3D to, double t)
+__API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+SPATIAL_REFINED_FOR_SWIFT
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DSlerpLongest(SPRotation3D from, SPRotation3D to, double t) {
+
+    simd_quatd q = simd_slerp_longest(from.quaternion, to.quaternion, t);
+    
+    return SPRotation3DMakeWithQuaternion(q);
+}
+
+/*!
+ @abstract Returns the inverse of a rotation.
+ @param rotation The source rotation.
+ @returns The inverse of a rotation.
+*/
+SPATIAL_INLINE
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DInverse(SPRotation3D rotation)
+__API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+SPATIAL_SWIFT_NAME(getter:Rotation3D.inverse(self:))
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DInverse(SPRotation3D rotation) {
+
+    simd_quatd q = simd_inverse(rotation.quaternion);
+    
+    return SPRotation3DMakeWithQuaternion(q);
+}
+
+/*!
+ @abstract Returns the twist component of the rotation's swing-twist decomposition for a given twist axis.
+ @param rotation The source rotation.
+ @param twistAxis The twist axis.
+ @returns The twist component of the rotation's swing-twist decomposition for a given twist axis.
+*/
+SPATIAL_INLINE
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DTwist(SPRotation3D rotation, SPRotationAxis3D twistAxis)
+__API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+SPATIAL_SWIFT_NAME(Rotation3D.twist(self:twistAxis:))
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DTwist(SPRotation3D rotation, SPRotationAxis3D twistAxis) {
+
+    simd_double3 projection = simd_project(simd_imag(rotation.quaternion),
+                                           twistAxis.vector);
+    simd_quatd twist = simd_quaternion(projection.x,
+                                       projection.y,
+                                       projection.z,
+                                       simd_real(rotation.quaternion));
+    
+    return SPRotation3DMakeWithQuaternion(simd_normalize(twist));
+}
+
+/*!
+ @abstract Returns the swing component of the rotation's swing-twist decomposition for a given twist axis.
+ @param rotation The source rotation.
+ @param twistAxis The twist axis.
+ @returns The swing component of the rotation's swing-twist decomposition for a given twist axis.
+*/
+SPATIAL_INLINE
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DSwing(SPRotation3D rotation, SPRotationAxis3D twistAxis)
+__API_AVAILABLE(macos(14.0), ios(17.0), watchos(10.0), tvos(17.0));
+
+SPATIAL_SWIFT_NAME(Rotation3D.swing(self:twistAxis:))
+SPATIAL_OVERLOADABLE
+SPRotation3D SPRotation3DSwing(SPRotation3D rotation, SPRotationAxis3D twistAxis) {
+    
+    simd_quatd inverseTwist = simd_inverse(SPRotation3DTwist(rotation, twistAxis).quaternion);
+    simd_quatd swing = simd_mul(rotation.quaternion, inverseTwist);
+    
+    return SPRotation3DMakeWithQuaternion(simd_normalize(swing));
+}
+
+#endif /* Spatial_SPRotation3D_h */
