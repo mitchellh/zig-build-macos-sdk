@@ -35,6 +35,7 @@ cp -R $frameworks/CFNetwork.framework ./Frameworks/CFNetwork.framework
 cp -R $frameworks/ApplicationServices.framework ./Frameworks/ApplicationServices.framework
 cp -R $frameworks/ImageIO.framework ./Frameworks/ImageIO.framework
 cp -R $frameworks/GameController.framework ./Frameworks/GameController.framework
+cp -R $frameworks/Symbols.framework ./Frameworks/Symbols.framework
 
 # Audio frameworks
 cp -R $frameworks/AudioToolbox.framework ./Frameworks/AudioToolbox.framework
