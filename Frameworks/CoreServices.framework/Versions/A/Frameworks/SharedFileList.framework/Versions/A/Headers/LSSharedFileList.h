@@ -22,9 +22,12 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #ifndef __CARBONCORE__
 #include <CarbonCore/CarbonCore.h>
 #endif
+#pragma GCC diagnostic pop
 
 #ifndef __ICONSCORE__
 #include <LaunchServices/IconsCore.h>

@@ -65,9 +65,13 @@
 #define API_TO_BE_DEPRECATED_DRIVERKIT 100000
 #endif
 
-#ifndef API_TO_BE_DEPRECATED_XROS
-#define API_TO_BE_DEPRECATED_XROS 100000
+#ifndef API_TO_BE_DEPRECATEDC_VISIONOS
+#define API_TO_BE_DEPRECATED_VISIONOS 100000
 #endif
+
+#ifndef __OPEN_SOURCE__
+
+#endif /* __OPEN_SOURCE__ */
 
 #include <AvailabilityInternal.h>
 

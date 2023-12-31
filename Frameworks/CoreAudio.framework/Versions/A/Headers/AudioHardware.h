@@ -583,6 +583,25 @@ typedef CF_ENUM(UInt32, AudioHardwarePowerHint)
                         property can be set in an application's info.plist using the key,
                         "AudioHardwarePowerHint". The values for this key are the strings that
                         correspond to the values in the Power Hints enum.
+    @constant       kAudioHardwarePropertyProcessObjectList
+                        An array of AudioObjectIDs that represent the Process objects for all client processes
+                        currently connected to the system.
+    @constant       kAudioHardwarePropertyTranslatePIDToProcessObject
+                        This property fetches the AudioObjectID that corresponds to the Process object
+                        that has the given PID. The PID is passed in via the qualifier as a pid_t
+                        while the AudioObjectID for the Process is returned to the caller as the
+                        property's data. Note that an error is not returned if the PID doesn't refer
+                        to any Process. Rather, this property will return kAudioObjectUnknown
+                        as the value of the property.
+    @constant       kAudioHardwarePropertyTapList
+                        An array of AudioObjectIDs that represent the Tap objects on the system.
+    @constant       kAudioHardwarePropertyTranslateUIDToTap
+                        This property fetches the AudioObjectID that corresponds to the AudioTap
+                        that has the given UID. The UID is passed in via the qualifier as a CFString
+                        while the AudioObjectID for the AudioTap is returned to the caller as the 
+                        property's data. Note that an error is not returned if the UID doesn't refer 
+                        to any AudioTap. Rather, this property will return kAudioObjectUnknown as the 
+                        value of the property.
 */
 CF_ENUM(AudioObjectPropertySelector)
 {
@@ -611,6 +630,10 @@ CF_ENUM(AudioObjectPropertySelector)
     kAudioHardwarePropertyUserSessionIsActiveOrHeadless         = 'user',
     kAudioHardwarePropertyServiceRestarted                      = 'srst',
     kAudioHardwarePropertyPowerHint                             = 'powh',
+    kAudioHardwarePropertyProcessObjectList                     = 'prs#',
+    kAudioHardwarePropertyTranslatePIDToProcessObject           = 'id2p',
+    kAudioHardwarePropertyTapList                               = 'tps#',
+    kAudioHardwarePropertyTranslateUIDToTap                     = 'uidt',
 };
 
 //==================================================================================================
@@ -1590,6 +1613,28 @@ CF_ENUM(AudioClassID)
  */
 #define kAudioAggregateDeviceIsStackedKey       "stacked"
 
+/*!
+    @defined        kAudioAggregateDeviceTapListKey
+    @discussion     The key used in a CFDictionary that describes the Tap composition of an
+                    AudioAggregateDevice.  The value for this key is a CFArray of CFDictionaries
+                    that describe each tap in the AudioAggregateDevice.  The keys for this
+                    CFDictionary are defined in the AudioTap section.
+*/
+#define kAudioAggregateDeviceTapListKey            "taps"
+
+/*!
+    @defined        kAudioAggregateDeviceTapAutoStartKey
+    @discussion     The key used in a CFDictionary that describes the composition of an 
+                    AudioAggregateDevice. The value for this key is a CFNumber where a non-zero  
+                    value indicates that this aggregate device’s start should wait for the first 
+                    tap that receives audio. When this key is used, calling AudioDeviceStart with
+                    the aggregate device will wait until a tapped process begins receiving its  
+                    first audio from any tapped applications. The composition must also include
+                    the private key so that the aggregate is private to the process that created
+                    it.
+*/
+#define kAudioAggregateDeviceTapAutoStartKey      "tapautostart"
+
 //==================================================================================================
 #pragma mark AudioAggregateDevice Properties
 
@@ -1623,6 +1668,12 @@ CF_ENUM(AudioClassID)
                         device will control the time base. Setting this property will enable
                         drift correction for all subdevices in the aggregate device. The caller is
                         responsible for releasing the returned CFObject.
+    @constant       kAudioAggregateDevicePropertyTapList
+                        A CFArray of CFStrings that contain the UUIDs of all the tap objects in the
+                        contained in the AudioAggregateDevice.
+    @constant       kAudioAggregateDevicePropertySubTapList
+                        An array of AudioObjectIDs for all the active sub-taps in the aggregate
+                        device.
 */
 CF_ENUM(AudioObjectPropertySelector)
 {
@@ -1631,6 +1682,8 @@ CF_ENUM(AudioObjectPropertySelector)
     kAudioAggregateDevicePropertyComposition            = 'acom',
     kAudioAggregateDevicePropertyMainSubDevice          = 'amst',
     kAudioAggregateDevicePropertyClockDevice            = 'apcd',
+    kAudioAggregateDevicePropertyTapList                = 'tap#',
+    kAudioAggregateDevicePropertySubTapList             = 'atap',
 };
 
 //==================================================================================================
@@ -1780,6 +1833,193 @@ CF_ENUM(AudioObjectPropertySelector)
     kAudioSubDevicePropertyDriftCompensationQuality = 'drfq'
 };
 
+//==================================================================================================
+#pragma mark -
+#pragma mark AudioSubTap Constants
+
+/*!
+    @enum           AudioSubTap Class Constants
+    @abstract       Various constants related to the AudioSubTap class.
+    @constant       kAudioSubTapClassID
+                        The AudioClassID that identifies the AudioSubTap class.
+*/
+CF_ENUM(AudioClassID)
+{
+    kAudioSubTapClassID     = 'stap'
+};
+
+/*!
+    @defined        kAudioSubTapUIDKey
+    @discussion     The key used in a CFDictionary that describes the state of an AudioSubTap.
+                    The value for this key is a CFString that contains the UID for the
+                    AudioSubTap.
+*/
+#define kAudioSubTapUIDKey   "uid"
+
+/*!
+    @defined        kAudioSubTapExtraInputLatencyKey
+    @discussion     The key used in a CFDictionary that describes the state of an AudioSubTap.
+                    The value for this key is a CFNumber that indicates the total number of frames
+                    of additional latency that will be added to the input side of the
+                    AudioSubTap.
+*/
+#define kAudioSubTapExtraInputLatencyKey         "latency-in"
+
+/*!
+    @defined        kAudioSubTapExtraOutputLatencyKey
+    @discussion     The key used in a CFDictionary that describes the state of an AudioSubTap.
+                    The value for this key is a CFNumber that indicates the total number of frames
+                    of additional latency that will be added to the output side of the
+                    AudioSubTap.
+*/
+#define kAudioSubTapExtraOutputLatencyKey        "latency-out"
+
+/*!
+    @defined        kAudioSubTapDriftCompensationKey
+    @discussion     The key used in a CFDictionary that describes the state of an AudioSubTap.
+                    The value for this key is a CFNumber where a non-zero value indicates that drift
+                    compensation is enabled for the AudioSubTap
+*/
+#define kAudioSubTapDriftCompensationKey         "drift"
+
+/*!
+    @defined        kAudioSubTapDriftCompensationQualityKey
+    @discussion     The key used in a CFDictionary that describes the state of an AudioSubTap.
+                    The value for this key is a CFNumber that indicates the quality of the drift
+                    compensation for the AudioSubTap
+*/
+#define kAudioSubTapDriftCompensationQualityKey  "drift quality"
+
+//==================================================================================================
+#pragma mark AudioSubTap Properties
+
+/*!
+    @enum           AudioSubTap Properties
+    @abstract       AudioObjectPropertySelector values provided by the AudioSubTap class.
+    @discussion     The AudioSubTap class is a subclass of AudioObject class and has the same
+                    scope and element structure. However, AudioSubTap objects do not implement an
+                    IO path of their own and as such do not implement any  AudioDevice properties
+                    associated with the IO path. They also don't have any streams.
+    @constant       kAudioSubTapPropertyExtraLatency
+                        A Float64 indicating the number of sample frames to add to or subtract from
+                        the latency compensation used for this AudioSubTap.
+    @constant       kAudioSubTapPropertyDriftCompensation
+                        A UInt32 where a value of 0 indicates that no drift compensation should be
+                        done for this AudioSubTap and a value of 1 means that it should.
+    @constant       kAudioSubTapPropertyDriftCompensationQuality
+                        A UInt32 that controls the trade-off between quality and CPU load in the
+                        drift compensation. The range of values is from 0 to 128, where the lower
+                        the number, the worse the quality but also the less CPU is used to do the
+                        compensation.
+*/
+CF_ENUM(AudioObjectPropertySelector)
+{
+    kAudioSubTapPropertyExtraLatency             = 'xltc',
+    kAudioSubTapPropertyDriftCompensation        = 'drft',
+    kAudioSubTapPropertyDriftCompensationQuality = 'drfq'
+};
+
+//==================================================================================================
+#pragma mark -
+#pragma mark Process Constants
+
+/*!
+    @enum           Process Class Constants
+    @abstract       Various constants related to the Process class.
+    @discussion     The Process class contains information about a client process connected to the HAL.
+    @constant       kAudioProcessClassID
+                       The AudioClassID that identifies the Process class.
+*/
+CF_ENUM(AudioClassID)
+{
+    kAudioProcessClassID = 'clnt'
+};
+
+//==================================================================================================
+#pragma mark Process Properties
+
+/*!
+    @enum           Process Properties
+    @abstract       Processes AudioObjectPropertySelector values provided by the Process class.
+    @constant       kAudioProcessPropertyPID
+                        A pid_t indicating the process ID associated with the process.
+    @constant       kAudioProcessPropertyBundleID
+                        A CFString that contains the bundle ID of the process. The caller is
+                        responsible for releasing the returned CFObject.
+    @constant       kAudioProcessPropertyDevices
+                        An array of AudioObjectIDs that represent the devices currently used by the
+                        process for output.
+    @constant       kAudioProcessPropertyIsRunning
+                        A UInt32 where a value of 0 indicates that there is not audio IO in progress
+                        in the process, and a value of 1 indicates that there is audio IO in progress
+                        in the process. Note that audio IO may in progress even if no input or output
+                        streams are active.
+    @constant       kAudioProcessPropertyIsRunningInput
+                        A UInt32 where a value of 0 indicates that the process is not running any
+                        IO or there is not any active input streams, and a value of 1 indicates that
+                        the process is running IO and there is at least one active input stream.
+    @constant       kAudioProcessPropertyIsRunningOutput
+                        A UInt32 where a value of 0 indicates that the process is not running any
+                        IO or there is not any active output streams, and a value of 1 indicates that
+                        the process is running IO and there is at least one active output stream.
+    @constant       kAudioProcessPropertyIsMuted
+                        A UInt32 where a value of 0 indicates that the process is playing audio
+                        through its selected audio devices and a value of 1 indicates that a process
+                        is currently muted by an audio tap.
+*/
+CF_ENUM(AudioObjectPropertySelector)
+{
+    kAudioProcessPropertyPID        	 = 'ppid',
+    kAudioProcessPropertyBundleID   	 = 'pbid',
+    kAudioProcessPropertyDevices    	 = 'pdv#',
+    kAudioProcessPropertyIsRunning  	 = 'pir?',
+	kAudioProcessPropertyIsRunningInput  = 'piri',
+	kAudioProcessPropertyIsRunningOutput = 'piro',
+};
+
+//==================================================================================================
+#pragma mark -
+#pragma mark Tap Constants
+
+/*!
+    @enum           Tap Class Constants
+    @abstract       Various constants related to the Tap class.
+    @discussion     The Tap class contains a list of input streams that originate from the output
+                    stream(s) of one or more processes.
+    @constant       kAudioTapClassID
+                        The AudioClassID that identifies the Tap class.
+*/
+CF_ENUM(AudioClassID)
+{
+    kAudioTapClassID = 'tcls'
+};
+
+//==================================================================================================
+#pragma mark Tap Object Properties
+
+/*!
+    @enum           Tap Object Properties
+    @abstract       AudioObjectPropertySelector values provided by the Tap Object class.
+    @discussion     The Tap class is a subclass of the AudioObject class. the class
+                    has just the global scope, kAudioObjectPropertyScopeGlobal, and only a master element.
+    @constant       kAudioTapPropertyUID
+                        A CFString that contains a persistent identifier for the Tap. A Taps UID
+                        persists until the tap is destroyed. The caller is responsible for releasing
+                        the returned CFObject.
+    @constant       kAudioTapPropertyDescription
+                        The CATapDescription used to initially create this tap. This property can be used
+                        to modify and set the description of an existing tap.
+    @constant       kAudioTapPropertyFormat
+                        An AudioStreamBasicDescription that describes the current data format for
+                        the tap. This is the format of that data that will be accessible in any aggregate
+                        device that contains the tap.
+*/
+CF_ENUM(AudioObjectPropertySelector)
+{
+    kAudioTapPropertyUID           = 'tuid',
+    kAudioTapPropertyDescription   = 'tdsc',
+    kAudioTapPropertyFormat        = 'tfmt',
+};
 
 //==================================================================================================
 

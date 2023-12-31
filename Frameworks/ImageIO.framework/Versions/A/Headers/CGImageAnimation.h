@@ -28,12 +28,12 @@ typedef CF_ENUM(OSStatus, CGImageAnimationStatus) {
  */
 IMAGEIO_EXTERN const CFStringRef kCGImageAnimationStartIndex  IMAGEIO_AVAILABLE_STARTING(10.15, 13.0);
 
-/* The value of this key overrides the `delay time' specified by the image
+/* The value of this key overrides the `delay time` specified by the image
  * Value is a CFNumber of kCFNumberDoubleType.
  */
 IMAGEIO_EXTERN const CFStringRef kCGImageAnimationDelayTime  IMAGEIO_AVAILABLE_STARTING(10.15, 13.0);
 
-/* The value of this key overrides the `loop count' specified by the image
+/* The value of this key overrides the `loop count` specified by the image
  * Value is a CFNumber; kCFNumberPositiveInfinity may be used.
  */
 IMAGEIO_EXTERN const CFStringRef kCGImageAnimationLoopCount  IMAGEIO_AVAILABLE_STARTING(10.15, 13.0);
@@ -41,18 +41,18 @@ IMAGEIO_EXTERN const CFStringRef kCGImageAnimationLoopCount  IMAGEIO_AVAILABLE_S
 
 typedef void (^CGImageSourceAnimationBlock)(size_t index, CGImageRef image, bool* stop);
 
-/** Animate the sequence of images contained in the file at `url'. Currently supported image
- * formats are GIF and APNG. The `options' dictionary may be used to request additional playback
+/** Animate the sequence of images contained in the file at `url`. Currently supported image
+ * formats are GIF and APNG. The `options` dictionary may be used to request additional playback
  * options; see the list of keys above for more information. The block is called on the main queue
- * at time intervals specified by the `delay time' of the image. The animation can be stopped by
+ * at time intervals specified by the `delay time` of the image. The animation can be stopped by
  * setting the boolean parameter of the block to true.
  */
 IMAGEIO_EXTERN OSStatus CGAnimateImageAtURLWithBlock(CFURLRef url, CFDictionaryRef _iio_Nullable options, CGImageSourceAnimationBlock block) IMAGEIO_AVAILABLE_STARTING(10.15, 13.0);
 
-/** Animate the sequence of images contained in `data'. Currently supported image
- * formats are GIF and APNG. The `options' dictionary may be used to request additional playback
+/** Animate the sequence of images contained in `data`. Currently supported image
+ * formats are GIF and APNG. The `options` dictionary may be used to request additional playback
  * options; see the list of keys above for more information. The block is called on the main queue
- * at time intervals specified by the `delay time' of the image. The animation can be stopped by
+ * at time intervals specified by the `delay time` of the image. The animation can be stopped by
  * setting the boolean parameter of the block to true.
  */
 IMAGEIO_EXTERN OSStatus CGAnimateImageDataWithBlock(CFDataRef data, CFDictionaryRef _iio_Nullable options, CGImageSourceAnimationBlock block) IMAGEIO_AVAILABLE_STARTING(10.15, 13.0);

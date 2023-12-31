@@ -45,11 +45,11 @@ CG_EXTERN CFTypeID CGGradientGetTypeID(void)
    in `colors' will be at location 1, and intervening colors will be at
    equal intervals in between. Otherwise, each location in `locations'
    should be a CGFloat between 0 and 1. Each set of color components should
-   specify a color in the color space `space' (which may not be a pattern or
-   indexed color space). The number of locations is specified by `count';
-   the number of color components is the product of `count' and the number
-   of color components of `space'. If no color is provided for 0 or 1, the
-   gradient will use the color provided at the locations closest to 0 and 1
+   specify a color in the color space `space', which may not any of
+   CIELAB, DeviceN, Indexed or Pattern. The number of locations is specified
+   by `count'; the number of color components is the product of `count' and
+   the number of color components of `space'. If no color is provided for 0 or 1,
+   the gradient will use the color provided at the locations closest to 0 and 1
    for those values. */
 
 CG_EXTERN CGGradientRef __nullable CGGradientCreateWithColorComponents(
@@ -60,13 +60,14 @@ CG_EXTERN CGGradientRef __nullable CGGradientCreateWithColorComponents(
 /* Creates a gradient by pairing the colors provided in `colors' with the
    locations provided in `locations'. `colors' should be a non-empty array
    of CGColor objects. The colors may be in any color space other than a
-   pattern or indexed color space. If `space' is non-NULL, each color will
-   be converted to that color space and the gradient will drawn in that
-   space; otherwise, each color will be converted to and drawn in the
-   "Generic" RGB color space. If `space' is specified, it may not be a
-   pattern or indexed color space. If `locations' is NULL, the first color
-   in `colors' will be at location 0, the last color in `colors' will be at
-   location 1, and intervening colors will be at equal intervals in between.
+   pattern color space and are required to be convertible to `space'.
+   If `space' is non-NULL, it may not be any of CIELAB, DeviceN, Indexed or Pattern.
+   Each color will be converted to that color space and the gradient will drawn
+   in that space; otherwise, each color will be converted to and drawn in the
+   "Generic" RGB color space.
+   If `locations' is NULL, the first color in `colors' will be at location 0,
+   the last color in `colors' will be at location 1, and intervening colors
+   will be at equal intervals in between.
    Otherwise, each location in `locations' should be a CGFloat between 0 and
    1; the array of locations should should contain the same number of items
    as `colors'. If no color is provided for 0 or 1, the gradient will use

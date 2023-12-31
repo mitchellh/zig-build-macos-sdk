@@ -50,6 +50,17 @@ tessellationFactorBufferOffset:(NSUInteger)offset tessellationFactorBufferInstan
 - (void)drawPrimitives:(MTLPrimitiveType)primitiveType vertexStart:(NSUInteger)vertexStart vertexCount:(NSUInteger)vertexCount instanceCount:(NSUInteger)instanceCount baseInstance:(NSUInteger)baseInstance;
 - (void)drawIndexedPrimitives:(MTLPrimitiveType)primitiveType indexCount:(NSUInteger)indexCount indexType:(MTLIndexType)indexType indexBuffer:(id <MTLBuffer>)indexBuffer indexBufferOffset:(NSUInteger)indexBufferOffset instanceCount:(NSUInteger)instanceCount baseVertex:(NSInteger)baseVertex baseInstance:(NSUInteger)baseInstance;
 
+- (void)setObjectThreadgroupMemoryLength:(NSUInteger)length atIndex:(NSUInteger)index API_AVAILABLE(macos(14.0), ios(17.0));
+- (void)setObjectBuffer:(id <MTLBuffer>)buffer offset:(NSUInteger)offset atIndex:(NSUInteger)index API_AVAILABLE(macos(14.0), ios(17.0));
+- (void)setMeshBuffer:(id <MTLBuffer>)buffer offset:(NSUInteger)offset atIndex:(NSUInteger)index API_AVAILABLE(macos(14.0), ios(17.0));
+- (void)drawMeshThreadgroups:(MTLSize)threadgroupsPerGrid // MTLIndirectCommandTypeDrawMeshThreadgroups
+ threadsPerObjectThreadgroup:(MTLSize)threadsPerObjectThreadgroup
+   threadsPerMeshThreadgroup:(MTLSize)threadsPerMeshThreadgroup API_AVAILABLE(macos(14.0), ios(17.0));
+- (void)     drawMeshThreads:(MTLSize)threadsPerGrid // MTLIndirectCommandTypeDrawMeshThreads
+ threadsPerObjectThreadgroup:(MTLSize)threadsPerObjectThreadgroup
+   threadsPerMeshThreadgroup:(MTLSize)threadsPerMeshThreadgroup API_AVAILABLE(macos(14.0), ios(17.0));
+- (void)setBarrier API_AVAILABLE(macos(14.0), ios(17.0));
+- (void)clearBarrier API_AVAILABLE(macos(14.0), ios(17.0));
 
 - (void)reset;
 

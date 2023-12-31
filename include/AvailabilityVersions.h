@@ -70,13 +70,19 @@
 #define __MAC_12_3                                      120300
 #define __MAC_12_4                                      120400
 #define __MAC_12_5                                      120500
+#define __MAC_12_6                                      120600
+#define __MAC_12_7                                      120700
 #define __MAC_13_0                                      130000
 #define __MAC_13_1                                      130100
 #define __MAC_13_1                                      130100
 #define __MAC_13_2                                      130200
 #define __MAC_13_3                                      130300
 #define __MAC_13_4                                      130400
+#define __MAC_13_5                                      130500
+#define __MAC_13_6                                      130600
 #define __MAC_14_0                                      140000
+#define __MAC_14_1                                      140100
+#define __MAC_14_2                                      140200
 /* __MAC__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
 
 #define __IPHONE_2_0                                     20000
@@ -149,7 +155,11 @@
 #define __IPHONE_16_3                                   160300
 #define __IPHONE_16_4                                   160400
 #define __IPHONE_16_5                                   160500
+#define __IPHONE_16_6                                   160600
+#define __IPHONE_16_7                                   160700
 #define __IPHONE_17_0                                   170000
+#define __IPHONE_17_1                                   170100
+#define __IPHONE_17_2                                   170200
 /* __IPHONE__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
 
 #define __WATCHOS_1_0                                    10000
@@ -191,7 +201,10 @@
 #define __WATCHOS_9_3                                    90300
 #define __WATCHOS_9_4                                    90400
 #define __WATCHOS_9_5                                    90500
+#define __WATCHOS_9_6                                    90600
 #define __WATCHOS_10_0                                  100000
+#define __WATCHOS_10_1                                  100100
+#define __WATCHOS_10_2                                  100200
 /* __WATCHOS__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
 
 #define __TVOS_9_0                                       90000
@@ -235,7 +248,10 @@
 #define __TVOS_16_3                                     160300
 #define __TVOS_16_4                                     160400
 #define __TVOS_16_5                                     160500
+#define __TVOS_16_6                                     160600
 #define __TVOS_17_0                                     170000
+#define __TVOS_17_1                                     170100
+#define __TVOS_17_2                                     170200
 /* __TVOS__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
 
 #define __BRIDGEOS_2_0                                   20000
@@ -258,7 +274,10 @@
 #define __BRIDGEOS_7_2                                   70200
 #define __BRIDGEOS_7_3                                   70300
 #define __BRIDGEOS_7_4                                   70400
+#define __BRIDGEOS_7_6                                   70600
 #define __BRIDGEOS_8_0                                   80000
+#define __BRIDGEOS_8_1                                   80100
+#define __BRIDGEOS_8_2                                   80200
 
 
 #define __DRIVERKIT_19_0                                190000
@@ -267,12 +286,19 @@
 #define __DRIVERKIT_22_0                                220000
 #define __DRIVERKIT_22_4                                220400
 #define __DRIVERKIT_22_5                                220500
+#define __DRIVERKIT_22_6                                220600
 #define __DRIVERKIT_23_0                                230000
+#define __DRIVERKIT_23_1                                230100
+#define __DRIVERKIT_23_2                                230200
 /* __DRIVERKIT__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
 
-#define __XROS_1_0                                       10000
-/* __XROS__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
+#define __VISIONOS_1_0                                   10000
+/* __VISIONOS__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
 
+
+#ifndef __OPEN_SOURCE__
+
+#endif /* __OPEN_SOURCE__ */
 
 /*
  * Set up standard Mac OS X versions
@@ -326,13 +352,19 @@
 #define  MAC_OS_VERSION_12_3                             __MAC_12_3
 #define  MAC_OS_VERSION_12_4                             __MAC_12_4
 #define  MAC_OS_VERSION_12_5                             __MAC_12_5
+#define  MAC_OS_VERSION_12_6                             __MAC_12_6
+#define  MAC_OS_VERSION_12_7                             __MAC_12_7
 #define  MAC_OS_VERSION_13_0                             __MAC_13_0
 #define  MAC_OS_VERSION_13_1                             __MAC_13_1
 #define  MAC_OS_VERSION_13_1                             __MAC_13_1
 #define  MAC_OS_VERSION_13_2                             __MAC_13_2
 #define  MAC_OS_VERSION_13_3                             __MAC_13_3
 #define  MAC_OS_VERSION_13_4                             __MAC_13_4
+#define  MAC_OS_VERSION_13_5                             __MAC_13_5
+#define  MAC_OS_VERSION_13_6                             __MAC_13_6
 #define  MAC_OS_VERSION_14_0                             __MAC_14_0
+#define  MAC_OS_VERSION_14_1                             __MAC_14_1
+#define  MAC_OS_VERSION_14_2                             __MAC_14_2
 
 #endif /* #if (!defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || defined(_DARWIN_C_SOURCE) */
 

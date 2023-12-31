@@ -3,7 +3,7 @@ tbd-version:     4
 targets:         [ x86_64-macos, x86_64-maccatalyst, x86_64h-macos, x86_64h-maccatalyst, 
                    arm64-macos, arm64-maccatalyst, arm64e-macos, arm64e-maccatalyst ]
 install-name:    '/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation'
-current-version: 2048.1.255
+current-version: 2202
 compatibility-version: 150
 reexported-libraries:
   - targets:         [ x86_64-macos, x86_64-maccatalyst, x86_64h-macos, x86_64h-maccatalyst, 
@@ -580,7 +580,7 @@ exports:
                        __CFBundleCopyWrappedBundleURL, __CFBundleCopyWrapperContainerURL, 
                        __CFBundleCreateError, __CFBundleCreateFilteredInfoPlist, 
                        __CFBundleCreateFilteredLocalizedInfoPlist, __CFBundleCreateIfLooksLikeBundle, 
-                       __CFBundleCreateIfMightBeBundle, __CFBundleCreateUnique, __CFBundleCreateUniqueWithLimitedInfo, 
+                       __CFBundleCreateIfMightBeBundle, __CFBundleCreateUnique, __CFBundleCreateUniqueWithOptions, 
                        __CFBundleCreateWithExecutableURLIfLooksLikeBundle, __CFBundleCreateWithExecutableURLIfMightBeBundle, 
                        __CFBundleFlushBundleCaches, __CFBundleFlushCaches, __CFBundleFlushCachesForURL, 
                        __CFBundleFlushLanguageCachesAfterEUIDChange, __CFBundleGetBundleWithIdentifierAndLibraryName, 

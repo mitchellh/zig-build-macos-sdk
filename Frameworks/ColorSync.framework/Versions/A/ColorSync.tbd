@@ -3,7 +3,7 @@ tbd-version:     4
 targets:         [ x86_64-macos, x86_64-maccatalyst, arm64-macos, arm64-maccatalyst, 
                    arm64e-macos, arm64e-maccatalyst ]
 install-name:    '/System/Library/Frameworks/ColorSync.framework/Versions/A/ColorSync'
-current-version: 3730
+current-version: 3735
 exports:
   - targets:         [ x86_64-macos, x86_64-maccatalyst, arm64-macos, arm64-maccatalyst, 
                        arm64e-macos, arm64e-maccatalyst ]
@@ -16,7 +16,7 @@ exports:
                        '$ld$install_name$os10.7$/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices', 
                        '$ld$install_name$os10.8$/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices', 
                        '$ld$install_name$os10.9$/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices', 
-                       _ColorSyncCodeFragmentGetMD5, _ColorSyncConvertDoubleXYZFromD50, 
+                       _ColorSyncAPIVersion, _ColorSyncCodeFragmentGetMD5, _ColorSyncConvertDoubleXYZFromD50, 
                        _ColorSyncConvertDoubleXYZToD50, _ColorSyncConvertXYZToXYZWithChromaticAdaptationMatrix, 
                        _ColorSyncCreateCodeFragment, _ColorSyncCreateCodeFragmentPriv, 
                        _ColorSyncCreateInputPoppyProfile, _ColorSyncCreateOutputPoppyProfile, 
@@ -28,12 +28,13 @@ exports:
                        _ColorSyncMatrixGetProperties, _ColorSyncMatrixGetTypeID, 
                        _ColorSyncNxMGetFunction, _ColorSyncNxMGetInputRange, _ColorSyncNxMGetOptions, 
                        _ColorSyncNxMGetOutputRange, _ColorSyncNxMGetProperties, _ColorSyncNxMGetTypeID, 
-                       _ColorSyncProfileContainsSupportedCICP, _ColorSyncProfileContainsTag, 
-                       _ColorSyncProfileCopyASCIIDescriptionString, _ColorSyncProfileCopyData, 
-                       _ColorSyncProfileCopyDescriptionString, _ColorSyncProfileCopyHeader, 
-                       _ColorSyncProfileCopyLocalizedDescriptionString, _ColorSyncProfileCopyLocalizedStringDictionary, 
-                       _ColorSyncProfileCopyTag, _ColorSyncProfileCopyTagSignatures, 
-                       _ColorSyncProfileCreate, _ColorSyncProfileCreateLink, _ColorSyncProfileCreateMutable, 
+                       _ColorSyncPrivateAPIVersion, _ColorSyncProfileContainsSupportedCICP, 
+                       _ColorSyncProfileContainsTag, _ColorSyncProfileCopyASCIIDescriptionString, 
+                       _ColorSyncProfileCopyData, _ColorSyncProfileCopyDescriptionString, 
+                       _ColorSyncProfileCopyHeader, _ColorSyncProfileCopyLocalizedDescriptionString, 
+                       _ColorSyncProfileCopyLocalizedStringDictionary, _ColorSyncProfileCopyTag, 
+                       _ColorSyncProfileCopyTagSignatures, _ColorSyncProfileCreate, 
+                       _ColorSyncProfileCreateLink, _ColorSyncProfileCreateMutable, 
                        _ColorSyncProfileCreateMutableCopy, _ColorSyncProfileCreateSanitizedCopy, 
                        _ColorSyncProfileCreateWithName, _ColorSyncProfileCreateWithURL, 
                        _ColorSyncProfileGetCICPInfo, _ColorSyncProfileGetData, _ColorSyncProfileGetLuminanceCoefficients, 

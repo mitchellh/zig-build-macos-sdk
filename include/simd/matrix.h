@@ -1101,7 +1101,7 @@ static simd_float2x2 SIMD_CFUNC simd_transpose(simd_float2x2 __x) {
     __x1.xy = __x.columns[1];
 #if defined __SSE__
     simd_float4 __r01 = _mm_unpacklo_ps(__x0, __x1);
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 __r01 = vzip1q_f32(__x0, __x1);
 #else
     simd_float4 __r01 = { __x0[0], __x1[0], __x0[1], __x1[1] };
@@ -1116,7 +1116,7 @@ static simd_float3x2 SIMD_CFUNC simd_transpose(simd_float2x3 __x) {
 #if defined __SSE__
     simd_float4 __r01 = _mm_unpacklo_ps(__x0, __x1);
     simd_float4 __r2x = _mm_unpackhi_ps(__x0, __x1);
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 __r01 = vzip1q_f32(__x0, __x1);
     simd_float4 __r2x = vzip2q_f32(__x0, __x1);
 #else
@@ -1130,7 +1130,7 @@ static simd_float4x2 SIMD_CFUNC simd_transpose(simd_float2x4 __x) {
 #if defined __SSE__
     simd_float4 __r01 = _mm_unpacklo_ps(__x.columns[0], __x.columns[1]);
     simd_float4 __r23 = _mm_unpackhi_ps(__x.columns[0], __x.columns[1]);
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 __r01 = vzip1q_f32(__x.columns[0], __x.columns[1]);
     simd_float4 __r23 = vzip2q_f32(__x.columns[0], __x.columns[1]);
 #else
@@ -1149,7 +1149,7 @@ static simd_float2x3 SIMD_CFUNC simd_transpose(simd_float3x2 __x) {
     simd_float4 __t = _mm_unpacklo_ps(__x0, __x1);
     simd_float4 __r0 = _mm_shuffle_ps(__t,__x2,0xc4);
     simd_float4 __r1 = _mm_shuffle_ps(__t,__x2,0xde);
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 padding = { 0 };
     simd_float4 __t0 = vzip1q_f32(__x0,__x2);
     simd_float4 __t1 = vzip1q_f32(__x1,padding);
@@ -1173,7 +1173,7 @@ static simd_float3x3 SIMD_CFUNC simd_transpose(simd_float3x3 __x) {
     simd_float4 __r0 = __t0; __r0.hi = __x2.lo;
     simd_float4 __r1 = _mm_shuffle_ps(__t0, __x2, 0xde);
     simd_float4 __r2 = __x2; __r2.lo = __t1.lo;
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 padding = { 0 };
     simd_float4 __t0 = vzip1q_f32(__x0,__x2);
     simd_float4 __t1 = vzip2q_f32(__x0,__x2);
@@ -1198,7 +1198,7 @@ static simd_float4x3 SIMD_CFUNC simd_transpose(simd_float3x4 __x) {
     simd_float4 __r1 = _mm_shuffle_ps(__t0, __x.columns[2], 0xde);
     simd_float4 __r2 = __x.columns[2]; __r2.lo = __t1.lo;
     simd_float4 __r3 = _mm_shuffle_ps(__t1, __x.columns[2], 0xfe);
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 padding = { 0 };
     simd_float4 __t0 = vzip1q_f32(__x.columns[0],__x.columns[2]);
     simd_float4 __t1 = vzip2q_f32(__x.columns[0],__x.columns[2]);
@@ -1228,7 +1228,7 @@ static simd_float2x4 SIMD_CFUNC simd_transpose(simd_float4x2 __x) {
     simd_float4 __t1 = _mm_unpacklo_ps(__x1,__x3);
     simd_float4 __r0 = _mm_unpacklo_ps(__t0,__t1);
     simd_float4 __r1 = _mm_unpackhi_ps(__t0,__t1);
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 __t0 = vzip1q_f32(__x0,__x2);
     simd_float4 __t1 = vzip1q_f32(__x1,__x3);
     simd_float4 __r0 = vzip1q_f32(__t0,__t1);
@@ -1254,7 +1254,7 @@ static simd_float3x4 SIMD_CFUNC simd_transpose(simd_float4x3 __x) {
     simd_float4 __r0 = _mm_unpacklo_ps(__t0,__t2);
     simd_float4 __r1 = _mm_unpackhi_ps(__t0,__t2);
     simd_float4 __r2 = _mm_unpacklo_ps(__t1,__t3);
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 __t0 = vzip1q_f32(__x0,__x2);
     simd_float4 __t1 = vzip2q_f32(__x0,__x2);
     simd_float4 __t2 = vzip1q_f32(__x1,__x3);
@@ -1280,7 +1280,7 @@ static simd_float4x4 SIMD_CFUNC simd_transpose(simd_float4x4 __x) {
     simd_float4 __r1 = _mm_unpackhi_ps(__t0,__t2);
     simd_float4 __r2 = _mm_unpacklo_ps(__t1,__t3);
     simd_float4 __r3 = _mm_unpackhi_ps(__t1,__t3);
-#elif defined __ARM_NEON__
+#elif defined __ARM_NEON__ && defined __arm64__
     simd_float4 __t0 = vzip1q_f32(__x.columns[0],__x.columns[2]);
     simd_float4 __t1 = vzip2q_f32(__x.columns[0],__x.columns[2]);
     simd_float4 __t2 = vzip1q_f32(__x.columns[1],__x.columns[3]);
@@ -1302,7 +1302,7 @@ static simd_double2x2 SIMD_CFUNC simd_transpose(simd_double2x2 __x) {
     simd_double2 __x0, __x1;
     __x0 = __x.columns[0];
     __x1 = __x.columns[1];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double2 __r0 = vzip1q_f64(__x0, __x1);
     simd_double2 __r1 = vzip2q_f64(__x0, __x1);
 #else
@@ -1316,7 +1316,7 @@ static simd_double3x2 SIMD_CFUNC simd_transpose(simd_double2x3 __x) {
     simd_double4 __x0, __x1;
     __x0.xyz = __x.columns[0];
     __x1.xyz = __x.columns[1];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double2 __r0 = vzip1q_f64(__x0.lo,__x1.lo);
     simd_double2 __r1 = vzip2q_f64(__x0.lo,__x1.lo);
     simd_double2 __r2 = vzip1q_f64(__x0.hi,__x1.hi);
@@ -1332,7 +1332,7 @@ static simd_double4x2 SIMD_CFUNC simd_transpose(simd_double2x4 __x) {
     simd_double4 __x0, __x1;
     __x0 = __x.columns[0];
     __x1 = __x.columns[1];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double2 __r0 = vzip1q_f64(__x0.lo,__x1.lo);
     simd_double2 __r1 = vzip2q_f64(__x0.lo,__x1.lo);
     simd_double2 __r2 = vzip1q_f64(__x0.hi,__x1.hi);
@@ -1351,7 +1351,7 @@ static simd_double2x3 SIMD_CFUNC simd_transpose(simd_double3x2 __x) {
     __x0 = __x.columns[0];
     __x1 = __x.columns[1];
     __x2 = __x.columns[2];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double2 padding = { 0 };
     simd_double4 __r0,__r1;
     __r0.lo = vzip1q_f64(__x0,__x1);
@@ -1370,7 +1370,7 @@ static simd_double3x3 SIMD_CFUNC simd_transpose(simd_double3x3 __x) {
     __x0.xyz = __x.columns[0];
     __x1.xyz = __x.columns[1];
     __x2.xyz = __x.columns[2];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double2 padding = { 0 };
     simd_double4 __r0,__r1,__r2;
     __r0.lo = vzip1q_f64(__x0.lo,__x1.lo);
@@ -1392,7 +1392,7 @@ static simd_double4x3 SIMD_CFUNC simd_transpose(simd_double3x4 __x) {
     __x0 = __x.columns[0];
     __x1 = __x.columns[1];
     __x2 = __x.columns[2];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double2 padding = { 0 };
     simd_double4 __r0,__r1,__r2,__r3;
     __r0.lo = vzip1q_f64(__x0.lo,__x1.lo);
@@ -1418,7 +1418,7 @@ static simd_double2x4 SIMD_CFUNC simd_transpose(simd_double4x2 __x) {
     __x1 = __x.columns[1];
     __x2 = __x.columns[2];
     __x3 = __x.columns[3];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double4 __r0,__r1;
     __r0.lo = vzip1q_f64(__x0,__x1);
     __r1.lo = vzip2q_f64(__x0,__x1);
@@ -1437,7 +1437,7 @@ static simd_double3x4 SIMD_CFUNC simd_transpose(simd_double4x3 __x) {
     __x1.xyz = __x.columns[1];
     __x2.xyz = __x.columns[2];
     __x3.xyz = __x.columns[3];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double4 __r0,__r1,__r2;
     __r0.lo = vzip1q_f64(__x0.lo,__x1.lo);
     __r1.lo = vzip2q_f64(__x0.lo,__x1.lo);
@@ -1459,7 +1459,7 @@ static simd_double4x4 SIMD_CFUNC simd_transpose(simd_double4x4 __x) {
     __x1 = __x.columns[1];
     __x2 = __x.columns[2];
     __x3 = __x.columns[3];
-#if defined __ARM_NEON__
+#if defined __ARM_NEON__ && defined __arm64__
     simd_double4 __r0,__r1,__r2,__r3;
     __r0.lo = vzip1q_f64(__x0.lo,__x1.lo);
     __r1.lo = vzip2q_f64(__x0.lo,__x1.lo);

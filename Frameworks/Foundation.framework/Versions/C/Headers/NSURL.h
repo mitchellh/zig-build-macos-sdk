@@ -149,11 +149,6 @@ FOUNDATION_EXPORT NSString * const NSURLFileScheme;
 
 #if !0
 
-/* Returns whether the URL's resource exists and is reachable. This method synchronously checks if the resource's backing store is reachable. Checking reachability is appropriate when making decisions that do not require other immediate operations on the resource, e.g. periodic maintenance of UI state that depends on the existence of a specific document. When performing operations such as opening a file or copying resource properties, it is more efficient to simply try the operation and handle failures. If this method returns NO, the optional error is populated. This method is currently applicable only to URLs for file system resources. For other URL types, NO is returned. Symbol is present in iOS 4, but performs no operation.
- */
-- (BOOL)checkResourceIsReachableAndReturnError:(NSError **)error NS_SWIFT_NOTHROW API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
-
-
 /* Working with file reference URLs
  */
 
@@ -681,6 +676,9 @@ API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0))
 /* The following methods work only on `file:` scheme URLs; for non-`file:` scheme URLs, these methods return the URL unchanged.
  */
 #if !0
+/* Returns whether the URL's resource exists and is reachable. This method synchronously checks if the resource's backing store is reachable. Checking reachability is appropriate when making decisions that do not require other immediate operations on the resource, e.g. periodic maintenance of UI state that depends on the existence of a specific document. When performing operations such as opening a file or copying resource properties, it is more efficient to simply try the operation and handle failures. If this method returns NO, the optional error is populated. This method is currently applicable only to URLs for file system resources. For other URL types, NO is returned. Symbol is present in iOS 4, but performs no operation.
+ */
+- (BOOL)checkResourceIsReachableAndReturnError:(NSError **)error NS_SWIFT_NOTHROW API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
 @property (nullable, readonly, copy) NSURL *URLByStandardizingPath API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
 @property (nullable, readonly, copy) NSURL *URLByResolvingSymlinksInPath API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
 #endif 

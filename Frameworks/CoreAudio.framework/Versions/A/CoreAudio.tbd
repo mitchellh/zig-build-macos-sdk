@@ -23,8 +23,7 @@ exports:
                        _AudioGetCurrentHostTime, _AudioGetHostClockFrequency, _AudioGetHostClockMinimumTimeDelta, 
                        _AudioHardwareAddPropertyListener, _AudioHardwareAddRunLoopSource, 
                        _AudioHardwareBeMaster, _AudioHardwareCreateAggregateDevice, 
-                       _AudioHardwareCreateProcessTap, _AudioHardwareDestroyAggregateDevice, 
-                       _AudioHardwareDestroyProcessTap, _AudioHardwareDisposeForTesting, 
+                       _AudioHardwareDestroyAggregateDevice, _AudioHardwareDisposeForTesting, 
                        _AudioHardwareGetProperty, _AudioHardwareGetPropertyInfo, 
                        _AudioHardwareInitializeForTesting, _AudioHardwareReloadServerSettings, 
                        _AudioHardwareRemovePropertyListener, _AudioHardwareRemoveRunLoopSource, 
@@ -347,5 +346,6 @@ exports:
                        __ZTVN4AMCP7ControlE, __ZTVN4AMCP8DSP_NodeE, __ZTVN4AMCP9IOContextE ]
     objc-classes:    [ CATapDescription ]
   - targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
-    symbols:         [ _AudioServerPlugInMain ]
+    symbols:         [ _AudioHardwareCreateProcessTap, _AudioHardwareDestroyProcessTap, 
+                       _AudioServerPlugInMain ]
 ...

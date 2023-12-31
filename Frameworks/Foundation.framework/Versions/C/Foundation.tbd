@@ -3,7 +3,7 @@ tbd-version:     4
 targets:         [ x86_64-macos, x86_64-maccatalyst, arm64-macos, arm64-maccatalyst, 
                    arm64e-macos, arm64e-maccatalyst ]
 install-name:    '/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation'
-current-version: 2048.1.255
+current-version: 2202
 compatibility-version: 300
 swift-abi-version: 7
 reexported-libraries:
@@ -7991,7 +7991,6 @@ exports:
                        '_$s10Foundation9PredicateV6encode2to13configurationys7Encoder_p_AA0B20CodableConfigurationVtKF', 
                        '_$s10Foundation9PredicateV6encode2toys7Encoder_p_tKF', '_$s10Foundation9PredicateV8evaluateySbxxQpKF', 
                        '_$s10Foundation9PredicateV8variableAA0B11ExpressionsO8VariableVy_xGxQp_tvg', 
-                       '_$s10Foundation9PredicateV8variableAA0B11ExpressionsO8VariableVy_xGxQp_tvpMV', 
                        '_$s10Foundation9PredicateVMa', '_$s10Foundation9PredicateVMn', 
                        '_$s10Foundation9PredicateVyACyxxQp_QPGAA08StandardB10Expression_pSb6OutputAA0bD0PRts_XPAA0B11ExpressionsO8VariableVy_xGxQpXEcfC', 
                        '_$s10Foundation9PredicateVyACyxxQp_QPGqd__AA0B11ExpressionsO8VariableVy_xGxQpXEcAA08StandardB10ExpressionRd__Sb6OutputRtd__lufC', 

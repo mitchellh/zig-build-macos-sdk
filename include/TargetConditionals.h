@@ -51,49 +51,54 @@
  *      TARGET_CPU_MIPS         - Compiler is generating MIPS instructions
  *      TARGET_CPU_SPARC        - Compiler is generating Sparc instructions
  *      TARGET_CPU_ALPHA        - Compiler is generating Dec Alpha instructions
- *
- *
+ */
+
+/*
  *  TARGET_OS_*
+ *
  *  These conditionals specify in which Operating System the generated code will
  *  run.  Indention is used to show which conditionals are evolutionary subclasses.
  *
  *  The MAC/WIN32/UNIX conditionals are mutually exclusive.
- *  The IOS/TV/WATCH conditionals are mutually exclusive.
+ *  The IOS/TV/WATCH/VISION conditionals are mutually exclusive.
  *
+ *    TARGET_OS_WIN32              - Generated code will run on WIN32 API
+ *    TARGET_OS_WINDOWS            - Generated code will run on Windows
+ *    TARGET_OS_UNIX               - Generated code will run on some Unix (not macOS)
+ *    TARGET_OS_LINUX              - Generated code will run on Linux
+ *    TARGET_OS_MAC                - Generated code will run on a variant of macOS
+ *      TARGET_OS_OSX                - Generated code will run on macOS
+ *      TARGET_OS_IPHONE             - Generated code will run on a variant of iOS (firmware, devices, simulator)
+ *        TARGET_OS_IOS                - Generated code will run on iOS
+ *          TARGET_OS_MACCATALYST        - Generated code will run on macOS
+ *        TARGET_OS_TV                 - Generated code will run on tvOS
+ *        TARGET_OS_WATCH              - Generated code will run on watchOS
+ *        TARGET_OS_VISION             - Generated code will run on visionOS
+ *        TARGET_OS_BRIDGE             - Generated code will run on bridge devices
+ *      TARGET_OS_SIMULATOR          - Generated code will run on an iOS, tvOS, watchOS, or visionOS simulator
+ *      TARGET_OS_DRIVERKIT          - Generated code will run on macOS, iOS, tvOS, watchOS, or visionOS
  *
- *      TARGET_OS_WIN32           - Generated code will run under WIN32 API
- *      TARGET_OS_WINDOWS         - Generated code will run under Windows
- *      TARGET_OS_UNIX            - Generated code will run under some Unix (not OSX)
- *      TARGET_OS_LINUX           - Generated code will run under Linux
- *      TARGET_OS_MAC             - Generated code will run under Mac OS X variant
- *         TARGET_OS_OSX          - Generated code will run under OS X devices
- *         TARGET_OS_IPHONE          - Generated code for firmware, devices, or simulator
- *            TARGET_OS_IOS             - Generated code will run under iOS
- *            TARGET_OS_TV              - Generated code will run under Apple TV OS
- *            TARGET_OS_WATCH           - Generated code will run under Apple Watch OS
- *            TARGET_OS_BRIDGE          - Generated code will run under Bridge devices
- *            TARGET_OS_MACCATALYST     - Generated code will run under macOS
- *         TARGET_OS_DRIVERKIT          - Generated code will run under macOS, iOS, Apple TV OS, or Apple Watch OS
- *         TARGET_OS_SIMULATOR      - Generated code will run under a simulator
+ *    TARGET_OS_EMBEDDED           - DEPRECATED: Use TARGET_OS_IPHONE and/or TARGET_OS_SIMULATOR instead
+ *    TARGET_IPHONE_SIMULATOR      - DEPRECATED: Same as TARGET_OS_SIMULATOR
+ *    TARGET_OS_NANO               - DEPRECATED: Same as TARGET_OS_WATCH
  *
- *      TARGET_OS_EMBEDDED        - DEPRECATED: Use TARGET_OS_IPHONE and/or TARGET_OS_SIMULATOR instead
- *      TARGET_IPHONE_SIMULATOR   - DEPRECATED: Same as TARGET_OS_SIMULATOR
- *      TARGET_OS_NANO            - DEPRECATED: Same as TARGET_OS_WATCH
- *
- *    +---------------------------------------------------------------------------+
- *    |                             TARGET_OS_MAC                                 |
- *    | +-----+ +-------------------------------------------------+ +-----------+ |
- *    | |     | |                  TARGET_OS_IPHONE               | |           | |
- *    | |     | | +-----------------+ +----+ +-------+ +--------+ | |           | |
- *    | |     | | |       IOS       | |    | |       | |        | | |           | |
- *    | | OSX | | | +-------------+ | | TV | | WATCH | | BRIDGE | | | DRIVERKIT | |
- *    | |     | | | | MACCATALYST | | |    | |       | |        | | |           | |
- *    | |     | | | +-------------+ | |    | |       | |        | | |           | |
- *    | |     | | +-----------------+ +----+ +-------+ +--------+ | |           | |
- *    | +-----+ +-------------------------------------------------+ +-----------+ |
- *    +---------------------------------------------------------------------------+
+ *    +--------------------------------------------------------------------------------------+
+ *    |                                    TARGET_OS_MAC                                     |
+ *    | +-----+ +------------------------------------------------------------+ +-----------+ |
+ *    | |     | |                  TARGET_OS_IPHONE                          | |           | |
+ *    | |     | | +-----------------+ +----+ +-------+ +--------+ +--------+ | |           | |
+ *    | |     | | |       IOS       | |    | |       | |        | |        | | |           | |
+ *    | | OSX | | | +-------------+ | | TV | | WATCH | | BRIDGE | | VISION | | | DRIVERKIT | |
+ *    | |     | | | | MACCATALYST | | |    | |       | |        | |        | | |           | |
+ *    | |     | | | +-------------+ | |    | |       | |        | |        | | |           | |
+ *    | |     | | +-----------------+ +----+ +-------+ +--------+ +--------+ | |           | |
+ *    | +-----+ +------------------------------------------------------------+ +-----------+ |
+ *    +--------------------------------------------------------------------------------------+
+ */
 
+/*
  *  TARGET_RT_*
+ *
  *  These conditionals specify in which runtime the generated code will
  *  run. This is needed when the OS and CPU support more than one runtime
  *  (e.g. Mac OS X supports CFM and mach-o).
@@ -105,7 +110,7 @@
  *      TARGET_RT_MAC_MACHO     - TARGET_OS_MAC is true and Mach-O/dlyd runtime is used
  */
  
- /*
+/*
  * TARGET_OS conditionals can be enabled via clang preprocessor extensions:
  *
  *      __is_target_arch
@@ -197,7 +202,9 @@
         #define TARGET_OS_MAC               1
         #define TARGET_OS_OSX               0
         #define TARGET_OS_IPHONE            1
-        #define TARGET_OS_IOS               1
+
+        #define TARGET_OS_IOS               0
+
         #define TARGET_OS_WATCH             0
         
         #define TARGET_OS_TV                0
@@ -222,7 +229,9 @@
         #define TARGET_OS_MAC               1
         #define TARGET_OS_OSX               0
         #define TARGET_OS_IPHONE            1
-        #define TARGET_OS_IOS               1
+
+        #define TARGET_OS_IOS               0
+
         #define TARGET_OS_WATCH             0
         
         #define TARGET_OS_TV                0
@@ -347,7 +356,9 @@
         #define TARGET_OS_MAC               1
         #define TARGET_OS_OSX               1
         #define TARGET_OS_IPHONE            0
+
         #define TARGET_OS_IOS               0
+
         #define TARGET_OS_WATCH             0
         
         #define TARGET_OS_TV                0

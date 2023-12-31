@@ -2,12 +2,12 @@
  *  CVBase.h
  *  CoreVideo
  *
- *  Copyright (c) 2004-2020 Apple Inc. All rights reserved.
+ *  Copyright (c) 2004-2023 Apple Inc. All rights reserved.
  *
  */
  
  /*! @header CVBase.h
-	@copyright 2004-2017 Apple Inc. All rights reserved.
+	@copyright 2004-2023 Apple Inc. All rights reserved.
 	@availability Mac OS X 10.4 or later, and iOS 4.0 or later
     @discussion Here you can find the type declarations for CoreVideo. CoreVideo uses a CVTimeStamp structure to store video display time stamps.
 */
@@ -20,6 +20,9 @@
 #include <Availability.h>
 #include <AvailabilityMacros.h>
 #include <stdint.h>
+#if ! TARGET_OS_WINDOWS
+#include <CoreFoundation/CFAvailability.h>
+#endif
 
 #if TARGET_OS_WIN32
 #pragma warning (disable: 4068)		// ignore unknown pragmas

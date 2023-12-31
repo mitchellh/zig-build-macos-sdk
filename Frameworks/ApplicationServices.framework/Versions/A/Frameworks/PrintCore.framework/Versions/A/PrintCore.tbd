@@ -2,7 +2,7 @@
 tbd-version:     4
 targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
 install-name:    '/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/PrintCore.framework/Versions/A/PrintCore'
-current-version: 582
+current-version: 582.1
 parent-umbrella:
   - targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
     umbrella:        ApplicationServices

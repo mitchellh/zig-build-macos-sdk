@@ -25,11 +25,14 @@
 #if TARGET_OS_IPHONE || TARGET_OS_WIN32
 #include <CoreGraphics/CoreGraphics.h>
 #else
+#if __has_include(<ApplicationServices/ApplicationServices.h>)
 #include <ApplicationServices/ApplicationServices.h>
 #endif
-
+#endif
+#if __has_include(<CoreGraphics/CGColorSpace.h>)
 #include <CoreGraphics/CGColorSpace.h>
 #include <CoreGraphics/CGGeometry.h>
+#endif
 
 #include <CoreVideo/CVBuffer.h>
 
@@ -198,6 +201,7 @@ CV_EXPORT CGColorSpaceRef CV_NULLABLE CVImageBufferGetColorSpace( CVImageBufferR
 	
 #endif
 
+#if ! 0
 /*!
    @function   CVImageBufferCreateColorSpaceFromAttachments
    @abstract   Attempts to synthesize a CGColorSpace from an image buffer's attachments.
@@ -212,7 +216,8 @@ CV_EXPORT CGColorSpaceRef CV_NULLABLE CVImageBufferGetColorSpace( CVImageBufferR
 		
 */
 CV_EXPORT CGColorSpaceRef CV_NULLABLE CVImageBufferCreateColorSpaceFromAttachments( CFDictionaryRef CV_NONNULL attachments ) __OSX_AVAILABLE_STARTING(__MAC_10_8,__IPHONE_10_0);
-	
+#endif
+
 // CFData (24 bytes) containing big-endian data matching payload of ISO/IEC 23008-2:2015(E), D.2.28 Mastering display colour volume SEI message
 CV_EXPORT const CFStringRef CV_NONNULL kCVImageBufferMasteringDisplayColorVolumeKey __OSX_AVAILABLE_STARTING(__MAC_10_13,__IPHONE_11_0);
 
@@ -230,6 +235,21 @@ CV_EXPORT const CFStringRef CV_NONNULL kCVImageBufferAmbientViewingEnvironmentKe
 		
 */
 CV_EXPORT const CFStringRef CV_NONNULL kCVImageBufferRegionOfInterestKey           API_AVAILABLE(macosx(12.0), ios(15.0), tvos(15.0), watchos(8.0));
+
+/*!
+  @constant    kCVImageBufferLogTransferFunctionKey
+	Indicates that the transfer function or gamma of the content is a log format and identifies the specific log curve.
+  @discussion
+	The value is a CFString holding fully specified reverse DNS identifier.
+	Content captured in Apple Log will have this key set to kCVImageBufferLogTransferFunction_AppleLog.
+  @constant    kCVImageBufferLogTransferFunction_AppleLog
+	Indicates the Apple Log identifier.
+  @discussion
+	You can download the Apple Log Profile White Paper from the Apple Developer Downloads website.
+*/
+CV_EXPORT const CFStringRef CV_NONNULL kCVImageBufferLogTransferFunctionKey API_AVAILABLE(macosx(14.2), ios(17.2), tvos(17.2), watchos(10.2), visionos(1.1));
+
+CV_EXPORT const CFStringRef CV_NONNULL kCVImageBufferLogTransferFunction_AppleLog API_AVAILABLE(macosx(14.2), ios(17.2), tvos(17.2), watchos(10.2), visionos(1.1));
 
 
 #if defined(__cplusplus)

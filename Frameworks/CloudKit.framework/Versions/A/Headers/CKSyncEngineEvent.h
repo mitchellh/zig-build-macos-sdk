@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <CloudKit/CKRecord.h>
 
-@class CKRecordZone, CKRecordZoneID, CKSyncEngineAccountChangeEvent, CKSyncEngineDidFetchChangesEvent, CKSyncEngineDidFetchRecordZoneChangesEvent, CKSyncEngineDidSendChangesEvent, CKSyncEngineFailedRecordSave, CKSyncEngineFailedZoneSave, CKSyncEngineFetchedDatabaseChangesEvent, CKSyncEngineFetchedRecordDeletion, CKSyncEngineFetchedRecordZoneChangesEvent, CKSyncEngineFetchedZoneDeletion, CKSyncEngineSendChangesContext, CKSyncEngineSentDatabaseChangesEvent, CKSyncEngineSentRecordZoneChangesEvent, CKSyncEngineStateSerialization, CKSyncEngineStateUpdateEvent, CKSyncEngineWillFetchChangesEvent, CKSyncEngineWillFetchRecordZoneChangesEvent, CKSyncEngineWillSendChangesEvent;
+@class CKRecordZone, CKRecordZoneID, CKSyncEngineAccountChangeEvent, CKSyncEngineDidFetchChangesEvent, CKSyncEngineDidFetchRecordZoneChangesEvent, CKSyncEngineDidSendChangesEvent, CKSyncEngineFailedRecordSave, CKSyncEngineFailedZoneSave, CKSyncEngineFetchChangesContext, CKSyncEngineFetchedDatabaseChangesEvent, CKSyncEngineFetchedRecordDeletion, CKSyncEngineFetchedRecordZoneChangesEvent, CKSyncEngineFetchedZoneDeletion, CKSyncEngineSendChangesContext, CKSyncEngineSentDatabaseChangesEvent, CKSyncEngineSentRecordZoneChangesEvent, CKSyncEngineStateSerialization, CKSyncEngineStateUpdateEvent, CKSyncEngineWillFetchChangesEvent, CKSyncEngineWillFetchRecordZoneChangesEvent, CKSyncEngineWillSendChangesEvent;
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
@@ -302,6 +302,9 @@ NS_REFINED_FOR_SWIFT
 CK_SUBCLASSING_RESTRICTED
 NS_SWIFT_SENDABLE
 @interface CKSyncEngineWillFetchChangesEvent : CKSyncEngineEvent
+
+@property (readonly, strong, nonatomic) CKSyncEngineFetchChangesContext *context API_AVAILABLE(macos(14.2), macCatalyst(17.2), ios(17.2), tvos(17.2), watchos(10.2));
+
 @end
 
 /// The sync engine is about to fetch record zone changes from the server for a specific zone.
@@ -343,6 +346,9 @@ NS_REFINED_FOR_SWIFT
 CK_SUBCLASSING_RESTRICTED
 NS_SWIFT_SENDABLE
 @interface CKSyncEngineDidFetchChangesEvent : CKSyncEngineEvent
+
+@property (readonly, strong, nonatomic) CKSyncEngineFetchChangesContext *context API_AVAILABLE(macos(14.2), macCatalyst(17.2), ios(17.2), tvos(17.2), watchos(10.2));
+
 @end
 
 /// The sync engine is about to send changes to the server.

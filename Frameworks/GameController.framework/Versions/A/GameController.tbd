@@ -2,7 +2,7 @@
 tbd-version:     4
 targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
 install-name:    '/System/Library/Frameworks/GameController.framework/Versions/A/GameController'
-current-version: 11.0.24
+current-version: 11.2.3
 swift-abi-version: 7
 exports:
   - targets:         [ x86_64-macos, arm64-macos, arm64e-macos ]
@@ -261,15 +261,15 @@ exports:
                        _isDeviceDualShock4, _isDeviceKeyboard, _isDeviceLuna, _isDeviceMFiAuthenticated, 
                        _isDeviceMFiGamepadCompliantForDeviceRef, _isDeviceMFiGamepadCompliantForServiceClientRef, 
                        _isDeviceMotionLite, _isDeviceMouse, _isDeviceParentAuthenticated, 
-                       _isDeviceSwitchJoyCon, _isDeviceSwitchProController, _isDeviceSwitchSuperFamicomController, 
-                       _isDeviceXbox, _isPartnerSupportEnabled, _kGCControllerSettingsMetaSettingsExistKey, 
-                       _kGCSettingsCustomizedElementsKey, _kGCSettingsDefaultBundleIdentifier, 
-                       _kGCSettingsElementInvertHorizontallyKey, _kGCSettingsElementInvertSwapAxesKey, 
-                       _kGCSettingsElementInvertVerticallyKey, _kGCSettingsElementMappingKeyKey, 
-                       _kGCSettingsMetaSettingsExistKey, _kGCSettingsMetaSuiteSuffix, 
-                       _loadNSDictionaryFromJSON, _mapToAnalytics, _nameForKeyCode, 
-                       _numberFromInt, _serviceMatchesUsageAndUsagePage, _stringFromState, 
-                       _threadRunLoopSourceCallback ]
+                       _isDeviceSwitchJoyCon, _isDeviceSwitchN64Controller, _isDeviceSwitchProController, 
+                       _isDeviceSwitchSuperFamicomController, _isDeviceXbox, _isPartnerSupportEnabled, 
+                       _kGCControllerSettingsMetaSettingsExistKey, _kGCSettingsCustomizedElementsKey, 
+                       _kGCSettingsDefaultBundleIdentifier, _kGCSettingsElementInvertHorizontallyKey, 
+                       _kGCSettingsElementInvertSwapAxesKey, _kGCSettingsElementInvertVerticallyKey, 
+                       _kGCSettingsElementMappingKeyKey, _kGCSettingsMetaSettingsExistKey, 
+                       _kGCSettingsMetaSuiteSuffix, _loadNSDictionaryFromJSON, _mapToAnalytics, 
+                       _nameForKeyCode, _numberFromInt, _serviceMatchesUsageAndUsagePage, 
+                       _stringFromState, _threadRunLoopSourceCallback ]
     objc-classes:    [ GCAnalytics, GCApplicationStateMonitor, GCColor, GCController, 
                        GCControllerAxisInput, GCControllerButtonInput, GCControllerDirectionPad, 
                        GCControllerElement, GCControllerElementSettings, GCControllerInputState, 

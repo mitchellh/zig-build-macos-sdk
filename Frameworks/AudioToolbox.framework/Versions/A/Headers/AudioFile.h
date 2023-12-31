@@ -158,9 +158,6 @@ CF_ENUM(OSStatus) {
         kAudioFileInvalidFileError						= 'dta?',		// 0x6474613F, 1685348671
 		kAudioFileOperationNotSupportedError			= 0x6F703F3F, 	// 'op??', integer used because of trigraph
 
-		// not an actual error, used by metrics logging only
-		kAudioFileOpenUsingHintError					= 'hnt?',		// 0x686E743F, 1752069183
-
 		// general file error codes
 		kAudioFileNotOpenError							= -38,
 		kAudioFileEndOfFileError						= -39,

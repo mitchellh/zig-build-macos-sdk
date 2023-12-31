@@ -244,6 +244,7 @@ MTL_EXPORT API_AVAILABLE(macos(10.11), ios(8.0))
 @property (readonly) NSUInteger offset;
 @property (readonly) MTLDataType dataType;
 
+
 - (nullable MTLStructType *)structType;
 - (nullable MTLArrayType *)arrayType;
 

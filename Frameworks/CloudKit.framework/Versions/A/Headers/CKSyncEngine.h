@@ -344,6 +344,9 @@ NS_SWIFT_SENDABLE
 /// Creates a scope that includes all zones except the specified excluded zones.
 - (instancetype)initWithExcludedZoneIDs:(NSSet<CKRecordZoneID *> *)zoneIDs;
 
+/// Returns true if the specified zone ID is included in this scope.
+- (BOOL)containsZoneID:(CKRecordZoneID *)zoneID API_AVAILABLE(macos(14.2), macCatalyst(17.2), ios(17.2), tvos(17.2), watchos(10.2));
+
 @end
 
 /// A set of options to use when sending changes to the server.

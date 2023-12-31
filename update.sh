@@ -2,7 +2,7 @@
 set -euo pipefail
 set -x
 
-sdk='/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk'
+sdk='/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk'
 frameworks="$sdk/System/Library/Frameworks"
 includes="$sdk/usr/include"
 libs="$sdk/usr/lib"
@@ -79,7 +79,9 @@ cat ./Frameworks/Foundation.framework/Versions/C/Foundation.tbd | grep -v 'libsw
 mv tmp ./Frameworks/Foundation.framework/Versions/C/Foundation.tbd
 
 # 13M -> 368K
-find ./Frameworks/Kernel.framework -type f | grep -v IOKit/hidsystem | xargs rm -rf
+# This is commented because I now use the Mach headers but we can probably
+# prune more of this out to lower the size.
+# find ./Frameworks/Kernel.framework -type f | grep -v IOKit/hidsystem | xargs rm -rf
 
 # 29M -> 28M
 find . | grep '\.apinotes' | xargs rm -rf

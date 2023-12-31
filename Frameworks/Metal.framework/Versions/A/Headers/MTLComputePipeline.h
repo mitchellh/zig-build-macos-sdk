@@ -80,7 +80,7 @@ MTL_EXPORT API_AVAILABLE(macos(10.11), ios(9.0))
  It can also be used to provide dynamic libraries that are dynamically created (for example, from source) that have no stable installName that can be used to automatically load from the file system.
  @see MTLDynamicLibrary
  */
-@property (readwrite, nullable, nonatomic, copy) NSArray<id<MTLDynamicLibrary>>* insertLibraries API_DEPRECATED_WITH_REPLACEMENT("Use preloadedLibraries instead.", macos(11.0, 12.0), ios(14.0, 15.0));
+@property (readwrite, nullable, nonatomic, copy) NSArray<id<MTLDynamicLibrary>>* insertLibraries API_DEPRECATED_WITH_REPLACEMENT("preloadedLibraries", macos(11.0, 12.0), ios(14.0, 15.0));
 
 /*!
  @property preloadedLibraries

@@ -365,6 +365,8 @@ CF_ENUM(UInt32) {
                     This unit's implementation is lighter weight than kAudioUnitSubType_Splitter 
                     even for two output buses, and is recommended over kAudioUnitSubType_Splitter.
  
+                    Note kAudioUnitSubType_MultiSplitter is a type of kAudioUnitType_Mixer.
+ 
 	@constant		kAudioUnitSubType_Merger
 					An audio unit that provides 2 input buses and 2 output bus. The audio unit
 					merges the two inputs to the single output

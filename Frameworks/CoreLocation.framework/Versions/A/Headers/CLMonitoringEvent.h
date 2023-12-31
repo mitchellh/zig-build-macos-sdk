@@ -20,6 +20,7 @@ typedef NS_ENUM(NSUInteger, CLMonitoringState) {
 	CLMonitoringStateUnknown,
 	CLMonitoringStateSatisfied,
 	CLMonitoringStateUnsatisfied,
+	CLMonitoringStateUnmonitored API_AVAILABLE(macos(14.2), ios(17.2)) API_UNAVAILABLE(tvos, watchos)
 } NS_REFINED_FOR_SWIFT;
 
 /*

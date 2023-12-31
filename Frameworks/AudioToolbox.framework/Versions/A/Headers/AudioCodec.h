@@ -443,25 +443,35 @@ CF_ENUM(AudioCodecPropertyID)
 						and allows to adjust the encoder quality level for every packet. This is useful for packets streamed over
 						unreliable IP networks where the encoder needs to adapt immediately to network condition changes.
 						Escape property ID's start with a '^' symbol as the first char code. This bypasses the initilization check.
-    @constant		kAudioCodecPropertyProgramTargetLevel
-						A Float32 specifying the program target level in dB FS for decoders.
-						Supported target levels are in the range of -31.0 to -20.0dB.
-						This property controls the decoding of broadcast loudness
-						normalization metadata with goal of achieving consistent loudness across various
-						programs. The property complies with the target level defined in the MPEG Audio
-						standard ISO/IEC 14496-3. It will override kAudioCodecPropertyProgramTargetLevelConstant.
-	@constant		kAudioCodecPropertyProgramTargetLevelConstant
-						A UInt32 specifying the program target level constant in dB FS (Full Scale) for decoders.
-						Supported target levels are defined as enum with the prefix kProgramTargetLevel
-						(see below). This property controls the decoding of broadcast loudness
-						normalization metadata with the goal of achieving consistent loudness across various
-						programs. The property complies with the target level defined in the MPEG Audio
-						standard ISO/IEC 14496-3. The default is kProgramTargetLevel_None.
     @constant		kAudioCodecPropertyDynamicRangeControlMode
 						A UInt32 specifying the DRC mode. Supported modes are defined as enum with the
-						prefix kDynamicRangeControlMode (see below). This property controls which
+						prefix kDynamicRangeControlMode (see below). For certain legacy metadata this property controls which
 						dynamic range compression scheme is applied if the information is present in
 						the bitstream. The default is kDynamicRangeControlMode_None.
+    @constant        kAudioCodecPropertyAdjustCompressionProfile
+                        A UInt32 specifying the dynamic range compression profile to be applied in the decoder. Profiles are
+                        based on the DRC Effect Types in ISO/IEC 23003-4. Supported profiles are defined as DynamicRangeCompressionProfile
+                        enum (see below). The default profile is kDynamicRangeCompressionProfile_None.
+                        This property can also be set on an initialized decoder object. It will be applied immediately, if supported.
+    @constant        kAudioCodecPropertyProgramTargetLevelConstant
+                        A UInt32 matching one of the values in the ProgramTargetLevel enumeration, which specifies the
+                        program target loudness in LKFS for decoders.
+                        This property controls the loudness at the decoder output when supported. It is typically
+                        used for loudness normalization. The default is kProgramTargetLevel_None.
+    @constant        kAudioCodecPropertyAdjustTargetLevelConstant
+                        A UInt32 specifying the program target loudness in LKFS for decoders. It has the same effect
+                        as kAudioCodecPropertyProgramTargetLevelConstant, but this property can also be set on an
+                        initialized decoder object. It will be applied immediately, if supported.
+                        A value of kProgramTargetLevel_None removes a prior target level setting.
+    @constant        kAudioCodecPropertyProgramTargetLevel
+                        A Float32 specifying the program target loudness in LKFS for decoders.
+                        This property controls the loudness at the decoder output when supported. It is typically
+                        used for loudness normalization. Compared to kAudioCodecPropertyProgramTargetLevelConstant,
+                        this property is not limiting the values to predefined constants.
+    @constant        kAudioCodecPropertyAdjustTargetLevel
+                        A Float32 specifying the program target loudness in LKFS for decoders. It has the same effect
+                        as kAudioCodecPropertyProgramTargetLevel, but this property can also be set on an initialized decoder
+                        object. It will be applied immediately, if supported.
 */
 CF_ENUM(AudioCodecPropertyID)
 {
@@ -496,9 +506,12 @@ CF_ENUM(AudioCodecPropertyID)
     kAudioCodecPropertyBitRateForVBR                                            = 'vbrb',
 	kAudioCodecPropertyDelayMode                                                = 'dmod',
     kAudioCodecPropertyAdjustLocalQuality										= '^qal',
-    kAudioCodecPropertyProgramTargetLevel										= 'pptl',
     kAudioCodecPropertyDynamicRangeControlMode									= 'mdrc',
+    kAudioCodecPropertyAdjustCompressionProfile                                 = '^pro',
     kAudioCodecPropertyProgramTargetLevelConstant								= 'ptlc',
+    kAudioCodecPropertyAdjustTargetLevelConstant                                = '^tlc',
+    kAudioCodecPropertyProgramTargetLevel                                       = 'pptl',
+    kAudioCodecPropertyAdjustTargetLevel                                        = '^ptl',
 };
 
 
@@ -613,7 +626,7 @@ CF_ENUM(UInt32)
 /*!
 	@enum			ProgramTargetLevel
 
-	@discussion		Constants to be used with kAudioCodecPropertyProgramTargetLevelConstant
+	@discussion		Constants to be used with kAudioCodecPropertyProgramTargetLevelConstant to set the target loudness
 
 	@constant		kProgramTargetLevel_None
 						
@@ -649,7 +662,33 @@ CF_ENUM(UInt32)
 };
 
 /*!
-	@struct			AudioCodecPrimeInfo 
+    @enum            DynamicRangeCompressionProfile
+
+    @discussion        Constants to be used with kAudioCodecPropertyAdjustCompressionProfile to control
+                       the DRC Effect Type based on ISO/IEC 23003-4
+
+    @constant       kDynamicRangeCompressionProfile_None
+                        No compression
+    @constant        kDynamicRangeCompressionProfile_LateNight
+                        Compression to avoid disturbing others and listening at lower volume
+    @constant        kDynamicRangeCompressionProfile_NoisyEnvironment
+                        Compression suitable for listening in noisy environments
+    @constant        kDynamicRangeCompressionProfile_LimitedPlaybackRange
+                        Compression for transducers with limited dynamic range
+    @constant        kDynamicRangeCompressionProfile_GeneralCompression
+                        General purpose compression
+*/
+CF_ENUM(UInt32)
+{
+    kDynamicRangeCompressionProfile_None                    = 0,
+    kDynamicRangeCompressionProfile_LateNight               = 1,
+    kDynamicRangeCompressionProfile_NoisyEnvironment        = 2,
+    kDynamicRangeCompressionProfile_LimitedPlaybackRange    = 3,
+    kDynamicRangeCompressionProfile_GeneralCompression      = 6
+};
+
+/*!
+	@struct			AudioCodecPrimeInfo
  
 	@discussion		Specifies the number of leading and trailing empty frames
 					which have to be inserted.
