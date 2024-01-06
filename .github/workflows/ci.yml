@@ -13,7 +13,7 @@ jobs:
       - name: Setup Zig
         run: |
           brew install xz
-          sudo sh -c 'wget -c https://ziglang.org/builds/zig-macos-x86_64-0.12.0-dev.1101+25400fadf.tar.xz -O - | tar -xJ --strip-components=1 -C /usr/local/bin'
+          sudo sh -c 'wget -c https://ziglang.org/builds/zig-macos-x86_64-0.12.0-dev.2058+04ac028a2.tar.xz -O - | tar -xJ --strip-components=1 -C /usr/local/bin'
       - name: build
         run: zig build
         env:

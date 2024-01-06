@@ -15,7 +15,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(lib);
 }
 
-pub fn addPaths(step: *std.build.CompileStep) void {
+pub fn addPaths(step: *std.Build.Step.Compile) void {
     step.addSystemFrameworkPath(.{ .cwd_relative = sdkPath("/Frameworks") });
     step.addSystemIncludePath(.{ .cwd_relative = sdkPath("/include") });
     step.addLibraryPath(.{ .cwd_relative = sdkPath("/lib") });
