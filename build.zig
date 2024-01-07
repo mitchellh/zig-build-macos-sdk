@@ -21,6 +21,12 @@ pub fn addPaths(step: *std.Build.Step.Compile) void {
     step.addLibraryPath(.{ .cwd_relative = sdkPath("/lib") });
 }
 
+pub fn addPathsModule(m: *std.Build.Module) void {
+    m.addSystemFrameworkPath(.{ .cwd_relative = sdkPath("/Frameworks") });
+    m.addSystemIncludePath(.{ .cwd_relative = sdkPath("/include") });
+    m.addLibraryPath(.{ .cwd_relative = sdkPath("/lib") });
+}
+
 fn sdkPath(comptime suffix: []const u8) []const u8 {
     if (suffix[0] != '/') @compileError("suffix must be an absolute path");
     return comptime blk: {
