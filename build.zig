@@ -6,7 +6,7 @@ pub fn build(b: *std.Build) void {
 
     const lib = b.addStaticLibrary(.{
         .name = "macos_sdk",
-        .root_source_file = .{ .path = "stub.c" },
+        .root_source_file = b.path("stub.c"),
         .target = target,
         .optimize = optimize,
     });

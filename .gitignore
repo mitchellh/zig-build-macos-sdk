@@ -1,2 +1,3 @@
 # Zig stuff
+.zig-cache
 zig-*
